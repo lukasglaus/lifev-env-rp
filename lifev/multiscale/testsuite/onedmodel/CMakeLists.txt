@@ -1,0 +1,17 @@
+
+INCLUDE(TribitsAddExecutableAndTest)
+INCLUDE(TribitsCopyFilesToBinaryDir)
+
+TRIBITS_ADD_EXECUTABLE_AND_TEST(
+  OneDModel
+  SOURCES main.cpp
+  ARGS -c
+  NUM_MPI_PROCS 1
+  COMM mpi
+  )
+
+TRIBITS_COPY_FILES_TO_BINARY_DIR(MS1D_data
+  SOURCE_FILES data
+  SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
