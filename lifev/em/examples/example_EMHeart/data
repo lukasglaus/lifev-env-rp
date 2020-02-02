@@ -1,7 +1,7 @@
 #-------------------------------------------------
 #      Data file for EM-Heart
 #-------------------------------------------------
-#this is my last resort
+
 [exporter]
 type       = hdf5 #ensight 			# hdf5 (if library compiled with hdf5 support) or ensight
 multimesh  = false
