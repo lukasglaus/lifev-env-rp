@@ -1,0 +1,63 @@
+
+INCLUDE(TribitsAddExecutableAndTest)
+INCLUDE(TribitsCopyFilesToBinaryDir)
+
+INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR})
+
+TRIBITS_ADD_EXECUTABLE(
+  BiVent
+  SOURCES main.cpp
+  )
+
+ TRIBITS_COPY_FILES_TO_BINARY_DIR(data_example_EMBiVent
+   SOURCE_FILES ParamList.xml data circulation
+   SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}
+ )
+
+TRIBITS_COPY_FILES_TO_BINARY_DIR(biVentMedium
+  CREATE_SYMLINK
+  SOURCE_FILES biVentMedium
+  SOURCE_DIR ${CMAKE_SOURCE_DIR}/lifev/em/examples/example_EMBiVent
+)
+
+TRIBITS_COPY_FILES_TO_BINARY_DIR(biVentCoarseNew
+  CREATE_SYMLINK
+  SOURCE_FILES biVentCoarseNew
+  SOURCE_DIR ${CMAKE_SOURCE_DIR}/lifev/em/examples/example_EMBiVent
+)
+
+TRIBITS_COPY_FILES_TO_BINARY_DIR(biVentCoarse
+CREATE_SYMLINK
+SOURCE_FILES biVentCoarse
+SOURCE_DIR ${CMAKE_SOURCE_DIR}/lifev/em/examples/example_EMBiVent
+)
+
+TRIBITS_COPY_FILES_TO_BINARY_DIR(biVentCoarseP2
+   CREATE_SYMLINK
+   SOURCE_FILES biVentCoarseP2
+   SOURCE_DIR ${CMAKE_SOURCE_DIR}/lifev/em/examples/example_EMBiVent
+)
+
+TRIBITS_COPY_FILES_TO_BINARY_DIR(biVentCoarsePatchesP2
+CREATE_SYMLINK
+SOURCE_FILES biVentCoarsePatchesP2
+SOURCE_DIR ${CMAKE_SOURCE_DIR}/lifev/em/examples/example_EMBiVent
+)
+
+TRIBITS_COPY_FILES_TO_BINARY_DIR(heartVCoa
+CREATE_SYMLINK
+SOURCE_FILES heartVCoa
+SOURCE_DIR ${CMAKE_SOURCE_DIR}/lifev/em/examples/example_EMBiVent
+)
+
+TRIBITS_COPY_FILES_TO_BINARY_DIR(biVentCoarsePatches
+CREATE_SYMLINK
+SOURCE_FILES biVentCoarsePatches
+SOURCE_DIR ${CMAKE_SOURCE_DIR}/lifev/em/examples/example_EMBiVent
+)
+
+TRIBITS_COPY_FILES_TO_BINARY_DIR(biVentMediumPatchesP2
+CREATE_SYMLINK
+SOURCE_FILES biVentMediumPatchesP2
+SOURCE_DIR ${CMAKE_SOURCE_DIR}/lifev/em/examples/example_EMBiVent
+)
