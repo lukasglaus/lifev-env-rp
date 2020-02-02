@@ -1,0 +1,188 @@
+\documentclass[a4paper, 12pt, report]{lifestyle}
+
+\usepackage{rcs}
+\usepackage[top=3.6cm,bottom=3.6cm,right=3.2cm,left=3.5cm]{geometry}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{epsfig}
+\usepackage{hyperref}
+
+\RCS $Revision: 1.9 $
+\RCS $Date: 2015-01-14 11:00:00$
+\RCS $State: Exp $
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% New user defined commands
+%%%%%%N%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\definecolor{listinggray}{gray}{0.9}
+\definecolor{darkgreen}{rgb}{0,0.7,0} 
+\definecolor{lbcolor}{rgb}{0.9,0.9,0.9}
+\lstset{
+    backgroundcolor=\color{lbcolor},
+    tabsize=4,    
+    %   rulecolor=,
+    language=[GNU]C++,
+    basicstyle=\scriptsize,
+    upquote=true,
+    aboveskip={1.5\baselineskip},
+    columns=fixed,
+    showstringspaces=false,
+    extendedchars=false,
+    breaklines=true,
+    prebreak = \raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+    frame=single,
+    numbers=left,
+    showtabs=false,
+    showspaces=false,
+    showstringspaces=false,
+    identifierstyle=\ttfamily,
+    keywordstyle=\color[rgb]{0,0,1},
+    commentstyle=\color[rgb]{0.026,0.112,0.095},
+    stringstyle=\color[rgb]{0.627,0.126,0.941},
+    numberstyle=\color[rgb]{0.205, 0.142, 0.73},
+    %        \lstdefinestyle{C++}{language=C++,style=numbers}’.
+}
+
+%\newcommand{\Div} {\operatorname{div}}
+\newcommand{\Grad} {\boldsymbol{\nabla}}
+\newcommand{\strain}{{\uu \epsilon}}
+\newcommand{\Strain}[1] {(\Grad{\uu{#1}} +  (\Grad{\uu{#1}})^T )/2 }
+\newcommand{\piola}{\uu \sigma_\ms}
+
+\newcommand{\St}{\operatorname{Stokes}}
+\newcommand{\NS}{\operatorname{Fluid}}
+\newcommand{\Str}{\operatorname{Str}}
+
+\newcommand{\uu}[1]{\boldsymbol{#1}}
+\newcommand{\U}{{\uu{u}}}
+\newcommand{\V}{{\uu{v}}}
+\newcommand{\bY}{{\hat {\uu x}}}
+\newcommand{\bw}{{\uu w}}
+\newcommand{\D}{{\uu d}}
+\newcommand{\Df}{{\uu d^\mf}}
+\newcommand{\Ds}{{\uu d^\ms}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+
+
+\newcommand{\Div}{\operatorname{div}}
+\newcommand{\dis}{\displaystyle}
+
+%
+
+\newcommand{\xs}{\uu x^\ms}
+\newcommand{\xf}{\uu x^\mf}
+\newcommand{\ds}{\uu d^\ms}
+\newcommand{\df}{\uu d^\mf}
+\newcommand{\mf}{{\mathrm{f}}}
+\newcommand{\ms}{{\mathrm{s}}}
+\newcommand{\wf}{\uu w^\mf}
+\newcommand{\ws}{\uu w^\ms}
+\newcommand{\disp}[1]{\lambda^{#1}}
+%\newcommand{\Omegat}[1][t]{\Omega(#1)}
+%
+% FSI commands
+%
+\newcommand{\hOmega} {\hat\Omega}
+\newcommand{\hOmegaF}{\hat{\Omega}^{\mf}}
+\newcommand{\hOmegaS}{\hat\Omega^{\ms}}
+\newcommand{\hGamIn} {\hat\Gamma^{\mathrm{in}}}
+\newcommand{\hGamOu} {\hat\Gamma^{\mathrm{out}}}
+%
+\newcommand{\Omegat}{\Omega(t)}
+\newcommand{\Omegai}{\Omega_0}
+\newcommand{\OmegaF} {\Omega^{\mf}}
+\newcommand{\OmegaFi} {\Omega_0^{\mf}}
+\newcommand{\OmegaFt}{\Omega^{\mf}(t)}
+\newcommand{\OmegaS} {\Omega^{\ms}}
+\newcommand{\OmegaSi} {\Omega_0^{\ms}}
+\newcommand{\OmegaSt}{\Omega^{\ms}(t)}
+%
+\newcommand{\Domt}   {\Omega(t)}
+\newcommand{\Domi}   {\Omega_0}
+\newcommand{\DomF}   {\Omega^{\mf}}
+\newcommand{\DomFi}  {\Omega_0^{\mf}}
+\newcommand{\DomFt}  {\Omega^{\mf}(t)}
+\newcommand{\DomS}   {\Omega^{\ms}}
+\newcommand{\DomSi}  {\Omega_0^{\ms}}
+\newcommand{\DomSt}  {\Omega^{\ms}(t)}
+\newcommand{\GamIn}  {\Gamma^{\mathrm{in}}}
+\newcommand{\GamIni}  {\Gamma^{\mathrm{in}}_0}
+\newcommand{\GamInt} {\Gamma^{\mathrm{in}}(t)}
+\newcommand{\GamOu}  {\Gamma^{\mathrm{out}}}
+\newcommand{\GamOui}  {\Gamma^{\mathrm{out}}_0}
+\newcommand{\GamOut} {\Gamma^{\mathrm{out}}(t)}
+\newcommand{\GamFS}[1] {\Gamma(t^{#1})}
+\newcommand{\GamFSi} {\Gamma_0}
+\newcommand{\GamFSt} {\Gamma(t)}
+\newcommand{\hGamW}  {\Sigma_0}
+\newcommand{\Wall}   {\Sigma}
+\newcommand{\Wallt}  {\Sigma(t)}
+\newcommand{\hWall}  {\Sigma^s}
+%\newcommand{\ALE}[1]{{\CMcal A}_{#1}}
+\newcommand{\ALE}[1]{{\uu x^\mf_{#1}}}
+\newcommand{\diffALE}[1]{\left.\frac{\partial #1}{\partial t}\right|_{\uu x_0}}
+\newcommand{\In}{{\operatorname{in}}}
+\newcommand{\Out}{{\operatorname{out}}}
+\newcommand{\Fstress}[1][{ }] {\uu{\sigma}_\mf (\U^{#1}, p^{#1})}
+\newcommand{\Sstress}[1][{ }] {\uu{\sigma}_\ms}
+%
+% FSI operators
+%
+\newcommand{\Sf}{S_\mf}
+\newcommand{\Ss}{S_\ms}
+\newcommand{\SFprime}{S'_\mf}
+\newcommand{\SSprime}{S'_\ms}
+\newcommand{\DN}{S'_\ms(\lambda^k)}
+\newcommand{\ND}{S'_\mf(\lambda^k)}
+\newcommand{\NN}{S'_\mf(\lambda^k) + S'_\ms^{-1}(\lambda^k)}
+\newcommand{\invDN}{{S'}_\ms^{-1}(\lambda^k)}
+\newcommand{\invND}{{S'}_\mf^{-1}(\lambda^k)}
+\newcommand{\invNN}{{S'}_\mf^{-1}(\lambda^k) + S'_\ms^{-1}(\lambda^k)}
+
+ 
+
+\title{\lifetitle{LifeV User Manual}
+{G. Fourestey, S. Deparis}
+}
+\date{}
+\makeindex
+\makeglossary
+
+\pagestyle{fancy}
+
+%%\includeonly{lifev-dev_generalities,lifev-dev_howto}
+\begin{document}
+
+\maketitle
+
+\phantom{dummy text}
+\vfill
+This manual is for LifeV (version 3.8.3, January 2015),
+a library for scientific computing
+using finite elements, specially aimed at fluid-structure interaction and blood flow simulation.
+
+Copyright (C) 2001- 2015 EPFL, INRIA, Politecnico di Milano.
+
+\tableofcontents
+
+%\listoffigures
+
+\listoftables
+
+\include{lifev-install}
+\include{lifev-examples}
+
+%\appendix
+%\include{tablesAppendix}
+
+\bibliographystyle{abbrv}
+\bibliography{lifev}
+
+%\printindex
+
+\end{document}
+ 

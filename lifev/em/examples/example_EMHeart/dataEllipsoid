@@ -1,0 +1,374 @@
+#-------------------------------------------------
+#      Data file for EM-Heart
+#-------------------------------------------------
+
+
+[exporter]
+type       = hdf5 #ensight 			# hdf5 (if library compiled with hdf5 support) or ensight
+multimesh  = false
+start      = 0
+save       = 10
+
+
+[electrophysiology]
+
+monodomain_xml_path = ./
+monodomain_xml_file = ParamListE.xml
+
+    [./physics]
+    IonicModel = MinimalModel
+    fiberDiffusion  = 10 #1.33 #10.0
+    sheetDiffusion  = 3 #0.176 #3.0
+    normalDiffusion = 3 #0.176 #3.0
+    
+    [../time_discretization]
+    endtime         = 100000
+    timestep        = 0.05
+    
+    [../discretization]
+    LumpedMass = false
+    coupling = two-way
+
+    [../flags]
+    lvendo = 65 #50
+    # rvedno = 51
+    # rvseptum = 52
+
+    [../]
+
+
+[activation]
+
+    [./physics]
+    ActivationModel         = ActiveStrainRossi14
+    CalciumIndex            = 3
+    ActiveForceCoefficient  = -0.0  # -6.25  # -7.0 # -7.3
+    InverseViscosity        = 0.0002
+    ChemicalThreshold       = 0.21
+
+    [../time_discretization]
+    endtime         = 100000
+    timestep        = 0.05
+
+    [../pathology]
+    strength    = 0.2
+    infarctPos  = '2.0 -8.0 -3.0'
+    radius      = 3.0 #3.0
+
+    [../]
+
+
+[solid]
+
+    [./physics]
+    density         = 0
+    material_flag   = 1000 #101
+    young           = 29760 #9920
+    poisson         = 0.5
+    bulk            = 100000 #1.3333e+8
+    alpha           = 2.684564e+6
+    gamma           = 1.0
+    gammaf          = 0.0
+    solidType       = EMMaterial
+    lawType         = nonlinear
+
+    [../boundary_conditions]
+    numPreloadSteps  = 50
+
+    list = 'BaseSemilunar BaseAV AorticRing MitralRing TricuspidRing Epicardium'
+
+        [./BaseSemilunar]
+        type       = Robin
+        flag       = 462
+        mode       = Component
+        component  = '0 1 2'
+        function = '0.0'
+
+            [./RobinAlpha]
+            function = '100000' #' 5.00 * 1000' # D
+
+            [../RobinBeta]
+            function = '1' #' 5.00 * 1000' # D
+
+            [../]
+
+        [../BaseAV]
+        type       = Robin
+        flag       = 463
+        mode       = Component
+        component  = '0 1 2'
+        function = '0.0'
+
+            [./RobinAlpha]
+            function = '100000' #' 5.00 * 1000' # D
+
+            [../RobinBeta]
+            function = '1' #' 5.00 * 1000' # D
+
+            [../]
+
+        [../Epicardium]
+        type       = Robin
+        flag       = 464
+        mode       = Component
+        component  = '0 1 2'
+        function = '0.0'
+
+            [./RobinAlpha]
+            function = '1000' #' 5.00 * 1000' # D
+
+            [../RobinBeta]
+            function = '1' #' 5.00 * 1000' # D
+
+            [../]
+
+        [../AorticRing]
+        type       = Robin
+        flag       = 461
+        mode       = Component
+        component  = '0 1 2'
+        function = '0.0'
+
+            [./RobinAlpha]
+            function = '100000' #' 5.00 * 1000' # D
+
+            [../RobinBeta]
+            function = '1' #' 5.00 * 1000' # D
+
+            [../]
+
+        [../MitralRing]
+        type       = Robin
+        flag       = 460
+        mode       = Component
+        component  = '0 1 2'
+        function = '0.0'
+
+            [./RobinAlpha]
+            function = '100000' #' 5.00 * 1000' # D
+
+            [../RobinBeta]
+            function = '1' #' 5.00 * 1000' # D
+
+            [../]
+
+        [../TricuspidRing]
+        type       = Robin
+        flag       = 459
+        mode       = Component
+        component  = '0 1 2'
+        function = '0.0'
+
+            [./RobinAlpha]
+            function = '100000' #' 5.00 * 1000' # D
+
+            [../RobinBeta]
+            function = '1' #' 5.00 * 1000' # D
+
+            [../]
+
+        [../]
+
+    listVariableBC = 'EndocardiumLV EndocardiumRV Septum SeptumEdgeBottom SeptumEdgeTop'
+
+        [./EndocardiumLV]
+            flag    = 454
+            index   = 0
+
+        [../EndocardiumRV]
+            flag    = 455
+            index   = 1
+
+        [../Septum]
+            flag    = 456
+            index   = 1
+
+        [../SeptumEdgeBottom]
+            flag    = 457
+            index   = 1
+
+        [../SeptumEdgeTop]
+            flag    = 458
+            index   = 1
+
+        [../AorticRingP]
+            flag    = 461
+            index   = 0
+
+        [../MitralRingP]
+            flag    = 460
+            index   = 0
+
+        [../TricuspidRingP]
+            flag    = 459
+            index   = 1
+
+        [../]
+	
+	listEssentialPatchBC = 'EssentialPatchRealYZ1 EssentialPatchRealYZ2'
+
+    [./EssentialPatchMovingPlane1]
+        flag                    = 464
+        startingpoint           = '-1.8 -7.0 -4.5'
+        direction               = '1.0 0.0 1.0'
+        component               = '0 2'
+        type                    = EssentialPatchBCMovingPlane
+        displacement            = 1.2
+
+        [../EssentialPatchMovingPlane2]
+        flag                    = 464
+        startingpoint           = '3.5 -7.0 1.0'
+        direction               = '-1.0 0.0 1.0'
+        component               = '0 2'
+        type                    = EssentialPatchBCMovingPlane
+        displacement            = 1.2
+
+	[../EssentialPatchRealPatch1]
+        flag                    = 464
+        phi			= 0
+	theta			= 0
+	a			= 3.5
+	b			= 8
+	c			= 5
+	height			= 3.5
+	width			= 4.5
+	shift			= 0
+	vertexEllipse		= '4.11401 -7.85605 -1.66889'
+        direction               = '0.0 0.0 0.0'
+        component               = '0 2'
+        type                    = EssentialPatchBCPatchReal
+        displacement            = 1.0
+
+	[../EssentialPatchRealYZ1]
+        flag                    = 464
+        phi                     = 0
+        psi                     = -12  #-10
+        a                       = 5.4 # 6  #8
+        b                       = 8.0846    #7.4407  #7.6118  # 8.3351 #6
+        c                       = 7   # 3.5  #4
+        height                  = 4.9  # 5.1
+        width                   = 11 #12 #5.8
+        normalVector            = '0.905402 -0.187201 -0.381055'
+        vertexEllipse           = '3.47965 -6.57128 -3.84336'  #  '4.07965 -6.57128 -3.84336'     #'3.47965 -6.57128 -3.84336'     #'4.00018 -6.54221 -3.5716'    #'3.50018 -6.54221 -3.5716'  # Best One '3.47592 -8.49863 -3.22094'  
+        direction               = '0.0 0.0 0.0'
+        component               = '0 2'
+        type                    = EssentialPatchBCPatchRealYZRotation
+        displacement            = 0.72  # 1.4  #2.5 # 4.7
+
+	
+	[../EssentialPatchRealYZ2]
+        flag                    = 464
+        phi                     = 0
+        psi                     = 26 #28  #35  # 23  #43.26  #45  #37  #52  #47
+        a                       = 6 #5.4 # 6  #8
+        b                       = 8.1333  #6.25  #12.1452    #7.4407  #7.6118  # 8.3351 #6
+        c                       = 8   # 3.5  #4
+        height                  = 5  # 5.1
+        width                   = 13 #12 #5.8
+        normalVector            = '-0.660262 -0.64017 0.390209'
+        vertexEllipse           = '-3.823893 -7.72928 3.1143093' #    '-3.859499 -7.72928 3.1382113' #   '-3.9321235 -7.72928 3.186939'     # '-3.826282. -7.72928 3.115871'    # '-3.68023 -7.72928 3.01679' #  
+        direction               = '0.0 0.0 0.0'
+        component               = '0 2'
+        type                    = EssentialPatchBCPatchRealYZRotation
+        displacement            = 0.72   # 1.4 # 4.7
+	
+
+        [../]
+
+
+    [../patches]
+    testAtPreload       = false  #true
+    tmax                = 176 #175 #250 #150 #200 #250
+    tduration           = 350 #300
+
+    [../coupling]
+    pPerturbationFe         = 1e-3
+    pPerturbationCirc       = 1e-3
+    dpMax                   = 0.6 #0.5 #0.1 #0.3
+    couplingError           = 1e-5 #1e-6
+    couplingJFeSubStart     = 2
+    couplingJFeSubIter      = 1
+
+    [../time_discretization]
+    initialtime                 = 0.
+    endtime                     = 10000.
+    timestep                    = 1.0
+    dt_loadstep                 = 0.5
+    activation_limit_loadstep   = 0.1 #-0.07
+    theta                       = 0.35
+    zeta                        = 0.75
+    BDF_order                   = 2
+
+
+    [../space_discretization]
+    mesh_type           = .mesh
+    mesh_name           = humanHeart160
+    mesh_scaling        = '1.2 1.2 1.2'
+    #mesh_translation    = '-66 -72 -94.5'
+    #mesh_rotation       = '0.9 0.0 -0.5'
+    order               = P1  #P2
+    quad_rule           = 4pt
+    anisotropic         = true
+    fiber_name          = FiberDirection
+    fiber_fieldname     = fibers
+    sheet_name          = SheetsDirection
+    sheet_fieldname     = sheets
+
+
+    [../miscellaneous]
+    factor    	= 1
+    verbose   	= 1
+
+
+    [../newton]
+    maxiter             = 50
+    reltol              = 1.e-7
+    abstol              = 5e-5 #5e-6
+    NonLinearLineSearch = 0
+
+    [../solver]
+    solver          = gmres
+    scaling         = none
+    output          = none
+    conv            = rhs
+    max_iter        = 400
+    reuse           = true
+    max_iter_reuse  = 250
+    kspace          = 800
+    tol             = 1.e-9   # 1.e-10 		# AztecOO tolerance
+
+    [../prec]
+    prectype        = Ifpack	 		# Ifpack or ML
+    displayList     = true
+    xmlName         = ParamList.xml #xmlParameters.xml
+
+        [./ifpack]
+        overlap  	= 1
+
+            [./fact]
+            ilut_level-of-fill      = 1
+            drop_tolerance          = 1.e-5
+            relax_value             = 0
+
+            [../amesos]
+            solvertype  =  Amesos_Umfpack #Amesos_Umfpack #Amesos_Superludist #Amesos_KLU
+
+            [../partitioner]
+            overlap 	= 4
+
+            [../schwarz]
+            reordering_type 	= none 			# metis, rcm, none
+            filter_singletons 	= true
+
+            [../]
+
+    [../]
+
+
+
+
+	# -*- getpot -*- (GetPot mode activation for emacs)
+#----------------------------------------------------------------
+#      Data file for heart model
+#----------------------------------------------------------------
+
