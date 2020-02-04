@@ -287,7 +287,7 @@ int main (int argc, char** argv)
     //============================================
     // Apply essential patch b.c.
     //============================================
-     patchHandler.applyPatchBC(solver); //this one we get downwards to get better understanding
+    patchHandler.applyPatchBC(solver); //this one we get downwards to get better understanding
     heartSolver.setPatchDisplacementSumPtr(patchHandler.patchDisplacementSumPtr());
     heartSolver.setPatchLocationSumPtr(patchHandler.patchLocationSumPtr());
     heartSolver.setPatchFacesLocationSumPtr(patchHandler.patchFacesLocationSumPtr());
