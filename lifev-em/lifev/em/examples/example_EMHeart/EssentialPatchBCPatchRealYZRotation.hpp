@@ -522,7 +522,8 @@ class EssentialPatchBCPatchRealYZRotation : public EssentialPatchBC
          	std::ostringstream oss;//this is to convert int to string
          	oss << currentprocessor;
 
-         	std::string path_coordinates = "/cluster/home/pamstad/LIFE5/lifev-env/lifev-em-build/lifev/em/examples/example_EMHeart/coordinatefiles/coordinates_" + oss.str() + ".dat";
+            std::string path_coordinates = "/cluster/home/lglaus/LIFE5/lifev-env-rp/lifev-em-install-debug/lifev/em/examples/example_EMHeart/coordinatefiles/coordinates_" + oss.str() + ".dat"; //2020.02.05 lg
+         	//std::string path_coordinates = "/cluster/home/pamstad/LIFE5/lifev-env/lifev-em-build/lifev/em/examples/example_EMHeart/coordinatefiles/coordinates_" + oss.str() + ".dat"; //2020.02.05 lg
 
 		
 		std::ofstream writer_one(path_coordinates.c_str(), std::ios_base::app);
