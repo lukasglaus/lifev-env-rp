@@ -1516,9 +1516,10 @@ protected:
     void updateDispDirectionalVec(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver, const Real& time)
     {
     	*m_directionVecFieldPtr *=0.0;
-
-    	*m_directionVecFieldPtr += m_patchBCPtrVec[0]->displayDirectionalVectorField(solver, time);
-
+        for (auto& patch : m_patchBCPtrVec)//neu trial lg 05.02.2020
+        {//neu trial lg 05.02.2020
+                            *m_directionVecFieldPtr += m_patchBCPtrVec[0]->displayDirectionalVectorField(solver, time);
+        }//neu trial lg 05.02.2020
     }
 
 
