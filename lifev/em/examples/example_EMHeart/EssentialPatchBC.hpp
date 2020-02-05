@@ -1410,7 +1410,8 @@ public:
   	                      std::ostringstream oss;//this is to convert int to string
   	                      oss << currentprocessor;
 
-  	                      std::string path = "/cluster/home/pamstad/LIFE5/lifev-env/lifev-em-build/lifev/em/examples/example_EMHeart/coordinatefiles/coordinates_" + oss.str() + ".dat";
+  	                      std::string path = "/cluster/home/lglaus/LIFE5/lifev-env-rp/lifev-em-install/lifev/em/examples/example_EMHeart/coordinatefiles/coordinates_" + oss.str() + ".dat";//2020.02.05 lg
+                            //std::string path = "/cluster/home/pamstad/LIFE5/lifev-env/lifev-em-build/lifev/em/examples/example_EMHeart/coordinatefiles/coordinates_" + oss.str() + ".dat";//2020.02.05 lg
   	                      std::ofstream writer(path.c_str(), std::ios_base::app);
   	                      if(writer.is_open()==false)
   	                      {
