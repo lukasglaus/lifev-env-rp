@@ -706,9 +706,9 @@ public:
     	Vector3D startingPoint;
     	Vector3D direction = normalVector;
         
-       std::cout << "\n\nvector direction=( " << direction[0] << ", " << direction[1] << ", " << direction[2] << "\n\n";
+       std::cout << "\n\nvector direction=( " << direction[0] << ", " << direction[1] << ", " << direction[2] << "\n\n"; // 2020.02.06 lg
         
-    	//direction.normalize();
+    	//direction.normalize(); // 2020.02.06 lg
 
 
     	startingPoint[0] = -3.76487;
