@@ -706,7 +706,7 @@ public:
     	Vector3D startingPoint;
     	Vector3D direction = normalVector;
         
-        if ( 0 == comm->MyPID() ) std::cout << "\n\vector direction=( " << direction[0] << ", " << direction[1] << ", " << direction[2] << "\n\n";
+       std::cout << "\n\vector direction=( " << direction[0] << ", " << direction[1] << ", " << direction[2] << "\n\n";
         
     	direction.normalize();
 
