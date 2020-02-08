@@ -295,7 +295,7 @@ vectorPtr_Type EssentialPatchBCMovingPlane::directionalVectorField(EMSolver<Regi
 	                    coordinates(1) = p2PositionVector[jGID];
 	                    coordinates(2) = p2PositionVector[kGID];
 
-                        std::cout << "\n\nIteration number" << j << "of" <<nCompLocalDof-1 << "Coordinate vector" << cordinate(0) << "," << cordinate(1) << "," << cordinate(2) << ",";
+                        std::cout << "\n\nIteration number" << j << "of" <<nCompLocalDof-1 << "Coordinate vector" << coordinates(0) << "," << coordinates(1) << "," << coordinates(2) << ",";
                 
 	                    /*
 	                    coordinates(0) = (*m_p2currentPositionVector)[iGID];
