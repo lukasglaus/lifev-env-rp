@@ -275,7 +275,7 @@ vectorPtr_Type EssentialPatchBCMovingPlane::directionalVectorField(EMSolver<Regi
 
 	        //std::cout << "This is Length of EpetraDisplacementVector in DirectionalVectorfield: " << p2PatchDisplacement->epetraVector().MyLength() << std::endl;
 
-	        for (int j (0); j < nCompLocalDof-1; ++j)
+	        for (int j (0); j < nCompLocalDof; ++j)
 	        {
 	                    // Get coordinates
 
@@ -295,6 +295,7 @@ vectorPtr_Type EssentialPatchBCMovingPlane::directionalVectorField(EMSolver<Regi
 	                    coordinates(1) = p2PositionVector[jGID];
 	                    coordinates(2) = p2PositionVector[kGID];
 
+                        std::cout << "\n\nIteration number" << j << "of" <<nCompLocalDof-1 << "Coordinate vector" << cordinate(0) << "," << cordinate(1) << "," << cordinate(2) << ",";
                 
 	                    /*
 	                    coordinates(0) = (*m_p2currentPositionVector)[iGID];
