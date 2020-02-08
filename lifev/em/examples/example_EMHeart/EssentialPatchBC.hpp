@@ -704,9 +704,6 @@ public:
     	Real distance;
     	Vector3D normalVector;
     	Vector3D startingPoint;
-    	Vector3D direction = normalVector;
-        
-       std::cout << "\n\nvector direction=( " << direction[0] << ", " << direction[1] << ", " << direction[2] << "\n\n"; // 2020.02.06 lg
         
     	//direction.normalize(); // 2020.02.06 lg
 
@@ -719,6 +716,11 @@ public:
     	normalVector[1] = 0.695607;
     	normalVector[2] = -0.270367;
 
+        Vector3D direction = normalVector; // 2020.02.08 lg
+        direction.normalize(); // 2020.02.08 lg
+        
+        std::cout << "\n\nvector direction=( " << direction[0] << ", " << direction[1] << ", " << direction[2] << "\n\n"; // 2020.02.06 lg
+        
     	//first we want to set up the initial vector
     	auto p2dFeSpace = solver.structuralOperatorPtr()->dispFESpacePtr();
     	  	const auto& meshFull = solver.fullMeshPtr();
