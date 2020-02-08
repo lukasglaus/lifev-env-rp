@@ -294,13 +294,13 @@ vectorPtr_Type EssentialPatchBCMovingPlane::directionalVectorField(EMSolver<Regi
 						*/
 
 	                    Vector3D coordinates;
-
-                    std::cout << "\n\nvector coordinates =( " << coordinates[0] << ", " << coordinates[1] << ", " << coordinates[2] << "\n\n"; // 2020.02.08 lg
                 
 	                    coordinates(0) = p2PositionVector[iGID];
 	                    coordinates(1) = p2PositionVector[jGID];
 	                    coordinates(2) = p2PositionVector[kGID];
 
+                        std::cout << "\n\nvector coordinates =( " << coordinates[0] << ", " << coordinates[1] << ", " << coordinates[2] << "\n\n"; // 2020.02.08 lg
+                
 	                    /*
 	                    coordinates(0) = (*m_p2currentPositionVector)[iGID];
 	                    coordinates(1) = (*m_p2currentPositionVector)[jGID];
