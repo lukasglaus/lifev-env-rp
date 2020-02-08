@@ -239,7 +239,7 @@ vectorPtr_Type EssentialPatchBCMovingPlane::directionalVectorField(EMSolver<Regi
     
 	        if(normal_vector[2] != 0.0)
 	        {
-	        	//In thoughts we set cooridnates x and y equal to zero and solve for z coordinate and store it in current_point_on_plane[0]
+	        	//In thoughtdofdofdofdofs we set cooridnates x and y equal to zero and solve for z coordinate and store it in current_point_on_plane[0]
 	        	//here we just added the max value of distance vector (3.5155), let's see how it works
 	        	current_point_on_plane[2] = (normal_vector[0]*starting_point[0] + normal_vector[1]*starting_point[1] + normal_vector[2]*starting_point[2] +activationFunction(time))/normal_vector[2];
 	        	current_point_on_plane[1] = 0;
@@ -275,7 +275,7 @@ vectorPtr_Type EssentialPatchBCMovingPlane::directionalVectorField(EMSolver<Regi
 
 	        //std::cout << "This is Length of EpetraDisplacementVector in DirectionalVectorfield: " << p2PatchDisplacement->epetraVector().MyLength() << std::endl;
 
-	        for (int j (0); j < nCompLocalDof; ++j)
+	        for (int j (0); j < nCompLocalDof-1; ++j)
 	        {
 	                    // Get coordinates
 
