@@ -234,9 +234,13 @@ vectorPtr_Type EssentialPatchBCMovingPlane::directionalVectorField(EMSolver<Regi
 	             	std::cout << "The points are not the same" << std::endl;
 	        }
 			*/
-
+    
+            std::cout << "\n\nvector direction prio =( " << direction[0] << ", " << direction[1] << ", " << direction[2] << "\n\n"; // 2020.02.08 lg
+    
 	        direction.normalize(); //need to be careful; direction and normal_vector aren't the same anymore; after that direction is the normalised normal_vector
 
+            std::cout << "\n\nvector direction poster =( " << direction[0] << ", " << direction[1] << ", " << direction[2] << "\n\n"; // 2020.02.08 lg
+    
 	        if(normal_vector[2] != 0.0)
 	        {
 	        	//In thoughts we set cooridnates x and y equal to zero and solve for z coordinate and store it in current_point_on_plane[0]
@@ -291,6 +295,8 @@ vectorPtr_Type EssentialPatchBCMovingPlane::directionalVectorField(EMSolver<Regi
 
 	                    Vector3D coordinates;
 
+                    std::cout << "\n\nvector coordinates =( " << coordinates[0] << ", " << coordinates[1] << ", " << coordinates[2] << "\n\n"; // 2020.02.08 lg
+                
 	                    coordinates(0) = p2PositionVector[iGID];
 	                    coordinates(1) = p2PositionVector[jGID];
 	                    coordinates(2) = p2PositionVector[kGID];
