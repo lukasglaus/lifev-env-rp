@@ -235,11 +235,7 @@ vectorPtr_Type EssentialPatchBCMovingPlane::directionalVectorField(EMSolver<Regi
 	        }
 			*/
     
-            std::cout << "\n\nvector direction prio =( " << direction[0] << ", " << direction[1] << ", " << direction[2] << "\n\n"; // 2020.02.08 lg
-    
 	        direction.normalize(); //need to be careful; direction and normal_vector aren't the same anymore; after that direction is the normalised normal_vector
-
-            std::cout << "\n\nvector direction poster =( " << direction[0] << ", " << direction[1] << ", " << direction[2] << "\n\n"; // 2020.02.08 lg
     
 	        if(normal_vector[2] != 0.0)
 	        {
@@ -299,7 +295,6 @@ vectorPtr_Type EssentialPatchBCMovingPlane::directionalVectorField(EMSolver<Regi
 	                    coordinates(1) = p2PositionVector[jGID];
 	                    coordinates(2) = p2PositionVector[kGID];
 
-                        std::cout << "\n\nvector coordinates =( " << coordinates[0] << ", " << coordinates[1] << ", " << coordinates[2] << "\n\n"; // 2020.02.08 lg
                 
 	                    /*
 	                    coordinates(0) = (*m_p2currentPositionVector)[iGID];
