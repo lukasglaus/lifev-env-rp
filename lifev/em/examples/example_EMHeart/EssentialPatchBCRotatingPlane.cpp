@@ -79,7 +79,7 @@ Vector3D calculate_pAxis (const Vector3D pointOnHeart,const Vector3D direction_t
     }
 
 //Calculate the opening angle in function of time
-Real EssentialPatchBCRotatingPlane::calculate_angleOfTime (Real maximum_angle, Real minimum_angle, Real& time)
+Real calculate_angleOfTime (Real maximum_angle, Real minimum_angle, Real& time)
     {
         Real angleOfTime;
         if (std::fmod(time,m_tduration) <= 0.5)
