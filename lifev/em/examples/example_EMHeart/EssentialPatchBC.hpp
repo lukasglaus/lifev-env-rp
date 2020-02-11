@@ -1186,6 +1186,7 @@ protected:
 	
     virtual void initialisePositionVector(const boost::shared_ptr<FESpace<RegionMesh<LinearTetra>, MapEpetra >> dFeSpace, EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver){};
 
+    virtual Vector3D normalize_vector (Vector3D vector){};
     
     std::string m_Name;
     unsigned int m_PrevFlag;
@@ -1475,11 +1476,6 @@ public:
     vectorPtr_Type directionalVecSumPtr()
     {
             	return m_directionVecFieldPtr;
-    }
-
-    Vector3D normalize_vector ()
-    {
-        return vector;
     }
     
 protected:
