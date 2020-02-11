@@ -18,7 +18,7 @@
 namespace LifeV
 {
 
-
+Vector3D pointOnHeart;
 
 void EssentialPatchBCRotatingPlane::setup(const GetPot& dataFile, const std::string& name)
 {
