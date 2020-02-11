@@ -1477,7 +1477,11 @@ public:
             	return m_directionVecFieldPtr;
     }
 
-
+    Vector3D normalize_vector ()
+    {
+        return vector;
+    }
+    
 protected:
     
     void updatePatchDisplacementSum(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver)
