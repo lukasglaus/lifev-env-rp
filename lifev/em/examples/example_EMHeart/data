@@ -204,10 +204,10 @@ monodomain_xml_file = ParamListE.xml
 
         [../]
 	
-
-	listEssentialPatchBC = 'EssentialPatchRealPatch1'
-   # listEssentialPatchBC = 'EssentialPatchMovingPlane1 EssentialPatchMovingPlane2'
-    #listEssentialPatchBC = 'EssentialPatchEllipsoid1 EssentialPatchEllipsoid2'
+        listEssentialPatchBC = 'EssentialPatchMovingPlane1 EssentialPatchMovingPlane2'
+        #listEssentialPatchBC = 'EssentialPatchRealPatch1'
+        #listEssentialPatchBC = 'EssentialPatchMovingPlane1 EssentialPatchMovingPlane2'
+        #listEssentialPatchBC = 'EssentialPatchEllipsoid1 EssentialPatchEllipsoid2'
 
     [./EssentialPatchMovingPlane1]
         flag                    = 464
@@ -224,22 +224,45 @@ monodomain_xml_file = ParamListE.xml
         component               = '0 2'
         type                    = EssentialPatchBCMovingPlane
         displacement            = 1.2
+        
+    [./EssentialPatchRotatingPlane1]
+            flag                    = 464
+            
+            #Settings:
+            distance_to_axis        = 7                 #mm, default=..
+            maximum_angle           = 30                #°, default=..
+            minimum_angle           = 5                 #°, default=..
+            
+            #Default Settings, no need to change them
+            pointOnHeart            = '-1.8 -7.0 -4.5'  #Starting point on heart
+            direction_to_axis       = '1.0 0.0 1.0'     #Direction from startingpoint to point in axis
+            axis_direction          = '1.0 0.0 1.0'     #Direction
+            component               = '0 2'
+            type                    = EssentialPatchBCRotatingPlane
+
+    [../EssentialPatchRotatingPlane2]
+            flag                    = 464
+            startingpoint           = '3.5 -7.0 1.0'
+            direction               = '-1.0 0.0 1.0'
+            component               = '0 2'
+            type                    = EssentialPatchBCRotatingPlane
+            displacement            = 1.2
 
 	[../EssentialPatchRealPatch1]
-        flag                    = 464
-        phi			= 0
-	theta			= 0
-	a			= 3.5
-	b			= 8
-	c			= 5
-	height			= 3.5
-	width			= 4.5
-	shift			= 0
-	vertexEllipse		= '4.11401 -7.85605 -1.66889'
-        direction               = '0.0 0.0 0.0'
-        component               = '0 2'
-        type                    = EssentialPatchBCPatchReal
-        displacement            = 1.0
+            flag                    = 464
+            phi			            = 0
+            theta			        = 0
+            a			            = 3.5
+            b			            = 8
+            c			            = 5
+            height			        = 3.5
+            width			        = 4.5
+            shift			        = 0
+            vertexEllipse		    = '4.11401 -7.85605 -1.66889'
+            direction               = '0.0 0.0 0.0'
+            component               = '0 2'
+            type                    = EssentialPatchBCPatchReal
+            displacement            = 1.0
 
 
 	

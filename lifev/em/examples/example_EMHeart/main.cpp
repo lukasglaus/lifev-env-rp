@@ -54,6 +54,8 @@
 #include <lifev/em/examples/example_EMHeart/EssentialPatchBCShell.hpp>
 #include <lifev/em/examples/example_EMHeart/EssentialPatchBCMovingPlane.h>
 #include <lifev/em/examples/example_EMHeart/EssentialPatchBCMovingPlane.cpp>
+#include <lifev/em/examples/example_EMHeart/EssentialPatchBCRotatingPlane.h>
+#include <lifev/em/examples/example_EMHeart/EssentialPatchBCRotatingPlane.cpp>
 #include <lifev/em/examples/example_EMHeart/EssentialPatchBCPatchReal.hpp>
 #include <lifev/em/examples/example_EMHeart/EssentialPatchBCPatchRealYZRotation.hpp>
 

@@ -719,7 +719,7 @@ public:
         Vector3D direction = normalVector; // 2020.02.08 lg
         direction.normalize(); // 2020.02.08 lg
         
-        std::cout << "\n\nvector direction=( " << direction[0] << ", " << direction[1] << ", " << direction[2] << "\n\n"; // 2020.02.06 lg
+        if ( solver.comm()->MyPID() == 0 ) std::cout << "\n\nvector direction=( " << direction[0] << ", " << direction[1] << ", " << direction[2] << "\n\n"; // 2020.02.06 lg
         
     	//first we want to set up the initial vector
     	auto p2dFeSpace = solver.structuralOperatorPtr()->dispFESpacePtr();
