@@ -19,6 +19,7 @@ namespace LifeV
 {
 
 Vector3D pointOnHeart;
+Real m_tduration;
 
 void EssentialPatchBCRotatingPlane::setup(const GetPot& dataFile, const std::string& name)
 {
@@ -79,7 +80,7 @@ Vector3D calculate_pAxis (const Vector3D pointOnHeart,const Vector3D direction_t
     }
 
 //Calculate the opening angle in function of time
-Real calculate_angleOfTime (Real maximum_angle, Real minimum_angle, Real& time)
+Real EssentialPatchBC::calculate_angleOfTime (Real maximum_angle, Real minimum_angle, Real& time)
     {
         Real angleOfTime;
         if (std::fmod(time,m_tduration) <= 0.5)
