@@ -82,13 +82,14 @@ Vector3D calculate_pAxis (const Vector3D pointOnHeart,const Vector3D direction_t
 Real EssentialPatchBCRotatingPlane::calculate_angleOfTime (Real maximum_angle, Real minimum_angle, Real& time)
     {
         Real angleOfTime;
-        if (time % m_tduration<=0.5)
+        if (std::fmod(time,m_tduration) <= 0.5)
             {
-                angleOfTime=maximum_angle/2 - (maximum_angle/2 - minimum_angle/2)*((time % (m_tduration/2))/(m_tduration/2);
+                angleOfTime=maximum_angle/2 - (maximum_angle/2 - minimum_angle/2)*(std::fmod(time,(m_tduration/2)))/(m_tduration/2);
+               
             }
             else
             {
-                angleOfTime=minimum_angle/2 + (maximum_angle/2 - minimum_angle/2)*((time % (m_tduration/2))/(m_tduration/2));
+                angleOfTime=maximum_angle/2 + (maximum_angle/2 - minimum_angle/2)*(std::fmod(time,(m_tduration/2)))/(m_tduration/2);
             }
     
             return angleOfTime;
