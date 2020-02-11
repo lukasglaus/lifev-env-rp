@@ -1189,7 +1189,19 @@ protected:
     //Included for EssentialPatchBCRotatingPlane.hpp
     virtual Vector3D normalize_vector (Vector3D vector){};
     virtual Vector3D calculate_pAxis (const Vector3D pointOnHeart,const Vector3D direction_to_axis,const Real distance_to_axis){};
-    virtual Real calculate_angleOfTime (Real maximum_angle, Real minimum_angle, Real& time){};
+    virtual Real calculate_angleOfTime (Real maximum_angle, Real minimum_angle, Real& time){
+        Real angleOfTime;
+            if (time % m_tduration<=0.5)
+                {
+                    angleOfTime=maximum_angle/2 - (maximum_angle/2 - minimum_angle/2)*((time % (m_tduration/2))/(m_tduration/2);
+                }
+                else
+                {
+                    angleOfTime=minimum_angle/2 + (maximum_angle/2 - minimum_angle/2)*((time % (m_tduration/2))/(m_tduration/2));
+                }
+        
+                return angleOfTime;};
+                                                                                       
     virtual Vector3D rotateVectorAroundAxis (const Vector3D direction_to_axis,const Vector3D axis_direction, Real angleOfTime){};
 
     
