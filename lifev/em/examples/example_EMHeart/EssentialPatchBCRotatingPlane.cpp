@@ -99,6 +99,7 @@ Real calculate_angleOfTime (Real maximum_angle, Real minimum_angle, Real& time)
 Vector3D rotateVectorAroundAxis (const Vector3D direction_to_axis,const Vector3D axis_direction, Real angleOfTime)
     {
     Vector3D normalOfPatch;
+    Vector3D rotatedVector;
                     
     Real product1=(axis_direction[0]*axis_direction[0]*(1-std::cos(angleOfTime))+std::cos(angleOfTime))*direction_to_axis[0];
     
@@ -160,7 +161,8 @@ const bool EssentialPatchBCRotatingPlane::nodeOnPatch(const Vector3D& coord, con
 
 
             return nodeInArea;
-
+}
+                                                                                   
 const bool EssentialPatchBCRotatingPlane::nodeOnPatchCurrent(const Vector3D& coord, const Real& time)
 {
     bool nodeInArea = 0;
