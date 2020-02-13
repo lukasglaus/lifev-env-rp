@@ -699,6 +699,6 @@ vectorPtr_Type EssentialPatchBCMovingPlane::directionalVectorField(const boost::
 */
 
 //REGISTER(EssentialPatchBC, EssentialPatchBCMovingPlane);
-}
+};
 }//this is Klammer von LifeV namespace
 
