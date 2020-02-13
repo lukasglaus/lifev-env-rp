@@ -21,6 +21,7 @@ namespace LifeV
 Vector3D pointOnHeart;
 Real m_tduration;
 int rotation_direction;
+Real angleOfTime;
 
 void EssentialPatchBCRotatingPlane::setup(const GetPot& dataFile, const std::string& name)
 {
@@ -64,8 +65,8 @@ void EssentialPatchBCRotatingPlane::setup(const GetPot& dataFile, const std::str
     m_maxDisplacement=0;
     
     //initial normal vector for applyPatchBC
-    initialAngleOfTime=calculate_angleOfTime (maximum_angle, minimum_angle,0);
-    normal_vector=createNormalVector (direction_to_axis,axis_direction,initialAngleOfTime)
+    angleOfTime=calculate_angleOfTime (maximum_angle, minimum_angle,0);
+    normal_vector=createNormalVector (direction_to_axis,axis_direction,angleOfTime)
 }
 
 //Normalizes a vector
@@ -97,7 +98,6 @@ Vector3D calculate_pAxis (const Vector3D pointOnHeart,const Vector3D direction_t
 //Calculate the opening angle(Degree) in function of time
 Real calculate_angleOfTime (Real maximum_angle, Real minimum_angle, Real& time)
     {
-        Real angleOfTime;
         if (std::fmod(time,m_tduration)/m_tduration < 0.5)
             {
                 angleOfTime=maximum_angle/2 - (maximum_angle/2 - minimum_angle/2)*(std::fmod(time,(m_tduration/2)))/(m_tduration/2);
