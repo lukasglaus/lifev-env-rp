@@ -18,10 +18,6 @@
 namespace LifeV
 {
 
-class EssentialPatchBCRotatingPlane : public EssentialPatchBC
-{
-public:
-
 Vector3D pointOnHeart;
 Real m_tduration;
 int rotation_direction;
@@ -699,6 +695,5 @@ vectorPtr_Type EssentialPatchBCMovingPlane::directionalVectorField(const boost::
 */
 
 //REGISTER(EssentialPatchBC, EssentialPatchBCMovingPlane);
-};
 }//this is Klammer von LifeV namespace
 

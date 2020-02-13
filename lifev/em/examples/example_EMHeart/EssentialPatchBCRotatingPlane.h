@@ -32,6 +32,8 @@ public:
 
      virtual const bool nodeOnPatchCurrent(const Vector3D& coord,const Real& time);
 
+    virtual void EssentialPatchBCRotatingPlane::modifyPatchBC(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver, const Real& time, int& PatchFlag);
+    
 private:
     //vectorPtr_Type p2PositionVector;
     //LifeV::EssentialPatchBC::vector_Type p2PositionVector;
