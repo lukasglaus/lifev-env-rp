@@ -225,7 +225,7 @@ monodomain_xml_file = ParamListE.xml
         type                    = EssentialPatchBCMovingPlane
         displacement            = 1.2
         
-    [./EssentialPatchRotatingPlane1]
+        [../EssentialPatchRotatingPlane1]
             flag                    = 464
             
             #Settings:
@@ -242,7 +242,7 @@ monodomain_xml_file = ParamListE.xml
             component               = '0 2'
             type                    = EssentialPatchBCRotatingPlane
 
-    [../EssentialPatchRotatingPlane2]
+        [../EssentialPatchRotatingPlane2]
             flag                    = 464
            
             #Settings:
@@ -260,7 +260,7 @@ monodomain_xml_file = ParamListE.xml
             component               = '0 2'
             type                    = EssentialPatchBCRotatingPlane
             
-	[../EssentialPatchRealPatch1]
+        [../EssentialPatchRealPatch1]
             flag                    = 464
             phi			            = 0
             theta			        = 0
