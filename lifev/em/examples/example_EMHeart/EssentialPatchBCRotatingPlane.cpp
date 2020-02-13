@@ -48,30 +48,44 @@ void EssentialPatchBCRotatingPlane::setup(const GetPot& dataFile, const std::str
     }
     axis_direction = normalize_vector(axis_direction);
     
+    starting_point=calculate_pAxis(pointOnHeart,direction_to_axis,distance_to_axis);//starting_point already defined in EssentialPatchBC.hpp
+    
     //Import the initial opening angle of the patches
     maximum_angle = dataFile ( ("solid/boundary_conditions/" + m_Name + "/maximum_angle").c_str(), 1.0 );
-
+    maximum_angle = (maximum_angle * PI)/180;
+    rotation_direction = dataFile ( ("solid/boundary_conditions/" + m_Name + "/rotation_direction").c_str(), 1.0 );
+    
     //Import the final (=smallest) opening angle of the patches
     minimum_angle = dataFile ( ("solid/boundary_conditions/" + m_Name + "/minimum_angle").c_str(), 1.0 );
-
-    starting_point=calculate_pAxis(pointOnHeart,direction_to_axis,distance_to_axis); //starting_point already defined in EssentialPatchBC.hpp
+    minimum_angle = (minimum_angle * PI)/180;
+    
+    //In order to have no translation of the patches
+    m_maxDisplacement=0;
+    
+    //initial normal vector for applyPatchBC
+    initialAngleOfTime=calculate_angleOfTime (maximum_angle, minimum_angle,0);
+    normal_vector=createNormalVector (direction_to_axis,axis_direction,initialAngleOfTime)
 }
 
 //Normalizes a vector
 Vector3D normalize_vector (Vector3D vector)
     {
     Real abs=std::sqrt(vector[0]*vector[0]+vector[1]*vector[1]+vector[2]*vector[2]);
-    vector[0]=vector[0]/abs;
-    vector[1]=vector[1]/abs;
-    vector[2]=vector[2]/abs;
+        if (abs !=0)
+        {
+            vector[0]=vector[0]/abs;
+            vector[1]=vector[1]/abs;
+            vector[2]=vector[2]/abs;
+        }
         if (abs!=1){std::cout<<"Careful:During import a vector had to be normalized";}
+        if (abs=0){std::cout<<"Careful:Absolute value of a supposed to be normalized vector is zero";}
     return vector;
     }
 
 //Calculate the location of pAxis, a point within the rotating axis
 Vector3D calculate_pAxis (const Vector3D pointOnHeart,const Vector3D direction_to_axis,const Real distance_to_axis)
     {
-        Vector3D p_axis;
+        Vector3D=p_axis;
         p_axis[0]=pointOnHeart[0]+direction_to_axis[0]*distance_to_axis;
         p_axis[1]=pointOnHeart[1]+direction_to_axis[1]*distance_to_axis;
         p_axis[2]=pointOnHeart[2]+direction_to_axis[2]*distance_to_axis;
@@ -79,21 +93,23 @@ Vector3D calculate_pAxis (const Vector3D pointOnHeart,const Vector3D direction_t
         return p_axis;
     }
 
-//Calculate the opening angle in function of time
+//Calculate the opening angle(Degree) in function of time
 Real calculate_angleOfTime (Real maximum_angle, Real minimum_angle, Real& time)
     {
         Real angleOfTime;
-        if (std::fmod(time,m_tduration) <= 0.5)
+        if (std::fmod(time,m_tduration)/m_tduration < 0.5)
             {
                 angleOfTime=maximum_angle/2 - (maximum_angle/2 - minimum_angle/2)*(std::fmod(time,(m_tduration/2)))/(m_tduration/2);
                
             }
             else
             {
-                angleOfTime=maximum_angle/2 + (maximum_angle/2 - minimum_angle/2)*(std::fmod(time,(m_tduration/2)))/(m_tduration/2);
+                angleOfTime=minimum_angle/2 + (maximum_angle/2 - minimum_angle/2)*(std::fmod(time,(m_tduration/2)))/(m_tduration/2);
             }
-    
-            return angleOfTime;
+        
+        angleOfTime=angleOfTime*rotation_direction;
+        
+        return angleOfTime;
     }
 
 //cos in degree or radian?
@@ -270,9 +286,75 @@ void EssentialPatchBCRotatingPlane::modifyPatchArea(EMSolver<RegionMesh<LinearTe
 
 //this is directional vectorfield for p2 elements
 
+void EssentialPatchBCRotatingPlane::modifyPatchBC(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver, const Real& time, int& PatchFlag)
+{
+
+Real angleOfTime=calculate_angleOfTime(maximum_angle,minimum_angle,Real& time);
+normal_vector=createNormalVector (direction_to_axis,axis_direction,angleOfTime);
+m_patchDirection=normal_vector;
+    
+//std::cout << "This is value of time variable: "<< time << std::endl;
+//int adder = 12;
+    //const int constantPatchFlag = PatchFlag;
+    //const int constantPatchFlag;
+//std::string patchNameAdder = std::to_string(adder); //converts double variable time to string
+//m_Name = m_Name + patchNameAdder;
+
+const int currentPatchFlag = PatchFlag;
+
+/*
+if(PatchFlag == 900 && time != 0)
+{
+    m_flagIncreaserOne += 10;
+    currentPatchFlag = m_flagIncreaserOne;
+}
+
+if(PatchFlag == 901 && time != 0)
+{
+    m_flagIncreaserTwo += 10;
+    currentPatchFlag = m_flagIncreaserTwo;
+}
+*/
+//std::cout << "This is modified PatchName: " << m_Name << std::endl;
+
+//std::cout << "This is patchFlag in modifyPatchBC which we give modifyPatchArea: " << constantPatchFlag << std::endl;
+
+
+    auto dFeSpace = solver.structuralOperatorPtr()->dispFESpacePtr();
+    
+    modifyPatchArea(solver, currentPatchFlag, time);
+
+    Real currentPatchDisp = activationFunction(time) + 1e-3;
+    if ( 0 == solver.comm()->MyPID() ) std::cout << "\nEssentialPatchBC: " << m_Name << " displaced by " << currentPatchDisp << " cm";
+
+    m_patchDispPtr = directionalVectorField(solver,dFeSpace, m_patchDirection, currentPatchDisp, time);
+
+    m_patchDispBCPtr.reset( new bcVector_Type( *m_patchDispPtr, dFeSpace->dof().numTotalDof(), 1 ) );
+/*
+if (49.99  <= time && time  <= 50.02)
+{
+     solver.bcInterfacePtr() -> handler()->addBC (m_Name, currentPatchFlag,  Essential, Component, *m_patchDispBCPtr, m_patchComponent);
+     solver.bcInterfacePtr()->handler()->modifyBC(currentPatchFlag, *m_patchDispBCPtr);
+    if ( 0 == solver.comm()->MyPID() ) solver.bcInterfacePtr() -> handler() -> showMe();
+}
+
+if (time > 51)
+{
+    std::cout << "We are now modifing the BC which we inserted later" << std::endl;
+    solver.bcInterfacePtr()->handler()->modifyBC(currentPatchFlag, *m_patchDispBCPtr);
+}
+*/
+//solver.bcInterfacePtr() -> handler()->addBC (m_Name, currentPatchFlag,  Essential, Component, *m_patchDispBCPtr, m_patchComponent);
+//solver.bcInterfacePtr() -> handler()->addBC (m_Name, m_patchFlag,  Essential, Component, *m_patchDispBCPtr, m_patchComponent);
+// if ( 0 == solver.comm()->MyPID() ) solver.bcInterfacePtr() -> handler() -> showMe();
+ solver.bcInterfacePtr()->handler()->modifyBC(currentPatchFlag, *m_patchDispBCPtr); //This was the version how it worked
+    //solver.bcInterfacePtr()->handler()->modifyBC(m_patchFlag, *m_patchDispBCPtr); //this is old version
+   //solver.bcInterfacePtr() -> handler()->addBC (m_Name, m_patchFlag,  Essential, Component, *m_patchDispBCPtr, m_patchComponent);//idea is now that we add everytime a new BC
+}
+
 vectorPtr_Type EssentialPatchBCRotatingPlane::directionalVectorField(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver,const boost::shared_ptr<FESpace<RegionMesh<LinearTetra>, MapEpetra >> dFeSpace, Vector3D& direction, const Real& disp, const Real& time)
 {
-    Vector3D current_point_on_plane;
+    Vector3D current_point_on_plane=starting_point;
     Real distance;
 
         //m_p2currentPositionVector = vectorPtr_Type (new VectorEpetra( dFeSpace->map(), Repeated ));
@@ -318,7 +400,7 @@ vectorPtr_Type EssentialPatchBCRotatingPlane::directionalVectorField(EMSolver<Re
             */
     
             direction.normalize(); //need to be careful; direction and normal_vector aren't the same anymore; after that direction is the normalised normal_vector
-    
+    /*
             if(normal_vector[2] != 0.0)
             {
                 //In thoughtdofdofdofdofs we set cooridnates x and y equal to zero and solve for z coordinate and store it in current_point_on_plane[0]
@@ -347,7 +429,7 @@ vectorPtr_Type EssentialPatchBCRotatingPlane::directionalVectorField(EMSolver<Re
              {
                 std::cout << "A normal  vector in the data file of (0, 0 , 0) doesn't make sense" << std::endl;
             }
-
+    */
 
         //std::cout << "THIS IS CURRENT POINT ON PLANE "  << current_point_on_plane[0] << "       " << current_point_on_plane[1] << "         " << current_point_on_plane[2] << std::endl;
         // std::cout << current_point_on_plane[1] << std::endl;
@@ -433,9 +515,9 @@ vectorPtr_Type EssentialPatchBCRotatingPlane::directionalVectorField(EMSolver<Re
                         }
 
                         Vector3D displacement_vector;
-                        displacement_vector[0] = 0.0; // distance*direction[0];
-                        displacement_vector[1] = 0.0; //  distance*direction[1];
-                        displacement_vector[2] = 0.0; // distance*direction[2];
+                        displacement_vector[0] = distance*direction[0]; // distance*direction[0];
+                        displacement_vector[1] = distance*direction[1]; //  distance*direction[1];
+                        displacement_vector[2] = distance*direction[2]; // distance*direction[2];
 
                 //std::cout << "This is displacmeent VEctor: " <<  displacement_vector(0) << "          " << displacement_vector(1) << "         " << displacement_vector(2) << std::endl;
 
