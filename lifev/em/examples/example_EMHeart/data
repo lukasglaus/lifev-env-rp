@@ -204,7 +204,7 @@ monodomain_xml_file = ParamListE.xml
 
         [../]
 	
-        listEssentialPatchBC = 'EssentialPatchMovingPlane1 EssentialPatchMovingPlane2'
+        listEssentialPatchBC = 'EssentialPatchRotatingPlane1 EssentialPatchRotatingiPlane2'
         #listEssentialPatchBC = 'EssentialPatchRealPatch1'
         #listEssentialPatchBC = 'EssentialPatchMovingPlane1 EssentialPatchMovingPlane2'
         #listEssentialPatchBC = 'EssentialPatchEllipsoid1 EssentialPatchEllipsoid2'
@@ -312,7 +312,7 @@ monodomain_xml_file = ParamListE.xml
     mesh_scaling        = '1.2 1.2 1.2'
     #mesh_translation    = '-66 -72 -94.5'
     #mesh_rotation       = '0.9 0.0 -0.5'
-    order               = P1  #P2
+    order               = P2  #P1 or P2
     quad_rule           = 4pt
     anisotropic         = true
     fiber_name          = FiberDirection
