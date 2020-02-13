@@ -66,7 +66,7 @@ void EssentialPatchBCRotatingPlane::setup(const GetPot& dataFile, const std::str
     
     //initial normal vector for applyPatchBC
     angleOfTime=calculate_angleOfTime (maximum_angle, minimum_angle,0);
-    normal_vector=createNormalVector (direction_to_axis,axis_direction,angleOfTime)
+    normal_vector=createNormalVector (direction_to_axis,axis_direction,angleOfTime);
 }
 
 //Normalizes a vector
