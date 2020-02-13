@@ -20,6 +20,7 @@ namespace LifeV
 
 Vector3D pointOnHeart;
 Real m_tduration;
+int rotation_direction;
 
 void EssentialPatchBCRotatingPlane::setup(const GetPot& dataFile, const std::string& name)
 {
