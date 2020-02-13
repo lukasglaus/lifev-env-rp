@@ -1190,10 +1190,9 @@ protected:
     virtual Vector3D normalize_vector (Vector3D vector){};
     virtual Vector3D calculate_pAxis (const Vector3D pointOnHeart,const Vector3D direction_to_axis,const Real distance_to_axis){};
     virtual Real calculate_angleOfTime (Real maximum_angle, Real minimum_angle, Real& time){};
-                                                                                       
     virtual Vector3D rotateVectorAroundAxis (const Vector3D direction_to_axis,const Vector3D axis_direction, Real angleOfTime){};
     virtual Vector3D createNormalVector (const Vector3D direction_to_axis,const Vector3D axis_direction, Real angleOfTime){};
-    
+    virtual Real calculate_angleOfTime (Real maximum_angle, Real minimum_angle, Real& time){};
     
     std::string m_Name;
     unsigned int m_PrevFlag;
