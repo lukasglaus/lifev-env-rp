@@ -290,7 +290,7 @@ void EssentialPatchBCRotatingPlane::modifyPatchArea(EMSolver<RegionMesh<LinearTe
 void EssentialPatchBCRotatingPlane::modifyPatchBC(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver, const Real& time, int& PatchFlag)
 {
 
-    Real angleOfTime=calculate_angleOfTime(maximum_angle,minimum_angle,Real& time);
+    Real angleOfTime=calculate_angleOfTime(maximum_angle,minimum_angle,time);
     normal_vector=createNormalVector (direction_to_axis,axis_direction,angleOfTime);
     m_patchDirection=normal_vector;
         
