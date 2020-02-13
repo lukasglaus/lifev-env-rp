@@ -18,6 +18,10 @@
 namespace LifeV
 {
 
+class EssentialPatchBCRotatingPlane : public EssentialPatchBC
+{
+public:
+
 Vector3D pointOnHeart;
 Real m_tduration;
 int rotation_direction;
@@ -290,67 +294,67 @@ void EssentialPatchBCRotatingPlane::modifyPatchArea(EMSolver<RegionMesh<LinearTe
 void EssentialPatchBCRotatingPlane::modifyPatchBC(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver, const Real& time, int& PatchFlag)
 {
 
-Real angleOfTime=calculate_angleOfTime(maximum_angle,minimum_angle,Real& time);
-normal_vector=createNormalVector (direction_to_axis,axis_direction,angleOfTime);
-m_patchDirection=normal_vector;
-    
-//std::cout << "This is value of time variable: "<< time << std::endl;
-//int adder = 12;
-    //const int constantPatchFlag = PatchFlag;
-    //const int constantPatchFlag;
-//std::string patchNameAdder = std::to_string(adder); //converts double variable time to string
-//m_Name = m_Name + patchNameAdder;
+    Real angleOfTime=calculate_angleOfTime(maximum_angle,minimum_angle,Real& time);
+    normal_vector=createNormalVector (direction_to_axis,axis_direction,angleOfTime);
+    m_patchDirection=normal_vector;
+        
+    //std::cout << "This is value of time variable: "<< time << std::endl;
+    //int adder = 12;
+        //const int constantPatchFlag = PatchFlag;
+        //const int constantPatchFlag;
+    //std::string patchNameAdder = std::to_string(adder); //converts double variable time to string
+    //m_Name = m_Name + patchNameAdder;
 
-const int currentPatchFlag = PatchFlag;
+    const int currentPatchFlag = PatchFlag;
 
-/*
-if(PatchFlag == 900 && time != 0)
-{
-    m_flagIncreaserOne += 10;
-    currentPatchFlag = m_flagIncreaserOne;
-}
+    /*
+    if(PatchFlag == 900 && time != 0)
+    {
+        m_flagIncreaserOne += 10;
+        currentPatchFlag = m_flagIncreaserOne;
+    }
 
-if(PatchFlag == 901 && time != 0)
-{
-    m_flagIncreaserTwo += 10;
-    currentPatchFlag = m_flagIncreaserTwo;
-}
-*/
-//std::cout << "This is modified PatchName: " << m_Name << std::endl;
+    if(PatchFlag == 901 && time != 0)
+    {
+        m_flagIncreaserTwo += 10;
+        currentPatchFlag = m_flagIncreaserTwo;
+    }
+    */
+    //std::cout << "This is modified PatchName: " << m_Name << std::endl;
 
-//std::cout << "This is patchFlag in modifyPatchBC which we give modifyPatchArea: " << constantPatchFlag << std::endl;
+    //std::cout << "This is patchFlag in modifyPatchBC which we give modifyPatchArea: " << constantPatchFlag << std::endl;
 
 
-    auto dFeSpace = solver.structuralOperatorPtr()->dispFESpacePtr();
-    
-    modifyPatchArea(solver, currentPatchFlag, time);
+        auto dFeSpace = solver.structuralOperatorPtr()->dispFESpacePtr();
+        
+        modifyPatchArea(solver, currentPatchFlag, time);
 
-    Real currentPatchDisp = activationFunction(time) + 1e-3;
-    if ( 0 == solver.comm()->MyPID() ) std::cout << "\nEssentialPatchBC: " << m_Name << " displaced by " << currentPatchDisp << " cm";
+        Real currentPatchDisp = activationFunction(time) + 1e-3;
+        if ( 0 == solver.comm()->MyPID() ) std::cout << "\nEssentialPatchBC: " << m_Name << " displaced by " << currentPatchDisp << " cm";
 
-    m_patchDispPtr = directionalVectorField(solver,dFeSpace, m_patchDirection, currentPatchDisp, time);
+        m_patchDispPtr = directionalVectorField(solver,dFeSpace, m_patchDirection, currentPatchDisp, time);
 
-    m_patchDispBCPtr.reset( new bcVector_Type( *m_patchDispPtr, dFeSpace->dof().numTotalDof(), 1 ) );
-/*
-if (49.99  <= time && time  <= 50.02)
-{
-     solver.bcInterfacePtr() -> handler()->addBC (m_Name, currentPatchFlag,  Essential, Component, *m_patchDispBCPtr, m_patchComponent);
-     solver.bcInterfacePtr()->handler()->modifyBC(currentPatchFlag, *m_patchDispBCPtr);
-    if ( 0 == solver.comm()->MyPID() ) solver.bcInterfacePtr() -> handler() -> showMe();
-}
+        m_patchDispBCPtr.reset( new bcVector_Type( *m_patchDispPtr, dFeSpace->dof().numTotalDof(), 1 ) );
+    /*
+    if (49.99  <= time && time  <= 50.02)
+    {
+         solver.bcInterfacePtr() -> handler()->addBC (m_Name, currentPatchFlag,  Essential, Component, *m_patchDispBCPtr, m_patchComponent);
+         solver.bcInterfacePtr()->handler()->modifyBC(currentPatchFlag, *m_patchDispBCPtr);
+        if ( 0 == solver.comm()->MyPID() ) solver.bcInterfacePtr() -> handler() -> showMe();
+    }
 
-if (time > 51)
-{
-    std::cout << "We are now modifing the BC which we inserted later" << std::endl;
-    solver.bcInterfacePtr()->handler()->modifyBC(currentPatchFlag, *m_patchDispBCPtr);
-}
-*/
-//solver.bcInterfacePtr() -> handler()->addBC (m_Name, currentPatchFlag,  Essential, Component, *m_patchDispBCPtr, m_patchComponent);
-//solver.bcInterfacePtr() -> handler()->addBC (m_Name, m_patchFlag,  Essential, Component, *m_patchDispBCPtr, m_patchComponent);
-// if ( 0 == solver.comm()->MyPID() ) solver.bcInterfacePtr() -> handler() -> showMe();
- solver.bcInterfacePtr()->handler()->modifyBC(currentPatchFlag, *m_patchDispBCPtr); //This was the version how it worked
-    //solver.bcInterfacePtr()->handler()->modifyBC(m_patchFlag, *m_patchDispBCPtr); //this is old version
-   //solver.bcInterfacePtr() -> handler()->addBC (m_Name, m_patchFlag,  Essential, Component, *m_patchDispBCPtr, m_patchComponent);//idea is now that we add everytime a new BC
+    if (time > 51)
+    {
+        std::cout << "We are now modifing the BC which we inserted later" << std::endl;
+        solver.bcInterfacePtr()->handler()->modifyBC(currentPatchFlag, *m_patchDispBCPtr);
+    }
+    */
+    //solver.bcInterfacePtr() -> handler()->addBC (m_Name, currentPatchFlag,  Essential, Component, *m_patchDispBCPtr, m_patchComponent);
+    //solver.bcInterfacePtr() -> handler()->addBC (m_Name, m_patchFlag,  Essential, Component, *m_patchDispBCPtr, m_patchComponent);
+    // if ( 0 == solver.comm()->MyPID() ) solver.bcInterfacePtr() -> handler() -> showMe();
+     solver.bcInterfacePtr()->handler()->modifyBC(currentPatchFlag, *m_patchDispBCPtr); //This was the version how it worked
+        //solver.bcInterfacePtr()->handler()->modifyBC(m_patchFlag, *m_patchDispBCPtr); //this is old version
+       //solver.bcInterfacePtr() -> handler()->addBC (m_Name, m_patchFlag,  Essential, Component, *m_patchDispBCPtr, m_patchComponent);//idea is now that we add everytime a new BC
 }
 
 vectorPtr_Type EssentialPatchBCRotatingPlane::directionalVectorField(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver,const boost::shared_ptr<FESpace<RegionMesh<LinearTetra>, MapEpetra >> dFeSpace, Vector3D& direction, const Real& disp, const Real& time)
@@ -695,6 +699,6 @@ vectorPtr_Type EssentialPatchBCMovingPlane::directionalVectorField(const boost::
 */
 
 //REGISTER(EssentialPatchBC, EssentialPatchBCMovingPlane);
-
+}
 }//this is Klammer von LifeV namespace
 
