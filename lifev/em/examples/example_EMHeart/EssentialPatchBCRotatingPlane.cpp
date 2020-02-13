@@ -87,7 +87,7 @@ Vector3D normalize_vector (Vector3D vector)
 //Calculate the location of pAxis, a point within the rotating axis
 Vector3D calculate_pAxis (const Vector3D pointOnHeart,const Vector3D direction_to_axis,const Real distance_to_axis)
     {
-        Vector3D=p_axis;
+        Vector3D p_axis;
         p_axis[0]=pointOnHeart[0]+direction_to_axis[0]*distance_to_axis;
         p_axis[1]=pointOnHeart[1]+direction_to_axis[1]*distance_to_axis;
         p_axis[2]=pointOnHeart[2]+direction_to_axis[2]*distance_to_axis;
