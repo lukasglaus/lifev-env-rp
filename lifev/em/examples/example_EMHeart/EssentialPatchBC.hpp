@@ -1192,7 +1192,6 @@ protected:
     virtual Real calculate_angleOfTime (Real maximum_angle, Real minimum_angle, Real& time){};
     virtual Vector3D rotateVectorAroundAxis (const Vector3D direction_to_axis,const Vector3D axis_direction, Real angleOfTime){};
     virtual Vector3D createNormalVector (const Vector3D direction_to_axis,const Vector3D axis_direction, Real angleOfTime){};
-    virtual Real calculate_angleOfTime (Real maximum_angle, Real minimum_angle, Real& time){};
     
     std::string m_Name;
     unsigned int m_PrevFlag;
