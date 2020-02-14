@@ -238,7 +238,7 @@ monodomain_xml_file = ParamListE.xml
             pointOnHeart            = '3.71 -7.61 1.78'  #Starting point on heart
                                     //pointOnHeart(3.71 -7.61 1.78), normal (0.85,-0.28,0.45)
             direction_to_axis       = '1.0 0.0 0.0'     #Direction from startingpoint to point in axis
-            axis_direction          = '0.0 0.0 1.0'     #Direction
+            axis_direction          = '0.0 1.0 0.0'     #Direction
             component               = '0 2'
             type                    = EssentialPatchBCRotatingPlane
 
@@ -256,7 +256,7 @@ monodomain_xml_file = ParamListE.xml
                 //pointOnHeart(3.71 -7.61 1.78), normal (0.85,-0.28,0.45)
                 
             direction_to_axis       = '1.0 0.0 0.0'     #Direction from startingpoint to point in axis
-            axis_direction          = '0.0 0.0 1.0'     #Direction
+            axis_direction          = '0.0 1.0 0.0'     #Direction
             component               = '0 2'
             type                    = EssentialPatchBCRotatingPlane
             
