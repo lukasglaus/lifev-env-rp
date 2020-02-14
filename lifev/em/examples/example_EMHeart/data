@@ -230,8 +230,8 @@ monodomain_xml_file = ParamListE.xml
             
             #Settings:
             distance_to_axis        = 20                 #mm, default=..
-            maximum_angle           = 30                #°, default=..
-            minimum_angle           = 5                 #°, default=..
+            maximum_angle           = 180                #°, default=..
+            minimum_angle           = 60                 #°, default=..
             rotation_direction      = 1
             
             #Default Settings, no need to change them
@@ -246,9 +246,9 @@ monodomain_xml_file = ParamListE.xml
             flag                    = 464
            
             #Settings:
-            distance_to_axis        = 20                 #mm, default=..
-            maximum_angle           = 30                #°, default=..
-            minimum_angle           = 5                 #°, default=..
+            distance_to_axis        = 180                 #mm, default=..
+            maximum_angle           = 60                  #°, default=..
+            minimum_angle           = 5                   #°, default=..
             rotation_direction      = -1
            
             #Default Settings, no need to change them
