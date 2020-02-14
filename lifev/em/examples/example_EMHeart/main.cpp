@@ -645,7 +645,8 @@ int main (int argc, char** argv)
     //============================================
     // Simple_run
     //============================================
-    const bool simple_run = dataFile ( "solid/coupling/simple_run", false );
+    const bool simple_run = dataFile ( "solid/simple_run/simple_run", false );
+    const double simple_iterations = dataFile ( "solid/simple_run/simple_iterations", 50 );
     
     if (simple_run==true)
     {
@@ -681,16 +682,14 @@ int main (int argc, char** argv)
         LifeChrono chronoExport;
         chronoExport.start();
         
-        for (int k (1); k <= maxiter; k++) // here begins the time looping
+        for (int k (1); k <= simple_iterations; k++) // here begins the time looping
         {
             if ( 0 == comm->MyPID() )
             {
                 std::cout << "\n*****************************************************************";
-                std::cout << "\nTIME = " << t+dt_activation;
+                std::cout << "\nSIMPLE_ITERATION = " <<k<<" / "<<simple_iterations;
                 std::cout << "\n*****************************************************************\n";
             }
-
-            t = t + dt_activation;
             
             //============================================
             // Simple run: Load steps mechanics (activation & b.c.)
@@ -699,20 +698,17 @@ int main (int argc, char** argv)
 
             const bool activationBelowLoadstepThreshold (minActivationValue < activationLimit_loadstep);
             const bool makeLoadstep (k % mechanicsLoadstepIter == 0 && activationBelowLoadstepThreshold);
-            const bool makeMechanicsCirculationCoupling (k % mechanicsCouplingIter == 0);
+            //const bool makeMechanicsCirculationCoupling (k % mechanicsCouplingIter == 0);
             
             // Linear b.c. extrapolation
             auto bcValuesLoadstep ( bcValues );
-            bcValuesLoadstep[0] = bcValues[0] + ( bcValues4thOAB[0] - bcValues[0] ) * ( k % mechanicsCouplingIter ) / mechanicsCouplingIter;
-            bcValuesLoadstep[1] = bcValues[1] + ( bcValues4thOAB[1] - bcValues[1] ) * ( k % mechanicsCouplingIter ) / mechanicsCouplingIter;
 
             if ( 0 == comm->MyPID() )
             {
                 std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
-                std::cout << "\nLoad step at time = " << t;
-                std::cout << "\nMinimal activation value = " << minActivationValue;
-                std::cout << "\nLin. LV-Pressure extrapolation from " <<  bcValues[0] << " to " <<  bcValuesLoadstep[0];
-                std::cout << "\nLin. RV-Pressure extrapolation from " <<  bcValues[1] << " to " <<  bcValuesLoadstep[1];
+                std::cout << "\nLoad step at simple_iteration = " << k<<" / "<<simple_iterations;
+                std::cout << "\nLin. LV-Pressure " <<  bcValues[0];
+                std::cout << "\nLin. RV-Pressure " <<  bcValues[1];
                 std::cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n";
             }
 
@@ -739,8 +735,8 @@ int main (int argc, char** argv)
                 if ( 0 == comm->MyPID() )
                 {
                     std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
-                    std::cout << "\nTotal simulation time at t = " << t << " ms is " << chronoTimeNow << " s";
-                    std::cout << "\nPrevious " << dt_save << " ms computed in " << chronoDiffToLastSave << " s";
+                    std::cout << "\nTotal simulation time at iteration k = " << k << " ms is " << chronoTimeNow << " s";
+                    std::cout << "\nPrevious step ms computed in " << chronoDiffToLastSave << " s";
                     std::cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n\n";
                 }
             }

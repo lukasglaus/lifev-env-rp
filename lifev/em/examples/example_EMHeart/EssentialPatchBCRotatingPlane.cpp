@@ -325,8 +325,8 @@ void EssentialPatchBCRotatingPlane::modifyPatchBC(EMSolver<RegionMesh<LinearTetr
         
         modifyPatchArea(solver, currentPatchFlag, time);
 
-        Real currentPatchDisp = activationFunction(time) + 1e-3;
-        if ( 0 == solver.comm()->MyPID() ) std::cout << "\nEssentialPatchBC: " << m_Name << " displaced by " << currentPatchDisp << " cm";
+        Real currentPatchDisp = activationFunction(time);
+        if ( 0 == solver.comm()->MyPID() ) std::cout << "\nEssentialPatchBC: " << m_Name << " rotated to angle " << (angleOfTime*180)/PI << " degree of ["<<minimum_angle/2<<","<<maximum_angle/2<<"]";
 
         m_patchDispPtr = directionalVectorField(solver,dFeSpace, m_patchDirection, currentPatchDisp, time);
 
