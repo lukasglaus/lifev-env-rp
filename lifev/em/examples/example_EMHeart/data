@@ -204,7 +204,7 @@ monodomain_xml_file = ParamListE.xml
 
         [../]
 	
-        listEssentialPatchBC = 'EssentialPatchRotatingPlane1 EssentialPatchRotatingiPlane2'
+        listEssentialPatchBC = 'EssentialPatchRotatingPlane1 EssentialPatchRotatingPlane2'
         #listEssentialPatchBC = 'EssentialPatchRealPatch1'
         #listEssentialPatchBC = 'EssentialPatchMovingPlane1 EssentialPatchMovingPlane2'
         #listEssentialPatchBC = 'EssentialPatchEllipsoid1 EssentialPatchEllipsoid2'
@@ -288,6 +288,7 @@ monodomain_xml_file = ParamListE.xml
     tduration           = 350 #300
 
     [../coupling]
+    simple_run              = 0
     pPerturbationFe         = 1e-3
     pPerturbationCirc       = 1e-3
     dpMax                   = 0.6 #0.5 #0.1 #0.3
