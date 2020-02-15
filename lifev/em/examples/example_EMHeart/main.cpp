@@ -650,6 +650,14 @@ int main (int argc, char** argv)
     
     if (simple_run==true)
     {
+        
+        if ( 0 == comm->MyPID() )
+        {
+            std::cout << "\n*****************************************************************";
+            std::cout << "\nWe are starting a simple_run;
+            std::cout << "\n*****************************************************************\n";
+        }
+        
         VFe[0] = LV.volume(disp, dETFESpace, - 1);
         VFe[1] = RV.volume(disp, dETFESpace, 1);
         VCirc = VFe;
@@ -691,9 +699,9 @@ int main (int argc, char** argv)
                 std::cout << "\n*****************************************************************\n";
             }
             
-            //============================================
+            //=====================================================
             // Simple run: Load steps mechanics (activation & b.c.)
-            //============================================
+            //=====================================================
             auto minActivationValue ( solver.activationModelPtr() -> fiberActivationPtr() -> minValue() );
 
             const bool activationBelowLoadstepThreshold (minActivationValue < activationLimit_loadstep);
@@ -749,6 +757,13 @@ int main (int argc, char** argv)
     
     if (simple_run==false)
     {
+        if ( 0 == comm->MyPID() )
+        {
+            std::cout << "\n*****************************************************************";
+            std::cout << "\nWe are starting a dynamic_run;
+            std::cout << "\n*****************************************************************\n";
+        }
+        
         VFe[0] = LV.volume(disp, dETFESpace, - 1);
         VFe[1] = RV.volume(disp, dETFESpace, 1);
         VCirc = VFe;

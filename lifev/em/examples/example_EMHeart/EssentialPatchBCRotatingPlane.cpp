@@ -107,9 +107,9 @@ Real calculate_angleOfTime (Real maximum_angle, Real minimum_angle, Real time)
             {
                 angleOfTime=minimum_angle/2 + (maximum_angle/2 - minimum_angle/2)*(std::fmod(time,(m_tduration/2)))/(m_tduration/2);
             }
-        
+        if ( solver.comm()->MyPID() == 0 ) std::cout << "\nangleOfTime " <<angleOfTime;
         angleOfTime=angleOfTime*rotation_direction;
-        
+        if ( solver.comm()->MyPID() == 0 ) std::cout << "\nangleOfTime after multiplication with rotation_direction " <<angleOfTime;
         return angleOfTime;
     }
 
@@ -204,7 +204,7 @@ const bool EssentialPatchBCRotatingPlane::nodeOnPatchCurrent(const Vector3D& coo
 
 void EssentialPatchBCRotatingPlane::modifyPatchArea(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver,const int& newFlag, const Real& time)
 {
-    if ( solver.comm()->MyPID() == 0 ) std::cout << "WE ARE IN MODIFY PATCH AREA " << std::endl;
+    if ( solver.comm()->MyPID() == 0 ) std::cout << "\nWE ARE IN MODIFY PATCH AREA " << std::endl;
 
             auto p2FeSpace = solver.electroSolverPtr()->feSpacePtr();
             auto p2dFeSpace = solver.structuralOperatorPtr()->dispFESpacePtr();
@@ -326,7 +326,7 @@ void EssentialPatchBCRotatingPlane::modifyPatchBC(EMSolver<RegionMesh<LinearTetr
         modifyPatchArea(solver, currentPatchFlag, time);
 
         Real currentPatchDisp = activationFunction(time);
-        if ( 0 == solver.comm()->MyPID() ) std::cout << "\nEssentialPatchBC: " << m_Name << " rotated to angle " << (angleOfTime*180)/PI << " degree of ["<<minimum_angle/2<<","<<maximum_angle/2<<"]";
+        if ( 0 == solver.comm()->MyPID() ) std::cout << "\nEssentialPatchBC: " << m_Name << " rotated to angle " << (angleOfTime*180)/PI << " degree of ["<<(minimum_angle*180)/(2*PI)<<","<<(maximum_angle*180)/(2*PI)<<"]";
 
         m_patchDispPtr = directionalVectorField(solver,dFeSpace, m_patchDirection, currentPatchDisp, time);
 
