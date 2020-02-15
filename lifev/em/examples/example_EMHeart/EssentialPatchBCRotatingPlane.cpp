@@ -32,6 +32,7 @@ public:
     Real minimum_angle; //2020.02.10 lg
     Vector3D pointOnHeart;
     Real m_tduration;
+    Real m_tmax;
     int rotation_direction;
     Real angleOfTime;
     
@@ -66,15 +67,19 @@ void setup(const GetPot& dataFile, const std::string& name,EMSolver<RegionMesh<L
     
     //Import the initial opening angle of the patches
     maximum_angle = dataFile ( ("solid/boundary_conditions/" + m_Name + "/maximum_angle").c_str(), 1.0 );
-    maximum_angle = (maximum_angle * PI)/180;
+    maximum_angle = (maximum_angle * 3.141)/180;
     rotation_direction = dataFile ( ("solid/boundary_conditions/" + m_Name + "/rotation_direction").c_str(), 1.0 );
     
     //Import the final (=smallest) opening angle of the patches
     minimum_angle = dataFile ( ("solid/boundary_conditions/" + m_Name + "/minimum_angle").c_str(), 1.0 );
-    minimum_angle = (minimum_angle * PI)/180;
+    minimum_angle = (minimum_angle * 3.141)/180;
     
     //In order to have no translation of the patches
     m_maxDisplacement=0;
+    
+    // Temporal activation parameter
+    m_tmax = dataFile ( "solid/patches/tmax", 0. );
+    m_tduration = dataFile ( "solid/patches/tduration", 0. );
     
     //initial normal vector for applyPatchBC
     angleOfTime=calculate_angleOfTime (maximum_angle, minimum_angle,0.0,solver);
@@ -93,8 +98,8 @@ Vector3D normalize_vector (Vector3D vector)
             vector[1]=vector[1]/abs;
             vector[2]=vector[2]/abs;
         }
-        if (abs!=1){std::cout<<"Careful:During import a vector had to be normalized";}
-        if (abs=0){std::cout<<"Careful:Absolute value of a supposed to be normalized vector is zero";}
+        if (abs!=1){std::cout<<"\nCareful:During import a vector had to be normalized";}
+        if (abs=0){std::cout<<"\nCareful:Absolute value of a supposed to be normalized vector is zero";}
     return vector;
     }
 
