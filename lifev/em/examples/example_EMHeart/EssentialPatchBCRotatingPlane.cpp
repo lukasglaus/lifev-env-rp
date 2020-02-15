@@ -567,8 +567,8 @@ vector_Type EssentialPatchBCRotatingPlane::displayDirectionalVectorField(EMSolve
 {
     Real distance;
     
-    normalVector=normal_vector;
-    startingPoint=starting_point;
+    Vector3D normalVector=normal_vector;
+    Vector3D startingPoint=starting_point;
     
     //Vector3D normalVector; //already in class defined?
     //Vector3D startingPoint;//already in class defined?

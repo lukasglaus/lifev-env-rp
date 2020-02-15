@@ -720,7 +720,8 @@ public:
     	normalVector[2] = -0.270367;
         
         
-        //Vector3D direction = normalVector; // 2020.02.08 lg
+        Vector3D direction = normalVector; // 2020.02.08 lg
+        
         direction.normalize(); // 2020.02.08 lg
         
         //Vector3D current_point_on_plane=starting_point;
