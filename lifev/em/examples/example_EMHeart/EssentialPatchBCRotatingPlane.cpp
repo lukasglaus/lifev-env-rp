@@ -107,9 +107,12 @@ Real calculate_angleOfTime (Real maximum_angle, Real minimum_angle, Real time, E
             {
                 angleOfTime=minimum_angle/2 + (maximum_angle/2 - minimum_angle/2)*(std::fmod(time,(m_tduration/2)))/(m_tduration/2);
             }
-        if ( solver.comm()->MyPID() == 0 ) std::cout << "\nangleOfTime " <<angleOfTime;
+        std::cout << "\nangleOfTime " <<angleOfTime;
         angleOfTime=angleOfTime*rotation_direction;
-        if ( solver.comm()->MyPID() == 0 ) std::cout << "\nangleOfTime after multiplication with rotation_direction " <<angleOfTime;
+        //if ( solver.comm()->MyPID() == 0 ) std::cout << "\nangleOfTime " <<angleOfTime;
+        angleOfTime=angleOfTime*rotation_direction;
+        //if ( solver.comm()->MyPID() == 0 ) std::cout << "\nangleOfTime after multiplication with rotation_direction " <<angleOfTime;
+        std::cout << "\nangleOfTime after multiplication with rotation_direction " <<angleOfTime;
         return angleOfTime;
     }
 
