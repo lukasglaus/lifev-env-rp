@@ -22,7 +22,7 @@ class EssentialPatchBCRotatingPlane : public EssentialPatchBC {
 public:
 
 
-    virtual void setup(const GetPot& dataFile, const std::string& name); //In the setup function the basic things come in it, like as name of patch, flag, direction vector, displacement vector and so on
+    virtual void setup(const GetPot& dataFile, const std::string& name,EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver); //In the setup function the basic things come in it, like as name of patch, flag, direction vector, displacement vector and so on
 
     virtual const bool nodeOnPatch(const Vector3D& coord, const Real& time);
 
