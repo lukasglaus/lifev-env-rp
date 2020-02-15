@@ -65,7 +65,7 @@ void EssentialPatchBCRotatingPlane::setup(const GetPot& dataFile, const std::str
     m_maxDisplacement=0;
     
     //initial normal vector for applyPatchBC
-    angleOfTime=calculate_angleOfTime (maximum_angle, minimum_angle,0.0,EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver);
+    angleOfTime=calculate_angleOfTime (maximum_angle, minimum_angle,0.0,EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver);
     normal_vector=createNormalVector (direction_to_axis,axis_direction,angleOfTime);
 }
 
@@ -96,7 +96,7 @@ Vector3D calculate_pAxis (const Vector3D pointOnHeart,const Vector3D direction_t
     }
 
 //Calculate the opening angle(Degree) in function of time
-Real calculate_angleOfTime (Real maximum_angle, Real minimum_angle, Real time, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver)
+Real calculate_angleOfTime (Real maximum_angle, Real minimum_angle, Real time, EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver)
     {
         if (std::fmod(time,m_tduration)/m_tduration < 0.5)
             {
@@ -290,7 +290,7 @@ void EssentialPatchBCRotatingPlane::modifyPatchArea(EMSolver<RegionMesh<LinearTe
 void EssentialPatchBCRotatingPlane::modifyPatchBC(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver, const Real& time, int& PatchFlag)
 {
 
-    Real angleOfTime=calculate_angleOfTime(maximum_angle,minimum_angle,time,EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver);
+    Real angleOfTime=calculate_angleOfTime(maximum_angle,minimum_angle,time,EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver);
     normal_vector=createNormalVector (direction_to_axis,axis_direction,angleOfTime);
     m_patchDirection=normal_vector;
         
