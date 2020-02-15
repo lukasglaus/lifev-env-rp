@@ -654,7 +654,7 @@ int main (int argc, char** argv)
         if ( 0 == comm->MyPID() )
         {
             std::cout << "\n*****************************************************************";
-            std::cout << "\nWe are starting a simple_run;
+            std::cout << "\nWe are starting a simple_run";
             std::cout << "\n*****************************************************************\n";
         }
         
@@ -760,7 +760,7 @@ int main (int argc, char** argv)
         if ( 0 == comm->MyPID() )
         {
             std::cout << "\n*****************************************************************";
-            std::cout << "\nWe are starting a dynamic_run;
+            std::cout << "\nWe are starting a dynamic_run";
             std::cout << "\n*****************************************************************\n";
         }
         
