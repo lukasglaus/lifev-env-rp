@@ -179,7 +179,7 @@ Vector3D rotateVectorAroundAxis (const Vector3D direction_to_axis,const Vector3D
     }
                                                                                    
 //ggf hier eine Zeitabhängigkeit in normal_vector und starting_point einfügen, m_maxDisplacement ggf durch activationFunction(time)) ersetzen
-const bool EssentialPatchBCRotatingPlane::nodeOnPatch(const Vector3D& coord, const Real& time)
+const bool nodeOnPatch(const Vector3D& coord, const Real& time)
 {
 
     bool nodeInArea = false;
@@ -903,4 +903,3 @@ vectorPtr_Type EssentialPatchBCMovingPlane::directionalVectorField(const boost::
 REGISTER(EssentialPatchBC, EssentialPatchBCRotatingPlane);
 
 }
-#endif /* LIFEV_EM_EXAMPLES_EXAMPLE_EMHEART_ESSENTIALPATCHBCMOVINGPLANE_H_ */
