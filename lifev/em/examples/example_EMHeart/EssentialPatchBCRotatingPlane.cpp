@@ -6,7 +6,7 @@
  *      Author: lglaus
  */
 
-#include "EssentialPatchBCRotatingPlane.h"
+//#include "EssentialPatchBCRotatingPlane.h"
 #include <stdio.h>
 #include <lifev/em/examples/example_EMHeart/EssentialPatchBC.hpp>
 #include <lifev/em/examples/example_EMHeart/GenericFactory.hpp>
@@ -18,6 +18,23 @@
 namespace LifeV
 {
 
+class EssentialPatchBCRotatingPlane : public EssentialPatchBC {
+public:
+
+    vectorPtr_Type m_p2currentPositionVector;
+    Real m_maxDisplacement;
+    Vector3D normal_vector;
+    Vector3D starting_point;
+    Vector3D direction_to_axis; //2020.02.10 lg
+    Vector3D axis_direction; //2020.02.10 lg
+    Real distance_to_axis; //2020.02.10 lg
+    Real maximum_angle; //2020.02.10 lg
+    Real minimum_angle; //2020.02.10 lg
+    Vector3D pointOnHeart;
+    Real m_tduration;
+    int rotation_direction;
+    Real angleOfTime;
+    
 void EssentialPatchBCRotatingPlane::setup(const GetPot& dataFile, const std::string& name,EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver)
 {
     super::setup(dataFile, name);
@@ -879,5 +896,11 @@ vectorPtr_Type EssentialPatchBCMovingPlane::directionalVectorField(const boost::
 */
 
 //REGISTER(EssentialPatchBC, EssentialPatchBCMovingPlane);
-}//this is Klammer von LifeV namespace
+//}//this is Klammer von LifeV namespace
 
+};
+
+REGISTER(EssentialPatchBC, EssentialPatchBCRotatingPlane);
+
+}
+#endif /* LIFEV_EM_EXAMPLES_EXAMPLE_EMHEART_ESSENTIALPATCHBCMOVINGPLANE_H_ */

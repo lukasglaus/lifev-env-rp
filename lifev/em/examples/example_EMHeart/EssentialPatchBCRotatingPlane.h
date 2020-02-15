@@ -21,8 +21,7 @@ namespace LifeV
 class EssentialPatchBCRotatingPlane : public EssentialPatchBC {
 public:
 
-    int rotation_direction;
-    Real angleOfTime;
+
     
 
     virtual void setup(const GetPot& dataFile, const std::string& name,EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver); //In the setup function the basic things come in it, like as name of patch, flag, direction vector, displacement vector and so on
@@ -54,7 +53,8 @@ private:
     Real minimum_angle; //2020.02.10 lg
     Vector3D pointOnHeart;
     Real m_tduration;
-
+    int rotation_direction;
+    Real angleOfTime;
     
     
 };
