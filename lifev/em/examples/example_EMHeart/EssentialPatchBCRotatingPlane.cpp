@@ -28,8 +28,8 @@ public:
     Vector3D direction_to_axis; //2020.02.10 lg
     Vector3D axis_direction; //2020.02.10 lg
     Real distance_to_axis; //2020.02.10 lg
-    Real maximum_angle; //2020.02.10 lg
-    Real minimum_angle; //2020.02.10 lg
+    double maximum_angle; //2020.02.10 lg
+    double minimum_angle; //2020.02.10 lg
     Vector3D pointOnHeart;
     Real m_tduration;
     Real m_tmax;
@@ -66,7 +66,7 @@ void setup(const GetPot& dataFile, const std::string& name,EMSolver<RegionMesh<L
     starting_point=calculate_pAxis(pointOnHeart,direction_to_axis,distance_to_axis);//starting_point already defined in EssentialPatchBC.hpp
     
     //Import the initial opening angle of the patches
-    maximum_angle = dataFile ( ("solid/boundary_conditions/" + m_Name + "/maximum_angle").c_str(), 1.0 );
+    maximum_angle = dataFile ( ("solid/boundary_conditions/" + m_Name + "/maximum_angle").c_str());
     maximum_angle = (maximum_angle * 3.141)/180;
     rotation_direction = dataFile ( ("solid/boundary_conditions/" + m_Name + "/rotation_direction").c_str(), 1.0 );
     
@@ -117,10 +117,10 @@ Vector3D calculate_pAxis (const Vector3D pointOnHeart,const Vector3D direction_t
 //Calculate the opening angle(Degree) in function of time
 Real calculate_angleOfTime (Real time, EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver)
     {
-        std::cout<<"time"<<time;
-        std::cout<<"maximum_angle"<<maximum_angle;
-        std::cout<<"minimum_angle"<<minimum_angle;
-        std::cout<<"m_tduration"<<m_tduration;
+        std::cout<<"\ntime"<<time;
+        std::cout<<"\nmaximum_angle"<<maximum_angle;
+        std::cout<<"\nminimum_angle"<<minimum_angle;
+        std::cout<<"\nm_tduration"<<m_tduration;
         
         if (std::fmod(time,m_tduration)/m_tduration < 0.5)
             {

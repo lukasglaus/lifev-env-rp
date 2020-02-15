@@ -209,7 +209,7 @@ monodomain_xml_file = ParamListE.xml
         #listEssentialPatchBC = 'EssentialPatchMovingPlane1 EssentialPatchMovingPlane2'
         #listEssentialPatchBC = 'EssentialPatchEllipsoid1 EssentialPatchEllipsoid2'
 
-    [./EssentialPatchMovingPlane1]
+        [./EssentialPatchMovingPlane1]
         flag                    = 464
         startingpoint           = '-1.8 -7.0 -4.5'
         direction               = '1.0 0.0 1.0'
