@@ -566,6 +566,10 @@ vectorPtr_Type EssentialPatchBCRotatingPlane::directionalVectorField(EMSolver<Re
 vector_Type EssentialPatchBCRotatingPlane::displayDirectionalVectorField(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver, const Real& time)
 {
     Real distance;
+    
+    normalVector=normal_vector;
+    startingPoint=starting_point;
+    
     //Vector3D normalVector; //already in class defined?
     //Vector3D startingPoint;//already in class defined?
     
@@ -583,7 +587,6 @@ vector_Type EssentialPatchBCRotatingPlane::displayDirectionalVectorField(EMSolve
     //normalVector[0] = 0.665647;
     //normalVector[1] = 0.695607;
     //normalVector[2] = -0.270367;
-    
     
     Vector3D direction = normalVector; // 2020.02.08 lg
     direction.normalize(); // 2020.02.08 lg
