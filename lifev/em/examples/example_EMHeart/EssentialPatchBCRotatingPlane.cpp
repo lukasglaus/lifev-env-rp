@@ -18,11 +18,6 @@
 namespace LifeV
 {
 
-Vector3D pointOnHeart;
-Real m_tduration;
-int rotation_direction;
-Real angleOfTime;
-
 void EssentialPatchBCRotatingPlane::setup(const GetPot& dataFile, const std::string& name,EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver)
 {
     super::setup(dataFile, name);
@@ -67,6 +62,8 @@ void EssentialPatchBCRotatingPlane::setup(const GetPot& dataFile, const std::str
     //initial normal vector for applyPatchBC
     angleOfTime=calculate_angleOfTime (maximum_angle, minimum_angle,0.0,solver);
     normal_vector=createNormalVector (direction_to_axis,axis_direction,angleOfTime);
+    
+    if ( solver.comm()->MyPID() == 0 ) std::cout<<"setup completed";
 }
 
 //Normalizes a vector
@@ -575,14 +572,14 @@ vector_Type EssentialPatchBCRotatingPlane::displayDirectionalVectorField(EMSolve
     
     //direction.normalize(); // 2020.02.06 lg
 
-    if ( solver.comm()->MyPID() == 0 ){std::cout<<"startingPoint in displayDirectionalVectorfield= "<<startingPoint[0]<<","<<startingPoint[1]<<","<<startingPoint[2]<<")";}
+    if ( solver.comm()->MyPID() == 0 ){std::cout<<"\nstartingPoint in displayDirectionalVectorfield= "<<startingPoint[0]<<","<<startingPoint[1]<<","<<startingPoint[2]<<")";}
     
     //startingPoint[0] = -3.76487;
     //startingPoint[1] = -10.6687;
     //startingPoint[2] = -0.36572;
     
     
-    if ( solver.comm()->MyPID() == 0 ){std::cout<<"normalVector in displayDirectionalVectorfield= "<<normalVector[0]<<","<<normalVector[1]<<","<<normalVector[2]<<")";}
+    if ( solver.comm()->MyPID() == 0 ){std::cout<<"\nnormalVector in displayDirectionalVectorfield= "<<normalVector[0]<<","<<normalVector[1]<<","<<normalVector[2]<<")";}
     
     //normalVector[0] = 0.665647;
     //normalVector[1] = 0.695607;

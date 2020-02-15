@@ -49,7 +49,12 @@ private:
     Real distance_to_axis; //2020.02.10 lg
     Real maximum_angle; //2020.02.10 lg
     Real minimum_angle; //2020.02.10 lg
-
+    Vector3D pointOnHeart;
+    Real m_tduration;
+    int rotation_direction;
+    Real angleOfTime;
+    
+    
 };
 
 REGISTER(EssentialPatchBC, EssentialPatchBCRotatingPlane);
