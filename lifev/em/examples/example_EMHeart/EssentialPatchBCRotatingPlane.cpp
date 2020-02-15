@@ -563,6 +563,187 @@ vectorPtr_Type EssentialPatchBCRotatingPlane::directionalVectorField(EMSolver<Re
 
 }
 
+vector_Type EssentialPatchBCRotatingPlane::displayDirectionalVectorField(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver, const Real& time)
+{
+    Real distance;
+    //Vector3D normalVector; //already in class defined?
+    //Vector3D startingPoint;//already in class defined?
+    
+    //direction.normalize(); // 2020.02.06 lg
+
+    if ( solver.comm()->MyPID() == 0 ){std::cout<<"startingPoint in displayDirectionalVectorfield= "<<startingPoint[0]<<","<<startingPoint[1]<<","<<startingPoint[2]<<")";}
+    
+    //startingPoint[0] = -3.76487;
+    //startingPoint[1] = -10.6687;
+    //startingPoint[2] = -0.36572;
+    
+    
+    if ( solver.comm()->MyPID() == 0 ){std::cout<<"normalVector in displayDirectionalVectorfield= "<<normalVector[0]<<","<<normalVector[1]<<","<<normalVector[2]<<")";}
+    
+    //normalVector[0] = 0.665647;
+    //normalVector[1] = 0.695607;
+    //normalVector[2] = -0.270367;
+    
+    
+    Vector3D direction = normalVector; // 2020.02.08 lg
+    direction.normalize(); // 2020.02.08 lg
+    
+    Vector3D current_point_on_plane=starting_point;
+    
+    if ( solver.comm()->MyPID() == 0 ) std::cout << "\n\nvector direction=( " << direction[0] << ", " << direction[1] << ", " << direction[2] << "\n\n"; // 2020.02.06 lg
+    
+    //first we want to set up the initial vector
+    auto p2dFeSpace = solver.structuralOperatorPtr()->dispFESpacePtr();
+        const auto& meshFull = solver.fullMeshPtr();
+            FESpace<RegionMesh<LinearTetra>, MapEpetra > p1dFESpace (p2dFeSpace->mesh(), "P1", 3, p2dFeSpace->mesh()->comm());
+
+                    VectorEpetra p1PositionVector (p1dFESpace.map());
+                    p1PositionVector *= 0.0;
+
+                    Int p1nLocalPoints = p1PositionVector.epetraVector().MyLength() / 3;
+
+                    //std::cout << "This is length of positionVector: " << p1PositionVector.epetraVector().MyLength() << std::endl;
+
+                    for (int j (0); j < p1nLocalPoints; j++)
+                    {
+                         UInt iGID = p1PositionVector.blockMap().GID (j);
+                         UInt jGID = p1PositionVector.blockMap().GID (j + p1nLocalPoints);
+                         UInt kGID = p1PositionVector.blockMap().GID (j + 2 * p1nLocalPoints);
+
+
+                         //Vector3D coord = meshFull->point(iGID).coordinates();
+
+                         p1PositionVector[iGID] = meshFull->point(iGID).x();
+                         p1PositionVector[jGID] = meshFull->point(iGID).y();
+                         p1PositionVector[kGID] = meshFull->point(iGID).z();
+
+
+
+                    }
+
+                    VectorEpetra p2PositionVector ( m_dispPtr->map() );
+                    p2PositionVector = p2dFeSpace->feToFEInterpolate(p1dFESpace, p1PositionVector);
+
+                    //now we have the positionvector
+
+
+                    if(time == 0.0)
+                    {
+                        m_currentPositionVector = vectorPtr_Type (new VectorEpetra( p1dFESpace.map(), Repeated ));
+                        //*m_currentPositionVector = p2PositionVector;
+                    }
+
+
+                    vectorPtr_Type p2PatchDisplacement (new VectorEpetra( p1dFESpace.map(), Repeated ));
+                    auto nCompLocalDof = p2PatchDisplacement->epetraVector().MyLength() / 3;
+
+
+
+                    /*
+                    if(normalVector[2] != 0.0)
+                                {
+                                    //In thoughts we set cooridnates x and y equal to zero and solve for z coordinate and store it in current_point_on_plane[0]
+                                    //here we just added the max value of distance vector (3.5155), let's see how it works
+                                    current_point_on_plane[2] = (normalVector[0]*startingPoint[0] + normalVector[1]*startingPoint[1] + normalVector[2]*startingPoint[2] +activationFunction(time))/normalVector[2];
+                                    current_point_on_plane[1] = 0;
+                                    current_point_on_plane[0] = 0;
+
+                                    //std::cout << "This is coordinate of current point on plane" << current_point_on_plane[2] << std::endl;
+
+                                }
+                     */
+                     
+                    /*
+                                else if (normal_vector[2] == 0.0 && normal_vector[1] != 0.0)
+                                {
+
+                                    current_point_on_plane[1] = (normal_vector[0]*starting_point[0] + normal_vector[1]*starting_point[1] + normal_vector[2]*starting_point[2]  + activationFunction(time))/normal_vector[1];
+                                    current_point_on_plane[2] = 0;
+                                    current_point_on_plane[0] = 0;
+                                }
+                                else if (normal_vector[2] == 0.0 && normal_vector[1] == 0.0 && normal_vector[0] != 0.0)
+                                {
+                                    current_point_on_plane[0] = (normal_vector[0]*starting_point[0] + normal_vector[1]*starting_point[1] + normal_vector[2]*starting_point[2]  +activationFunction(time))/normal_vector[0];
+                                    current_point_on_plane[1] = 0;
+                                    current_point_on_plane[2] = 0;
+                                }
+                                else
+                                {
+                                    std::cout << "A normal  vector in the data file of (0, 0 , 0) doesn't make sense" << std::endl;
+                                }
+                        */
+
+
+                     for (int j (0); j < nCompLocalDof; ++j)
+                                {
+                                            // Get coordinates
+
+                                            UInt iGID = p2PatchDisplacement->blockMap().GID (j);
+                                            UInt jGID = p2PatchDisplacement->blockMap().GID (j + nCompLocalDof);
+                                            UInt kGID = p2PatchDisplacement->blockMap().GID (j + 2 * nCompLocalDof);
+
+                                            /*
+                                            UInt iGID = p2PositionVector.blockMap().GID (j);
+                                            UInt jGID = p2PositionVector.blockMap().GID (j + nCompLocalDof);
+                                            UInt kGID = p2PositionVector.blockMap().GID (j + 2 * nCompLocalDof);
+                                            */
+
+                                            Vector3D coordinates;
+
+                                            /*
+                                            coordinates(0) = (*m_currentPositionVector)[iGID];
+                                            coordinates(1) = (*m_currentPositionVector)[jGID];
+                                            coordinates(2) = (*m_currentPositionVector)[kGID];
+                                            */
+
+                                            coordinates(0) = p2PositionVector[iGID];
+                                            coordinates(1) = p2PositionVector[jGID];
+                                            coordinates(2) = p2PositionVector[kGID];
+
+                                            Vector3D QP; //define here the vector that goes from Q (point on plane) to point P
+
+                                            QP = coordinates - current_point_on_plane;
+
+                                            if ( solver.comm()->MyPID() == 0 )
+                                            {
+                                                //std::cout << "These are coordinates: " << coordinates(0) << "        " << coordinates(1) << "       " << coordinates(2) << std::endl;
+                                                //std::cout << "This is current point on plane " << current_point_on_plane(0) << "         " << current_point_on_plane(1) << "        " << current_point_on_plane(2) << std::endl;
+                                            }
+
+
+                                            if(QP.dot(direction) <= 0) //here i have change to > 0
+                                            {
+                                                        //distance = 1.0;
+                                                        distance = abs(QP.dot(direction));
+                                            }
+                                            else
+                                              {
+                                                        distance = 0.0;
+                                              }
+
+                                            Vector3D displacement_vector;
+                                            displacement_vector[0] = distance*direction[0];
+                                            displacement_vector[1] = distance*direction[1];
+                                            displacement_vector[2] = distance*direction[2];
+
+                                            if ( solver.comm()->MyPID() == 0 )
+                                            {
+                                                //std::cout << "This is dispalcement vector: " << displacement_vector[0] << "       " << displacement_vector[1] << "          " << displacement_vector[2] << std::endl;
+                                            }
+
+                                            (*p2PatchDisplacement)[iGID] = displacement_vector[0];
+                                            (*p2PatchDisplacement)[jGID] = displacement_vector[1];
+                                            (*p2PatchDisplacement)[kGID] = displacement_vector[2];
+
+                                                                    (*m_currentPositionVector)[iGID] = (*m_currentPositionVector)[iGID] + (*p2PatchDisplacement)[iGID];
+                                                                    (*m_currentPositionVector)[jGID] = (*m_currentPositionVector)[jGID] + (*p2PatchDisplacement)[jGID];
+                                                                    (*m_currentPositionVector)[kGID] = (*m_currentPositionVector)[kGID] + (*p2PatchDisplacement)[kGID];
+
+                                }
+
+                     return *p2PatchDisplacement;
+}
+
 //THIS IS THE CORRECTED VERSION OF THE DIRECTIONAL VECTORFIELD; LETS SEE
 /*
 vectorPtr_Type EssentialPatchBCMovingPlane::directionalVectorField(const boost::shared_ptr<FESpace<RegionMesh<LinearTetra>, MapEpetra >> dFeSpace, Vector3D& direction, const Real& disp, const Real& time) const

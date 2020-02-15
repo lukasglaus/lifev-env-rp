@@ -698,32 +698,32 @@ public:
         return localPatchDisplacement;
     }
 
-    vector_Type displayDirectionalVectorField(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver, const Real& time)
+    virtual vector_Type displayDirectionalVectorField(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver, const Real& time)
     {
     	Real distance;
-    	//Vector3D normalVector; //already in class defined?
-    	//Vector3D startingPoint;//already in class defined?
+    	Vector3D normalVector; //already in class defined?
+    	Vector3D startingPoint;//already in class defined?
         
     	//direction.normalize(); // 2020.02.06 lg
 
-        if ( solver.comm()->MyPID() == 0 ){std::cout<<"startingPoint in displayDirectionalVectorfield= "<<startingPoint[0]<<","<<startingPoint[1]<<","<<startingPoint[2]<<")";}
-    	/*
+        //if ( solver.comm()->MyPID() == 0 ){std::cout<<"startingPoint in displayDirectionalVectorfield= "<<startingPoint[0]<<","<<startingPoint[1]<<","<<startingPoint[2]<<")";}
+    	
         startingPoint[0] = -3.76487;
     	startingPoint[1] = -10.6687;
     	startingPoint[2] = -0.36572;
-        */
         
-        if ( solver.comm()->MyPID() == 0 ){std::cout<<"normalVector in displayDirectionalVectorfield= "<<normalVector[0]<<","<<normalVector[1]<<","<<normalVector[2]<<")";}
-        /*
+        
+        //if ( solver.comm()->MyPID() == 0 ){std::cout<<"normalVector in displayDirectionalVectorfield= "<<normalVector[0]<<","<<normalVector[1]<<","<<normalVector[2]<<")";}
+        
     	normalVector[0] = 0.665647;
     	normalVector[1] = 0.695607;
     	normalVector[2] = -0.270367;
-        */
         
-        Vector3D direction = normalVector; // 2020.02.08 lg
+        
+        //Vector3D direction = normalVector; // 2020.02.08 lg
         direction.normalize(); // 2020.02.08 lg
         
-        Vector3D current_point_on_plane=starting_point;
+        //Vector3D current_point_on_plane=starting_point;
         
         if ( solver.comm()->MyPID() == 0 ) std::cout << "\n\nvector direction=( " << direction[0] << ", " << direction[1] << ", " << direction[2] << "\n\n"; // 2020.02.06 lg
         

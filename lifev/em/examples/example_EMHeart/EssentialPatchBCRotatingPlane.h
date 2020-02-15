@@ -30,9 +30,11 @@ public:
 
     virtual vectorPtr_Type directionalVectorField (EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver,const boost::shared_ptr<FESpace<RegionMesh<LinearTetra>, MapEpetra >> dFeSpace, Vector3D& direction, const Real& disp, const Real& time);
 
-     virtual const bool nodeOnPatchCurrent(const Vector3D& coord,const Real& time);
+    virtual const bool nodeOnPatchCurrent(const Vector3D& coord,const Real& time);
 
     virtual void modifyPatchBC(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver, const Real& time, int& PatchFlag);
+    
+    virtual vector_Type displayDirectionalVectorField(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver, const Real& time);
     
 private:
     //vectorPtr_Type p2PositionVector;
