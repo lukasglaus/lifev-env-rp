@@ -775,7 +775,7 @@ public:
 
 
 
-                        /*
+                        
     	    	    	if(normalVector[2] != 0.0)
     	    	    		        {
     	    	    		        	//In thoughts we set cooridnates x and y equal to zero and solve for z coordinate and store it in current_point_on_plane[0]
@@ -787,9 +787,9 @@ public:
     	    	    		        	//std::cout << "This is coordinate of current point on plane" << current_point_on_plane[2] << std::endl;
 
     	    	    	 	        }
-                         */
                          
-    	    	    	/*
+                         
+    	    	    	
     	    	    		        else if (normal_vector[2] == 0.0 && normal_vector[1] != 0.0)
     	    	    		        {
 
@@ -807,7 +807,7 @@ public:
     	    	    	 	        {
     	    	    		        	std::cout << "A normal  vector in the data file of (0, 0 , 0) doesn't make sense" << std::endl;
     	    	    		        }
-							*/
+							
 
 
     	    	    	 for (int j (0); j < nCompLocalDof; ++j)
