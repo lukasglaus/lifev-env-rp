@@ -66,7 +66,7 @@ void setup(const GetPot& dataFile, const std::string& name,EMSolver<RegionMesh<L
     starting_point=calculate_pAxis(pointOnHeart,direction_to_axis,distance_to_axis);//starting_point already defined in EssentialPatchBC.hpp
     
     //Import the initial opening angle of the patches
-    maximum_angle = dataFile ( ("solid/boundary_conditions/" + m_Name + "/maximum_angle").c_str());
+    maximum_angle = dataFile ( ("solid/boundary_conditions/" + m_Name + "/maximum_angle").c_str(), 1.0 );
     maximum_angle = (maximum_angle * 3.141)/180;
     rotation_direction = dataFile ( ("solid/boundary_conditions/" + m_Name + "/rotation_direction").c_str(), 1.0 );
     
