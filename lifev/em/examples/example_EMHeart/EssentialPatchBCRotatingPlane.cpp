@@ -65,7 +65,7 @@ void EssentialPatchBCRotatingPlane::setup(const GetPot& dataFile, const std::str
     m_maxDisplacement=0;
     
     //initial normal vector for applyPatchBC
-    angleOfTime=calculate_angleOfTime (maximum_angle, minimum_angle,0.0);
+    angleOfTime=calculate_angleOfTime (maximum_angle, minimum_angle,0.0,EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver);
     normal_vector=createNormalVector (direction_to_axis,axis_direction,angleOfTime);
 }
 
@@ -290,7 +290,7 @@ void EssentialPatchBCRotatingPlane::modifyPatchArea(EMSolver<RegionMesh<LinearTe
 void EssentialPatchBCRotatingPlane::modifyPatchBC(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver, const Real& time, int& PatchFlag)
 {
 
-    Real angleOfTime=calculate_angleOfTime(maximum_angle,minimum_angle,time);
+    Real angleOfTime=calculate_angleOfTime(maximum_angle,minimum_angle,time,EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver);
     normal_vector=createNormalVector (direction_to_axis,axis_direction,angleOfTime);
     m_patchDirection=normal_vector;
         
