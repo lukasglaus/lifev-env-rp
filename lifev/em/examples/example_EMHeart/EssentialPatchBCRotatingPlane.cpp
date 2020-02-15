@@ -82,7 +82,7 @@ void setup(const GetPot& dataFile, const std::string& name,EMSolver<RegionMesh<L
     m_tduration = dataFile ( "solid/patches/tduration", 0. );
     
     //initial normal vector for applyPatchBC
-    angleOfTime=calculate_angleOfTime (maximum_angle, minimum_angle,0.0,solver);
+    angleOfTime=calculate_angleOfTime (0.0,solver);
     normal_vector=createNormalVector (direction_to_axis,axis_direction,angleOfTime);
     
     if ( solver.comm()->MyPID() == 0 ) std::cout<<"setup completed";
@@ -115,7 +115,7 @@ Vector3D calculate_pAxis (const Vector3D pointOnHeart,const Vector3D direction_t
     }
 
 //Calculate the opening angle(Degree) in function of time
-Real calculate_angleOfTime (Real maximum_angle, Real minimum_angle, Real time, EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver)
+Real calculate_angleOfTime (Real time, EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver)
     {
         if (std::fmod(time,m_tduration)/m_tduration < 0.5)
             {
@@ -312,7 +312,7 @@ void modifyPatchArea(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<Region
 void modifyPatchBC(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver, const Real& time, int& PatchFlag)
 {
 
-    Real angleOfTime=calculate_angleOfTime(maximum_angle,minimum_angle,time,solver);
+    Real angleOfTime=calculate_angleOfTime(time,solver);
     normal_vector=createNormalVector (direction_to_axis,axis_direction,angleOfTime);
     m_patchDirection=normal_vector;
         
