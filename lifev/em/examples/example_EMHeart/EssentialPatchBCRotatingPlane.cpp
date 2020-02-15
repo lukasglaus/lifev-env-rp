@@ -23,7 +23,7 @@ Real m_tduration;
 int rotation_direction;
 Real angleOfTime;
 
-void EssentialPatchBCRotatingPlane::setup(const GetPot& dataFile, const std::string& name)
+void EssentialPatchBCRotatingPlane::setup(const GetPot& dataFile, const std::string& name,EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver)
 {
     super::setup(dataFile, name);
     
