@@ -199,7 +199,7 @@ const bool nodeOnPatch(const Vector3D& coord, const Real& time)
             return nodeInArea;
 }
                                                                                    
-const bool EssentialPatchBCRotatingPlane::nodeOnPatchCurrent(const Vector3D& coord, const Real& time)
+const bool nodeOnPatchCurrent(const Vector3D& coord, const Real& time)
 {
     bool nodeInArea = 0;
 
@@ -219,7 +219,7 @@ const bool EssentialPatchBCRotatingPlane::nodeOnPatchCurrent(const Vector3D& coo
 }
 
 
-void EssentialPatchBCRotatingPlane::modifyPatchArea(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver,const int& newFlag, const Real& time)
+void modifyPatchArea(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver,const int& newFlag, const Real& time)
 {
     if ( solver.comm()->MyPID() == 0 ) std::cout << "\nWE ARE IN MODIFY PATCH AREA " << std::endl;
 
@@ -304,7 +304,7 @@ void EssentialPatchBCRotatingPlane::modifyPatchArea(EMSolver<RegionMesh<LinearTe
 
 //this is directional vectorfield for p2 elements
 
-void EssentialPatchBCRotatingPlane::modifyPatchBC(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver, const Real& time, int& PatchFlag)
+void modifyPatchBC(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver, const Real& time, int& PatchFlag)
 {
 
     Real angleOfTime=calculate_angleOfTime(maximum_angle,minimum_angle,time,solver);
@@ -370,7 +370,7 @@ void EssentialPatchBCRotatingPlane::modifyPatchBC(EMSolver<RegionMesh<LinearTetr
        //solver.bcInterfacePtr() -> handler()->addBC (m_Name, m_patchFlag,  Essential, Component, *m_patchDispBCPtr, m_patchComponent);//idea is now that we add everytime a new BC
 }
 
-vectorPtr_Type EssentialPatchBCRotatingPlane::directionalVectorField(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver,const boost::shared_ptr<FESpace<RegionMesh<LinearTetra>, MapEpetra >> dFeSpace, Vector3D& direction, const Real& disp, const Real& time)
+vectorPtr_Type directionalVectorField(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver,const boost::shared_ptr<FESpace<RegionMesh<LinearTetra>, MapEpetra >> dFeSpace, Vector3D& direction, const Real& disp, const Real& time)
 {
     Vector3D current_point_on_plane=starting_point;
     Real distance;
@@ -577,7 +577,7 @@ vectorPtr_Type EssentialPatchBCRotatingPlane::directionalVectorField(EMSolver<Re
 
 }
 
-vector_Type EssentialPatchBCRotatingPlane::displayDirectionalVectorField(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver, const Real& time)
+vector_Type displayDirectionalVectorField(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver, const Real& time)
 {
     Real distance;
     
