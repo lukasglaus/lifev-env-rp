@@ -724,7 +724,7 @@ public:
         
         direction.normalize(); // 2020.02.08 lg
         
-        //Vector3D current_point_on_plane=starting_point;
+        Vector3D current_point_on_plane;
         
         if ( solver.comm()->MyPID() == 0 ) std::cout << "\n\nvector direction=( " << direction[0] << ", " << direction[1] << ", " << direction[2] << "\n\n"; // 2020.02.06 lg
         
