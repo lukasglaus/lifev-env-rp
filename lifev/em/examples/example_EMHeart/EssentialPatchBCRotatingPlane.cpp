@@ -154,7 +154,7 @@ double calculate_angleOfTime (Real time)
         std::cout<<"\nangleOfTime= "<< angleOfTime*180/PI<<" degree";
         std::cout<<"\ninitial maximum_angle = "<<maximum_angle*180/PI<<" degree";
         std::cout<<"\ninitial minimum_angle = "<<minimum_angle*180/PI<<" degree";
-        std::cout<<"\ninitial m_tduration = "<<m_tduration<<;
+        std::cout<<"\ninitial m_tduration = "<<m_tduration;
     }
 
 //cos in degree or radian?
@@ -208,8 +208,8 @@ Vector3D rotateVectorAroundAxis (double angleOfTime)
     normalToPlane[2]=axis_direction[0]*axis_perp_t[1]-axis_direction[1]*axis_perp_t[0];
     */
         
-    normalToPlane=(normalToPlane.normalize())*rotation_direction;
-                    
+    normalToPlane=(normalToPlane.normalize());
+    normalToPlane=normalToPlane*rotation_direction;
     return normalToPlane;
     }
                                                                                    
