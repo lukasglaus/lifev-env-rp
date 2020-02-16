@@ -208,7 +208,7 @@ Vector3D rotateVectorAroundAxis (double angleOfTime)
     normalToPlane[2]=axis_direction[0]*axis_perp_t[1]-axis_direction[1]*axis_perp_t[0];
     */
         
-    normalToPlane=(normalToPlane.normalize());
+    normalToPlane=normalToPlane.normalize();
     normalToPlane=normalToPlane*rotation_direction;
     return normalToPlane;
     }
