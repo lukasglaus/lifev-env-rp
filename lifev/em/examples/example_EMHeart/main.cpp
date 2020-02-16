@@ -646,7 +646,6 @@ int main (int argc, char** argv)
     // Simple_run
     //============================================
     const bool simple_run = dataFile ( "solid/simple_run/simple_run", false );
-    const double simple_iterations = dataFile ( "solid/simple_run/simple_iterations", 50 );
     
     if (simple_run==true)
     {
@@ -687,15 +686,22 @@ int main (int argc, char** argv)
             circulationSolver.exportSolution( circulationOutputFile );
         }
 
+        const double m_tduration = dataFile ( "solid/patches/tduration", 0. );
+        const double simple_iterations = dataFile ( "solid/simple_run/simple_iterations", 50 );
+        double pseudotime;
+        
         LifeChrono chronoExport;
         chronoExport.start();
         
-        for (int k (1); k <= simple_iterations; k++) // here begins the time looping
+        for (int k (0); k <= simple_iterations; k++) // here begins the time looping
         {
+            
+            pseudotime=(m_tduration/2)*(k/simple_iterations);
             if ( 0 == comm->MyPID() )
             {
                 std::cout << "\n*****************************************************************";
                 std::cout << "\nSIMPLE_ITERATION = " <<k<<" / "<<simple_iterations;
+                std::cout << "\nPseudotime = "<<pseudotime<<" / "<<m_tduration;
                 std::cout << "\n*****************************************************************\n";
             }
             
@@ -724,7 +730,7 @@ int main (int argc, char** argv)
             solver.structuralOperatorPtr() -> data() -> dataTime() -> setTime(t);
             modifyPressureBC(bcValuesLoadstep);
             //modifyEssentialPatchBC(t);
-            patchHandler.modifyPatchBC(solver, t); //this we survive; crash probably comes in next one
+            patchHandler.modifyPatchBC(solver, pseudotime); //this we survive; crash probably comes in next one
             solver.bcInterfacePtr() -> updatePhysicalSolverVariables();
             solver.solveMechanics();
             

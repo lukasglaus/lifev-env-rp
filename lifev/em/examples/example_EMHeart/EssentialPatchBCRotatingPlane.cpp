@@ -85,7 +85,7 @@ void setup(const GetPot& dataFile, const std::string& name)
     // Temporal activation parameter
     m_tmax = dataFile ( "solid/patches/tmax", 0. );
     m_tduration = dataFile ( "solid/patches/tduration", 0. );
-    //std::cout<<"\nsetup:initial m_tduration = "<<m_tduration<<endl;
+    //std::cout<<"\nsetup:initial m_tduration = "<<m_tduration;
     
     //initial normal vector for applyPatchBC
     angleOfTime=calculate_angleOfTime(0.0);
@@ -94,7 +94,7 @@ void setup(const GetPot& dataFile, const std::string& name)
     //if ( solver.comm()->MyPID() == 0 ) std::cout<<"setup completed";
     //std::cout<<"\nsetup:setup completed"<<endl;
     
-    displayImportantVariables(0);
+    //displayImportantVariables(0);
 }
 
 //Normalizes a vector
@@ -195,15 +195,15 @@ Vector3D rotateVectorAroundAxis (double angleOfTime)
  //Cross product between two vectors creates a vector normal to them: c = a x b
  Vector3D createNormalVector (Real time)
     {
-    std::cout<<"createNormalVector: time= "<<time;
+    //std::cout<<"\ncreateNormalVector: time= "<<time;
     double angle = calculate_angleOfTime(time);
-    std::cout<<"createNormalVector: angle= "<<angle*180/PI;
+    //std::cout<<"\ncreateNormalVector: angle= "<<angle*180/PI;
     Vector3D axis_perp_t = rotateVectorAroundAxis(angle);
-    std::cout<<"createNormalVector: axis_perp_t= ("<<axis_perp_t[0]<<","<<axis_perp_t[1]<<","<<axis_perp_t[2]<<")";
+    //std::cout<<"\ncreateNormalVector: axis_perp_t= ("<<axis_perp_t[0]<<","<<axis_perp_t[1]<<","<<axis_perp_t[2]<<")";
     Vector3D normalToPlane;
-    std::cout<<"createNormalVector: axis_direction= ("<<axis_direction[0]<<","<<axis_direction[1]<<","<<axis_direction[2]<<")";
+    //std::cout<<"\ncreateNormalVector: axis_direction= ("<<axis_direction[0]<<","<<axis_direction[1]<<","<<axis_direction[2]<<")";
     normalToPlane=axis_perp_t.cross(axis_direction);
-    std::cout<<"createNormalVector: axis_perp_t cross axis_direction=normalToPlane= ("<<normalToPlane[0]<<","<<normalToPlane[1]<<","<<normalToPlane[2]<<")";
+    //std::cout<<"\ncreateNormalVector: axis_perp_t cross axis_direction=normalToPlane= ("<<normalToPlane[0]<<","<<normalToPlane[1]<<","<<normalToPlane[2]<<")";
     /*
     normalToPlane[0]=axis_direction[1]*axis_perp_t[2]-axis_direction[2]*axis_perp_t[1];
     normalToPlane[1]=axis_direction[2]*axis_perp_t[0]-axis_direction[0]*axis_perp_t[2];
@@ -211,10 +211,10 @@ Vector3D rotateVectorAroundAxis (double angleOfTime)
     */
         
     normalToPlane.normalize();
-    std::cout<<"createNormalVector: normalToPlane (normalized)= ("<<normalToPlane[0]<<","<<normalToPlane[1]<<","<<normalToPlane[2]<<")";
+    //std::cout<<"createNormalVector: normalToPlane (normalized)= ("<<normalToPlane[0]<<","<<normalToPlane[1]<<","<<normalToPlane[2]<<")";
     normalToPlane=normalToPlane*rotation_direction;
-    std::cout<<"createNormalVector: rotation_direction = "<<rotation_direction;
-    std::cout<<"createNormalVector: normalToPlane (normalized+multiplied with rotation_direction)= ("<<normalToPlane[0]<<","<<normalToPlane[1]<<","<<normalToPlane[2]<<")";
+    //std::cout<<"createNormalVector: rotation_direction = "<<rotation_direction;
+    //std::cout<<"createNormalVector: normalToPlane (normalized+multiplied with rotation_direction)= ("<<normalToPlane[0]<<","<<normalToPlane[1]<<","<<normalToPlane[2]<<")";
     return normalToPlane;
     }
                                                                                    
@@ -226,7 +226,7 @@ const bool nodeOnPatch(const Vector3D& coord, const Real& time)
 
         //m_maxDisplacement = dataFile ( ("solid/boundary_conditions/" + m_Name + "/displacement").c_str(), 1.0 );
 
-        if((normal_vector[0]*coord[0] + normal_vector[1]*coord[1] + normal_vector[2]*coord[2] - normal_vector[0]*starting_point[0]- normal_vector[1]*starting_point[1]-normal_vector[2]*starting_point[2] - m_maxDisplacement) <= 0)
+        if((normal_vector[0]*coord[0] + normal_vector[1]*coord[1] + normal_vector[2]*coord[2] - normal_vector[0]*starting_point[0]- normal_vector[1]*starting_point[1]-normal_vector[2]*starting_point[2]) <= 0)
             {
                 nodeInArea = true;
             }
@@ -619,6 +619,213 @@ vectorPtr_Type directionalVectorField(EMSolver<RegionMesh<LinearTetra>, EMMonodo
 
 }
 
+    vectorPtr_Type patch_attacher(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver,const boost::shared_ptr<FESpace<RegionMesh<LinearTetra>, MapEpetra >> dFeSpace, Vector3D& direction, const Real& disp, const Real& time)
+    {
+        Vector3D current_point_on_plane=starting_point;
+        Real distance;
+
+            //m_p2currentPositionVector = vectorPtr_Type (new VectorEpetra( dFeSpace->map(), Repeated ));
+        //std::cout << "NOW WE ARE IN DIRECTIONAL VECTOR FIELD" << std::endl;
+
+
+                auto p2PositionVector = p2PositionVectorInitial(dFeSpace, solver);
+        /*
+            if(time == 0.0)
+            {
+            m_p2currentPositionVector = vectorPtr_Type (new VectorEpetra( dFeSpace->map(), Repeated ));
+            *m_p2currentPositionVector = p2PositionVectorInitial(dFeSpace, solver);
+            }
+            */
+
+                vectorPtr_Type p2PatchDisplacement (new VectorEpetra( dFeSpace->map(), Repeated ));
+
+
+                auto nCompLocalDof = p2PatchDisplacement->epetraVector().MyLength() / 3;
+
+
+                /*
+                bool sameMap = m_p2currentPositionVector->blockMap().SameAs(p2PatchDisplacement->blockMap());
+
+                if(sameMap == true)
+                {
+                    std::cout << "The maps are the same" << std::endl;
+                }
+                else
+                {
+                    std::cout << "The maps are not the same" << std::endl;
+                }
+
+                bool samePoint = m_p2currentPositionVector->blockMap().PointSameAs(p2PatchDisplacement->blockMap());
+                if(samePoint == true)
+                {
+                        std::cout << "The points are the same" << std::endl;
+                }
+                else
+                {
+                         std::cout << "The points are not the same" << std::endl;
+                }
+                */
+        
+                direction.normalize(); //need to be careful; direction and normal_vector aren't the same anymore; after that direction is the normalised normal_vector
+        /*
+                if(normal_vector[2] != 0.0)
+                {
+                    //In thoughtdofdofdofdofs we set cooridnates x and y equal to zero and solve for z coordinate and store it in current_point_on_plane[0]
+                    //here we just added the max value of distance vector (3.5155), let's see how it works
+                    current_point_on_plane[2] = (normal_vector[0]*starting_point[0] + normal_vector[1]*starting_point[1] + normal_vector[2]*starting_point[2] +activationFunction(time))/normal_vector[2];
+                    current_point_on_plane[1] = 0;
+                    current_point_on_plane[0] = 0;
+
+                    //std::cout << "This is coordinate of current point on plane" << current_point_on_plane[2] << std::endl;
+
+                 }
+                else if (normal_vector[2] == 0.0 && normal_vector[1] != 0.0)
+                {
+                    
+                    current_point_on_plane[1] = (normal_vector[0]*starting_point[0] + normal_vector[1]*starting_point[1] + normal_vector[2]*starting_point[2]  + activationFunction(time))/normal_vector[1];
+                    current_point_on_plane[2] = 0;
+                    current_point_on_plane[0] = 0;
+                }
+                else if (normal_vector[2] == 0.0 && normal_vector[1] == 0.0 && normal_vector[0] != 0.0)
+                {
+                    current_point_on_plane[0] = (normal_vector[0]*starting_point[0] + normal_vector[1]*starting_point[1] + normal_vector[2]*starting_point[2]  +activationFunction(time))/normal_vector[0];
+                    current_point_on_plane[1] = 0;
+                    current_point_on_plane[2] = 0;
+                }
+                else
+                 {
+                    std::cout << "A normal  vector in the data file of (0, 0 , 0) doesn't make sense" << std::endl;
+                }
+        */
+
+            //std::cout << "THIS IS CURRENT POINT ON PLANE "  << current_point_on_plane[0] << "       " << current_point_on_plane[1] << "         " << current_point_on_plane[2] << std::endl;
+            // std::cout << current_point_on_plane[1] << std::endl;
+            // std::cout << current_point_on_plane[2] << std::endl;
+
+
+
+                //std::cout << "This is Length of EpetraDisplacementVector in DirectionalVectorfield: " << p2PatchDisplacement->epetraVector().MyLength() << std::endl;
+
+                for (int j (0); j < nCompLocalDof; ++j)
+                {
+                            // Get coordinates
+
+                            UInt iGID = p2PatchDisplacement->blockMap().GID (j);
+                            UInt jGID = p2PatchDisplacement->blockMap().GID (j + nCompLocalDof);
+                            UInt kGID = p2PatchDisplacement->blockMap().GID (j + 2 * nCompLocalDof);
+
+                            /*
+                            UInt iGID = p2PositionVector.blockMap().GID (j);
+                            UInt jGID = p2PositionVector.blockMap().GID (j + nCompLocalDof);
+                            UInt kGID = p2PositionVector.blockMap().GID (j + 2 * nCompLocalDof);
+                            */
+
+                            Vector3D coordinates;
+                    
+                            coordinates(0) = p2PositionVector[iGID];
+                            coordinates(1) = p2PositionVector[jGID];
+                            coordinates(2) = p2PositionVector[kGID];
+
+                            //if ( solver.comm()->MyPID() == 0 ) std::cout << "\n\nIteration number" << j << "of" <<nCompLocalDof-1 << "Coordinate vector" << coordinates(0) << "," << coordinates(1) << "," << coordinates(2) << ",";
+                    
+                            /*
+                            coordinates(0) = (*m_p2currentPositionVector)[iGID];
+                            coordinates(1) = (*m_p2currentPositionVector)[jGID];
+                            coordinates(2) = (*m_p2currentPositionVector)[kGID];
+                            */
+
+                            Vector3D QP; //define here the vector that goes from Q (point on plane) to point P
+
+                            QP = coordinates - current_point_on_plane;
+
+                            //std::cout << "THESE ARE COORDINATES OF QP: " << QP[0] << "       " << QP[1] << "       " << QP[2] << std::endl;
+
+
+                         //   QP[0] = coordinates[0] - current_point_on_plane[0];
+                         //   QP[1] = coordinates[1] - current_point_on_plane[1];
+                         //   QP[2] = coordinates[2] - current_point_on_plane[2];
+
+
+                            //next we do the projection of the vector QP ond the normalvector to the plane; we look at the sign which it has in the if statement
+
+                            //if(QP[0]*direction[0] + QP[1]*direction[1] + QP[2]*direction[2] <=0) //we use here normalised normal vector
+                            if(QP.dot(direction) <= 0) //here i have change to > 0
+                            {
+                                //if the dot product is smaller equal zero, then we want to apply a displacement; for that we calculate the distance from point P to plane and then say this is the displacement we want
+                
+                                distance = abs(QP.dot(direction));
+                                //distance = abs(QP[0]*direction[0]+ QP[1]*direction[1]+QP[2]*direction[2]);
+                                //std::cout << " THIS IS CALCULATED DISTANCE IN VECTORFIELD: " << distance << std::endl;
+
+
+                                //////////////////Here we write distance to file
+                                auto currentprocessor = dFeSpace->mesh()->comm()->MyPID();
+                                std::ostringstream oss;//this is to convert int to string
+                                oss << currentprocessor;
+
+                                std::string path = "/cluster/home/lglaus/LIFE5/lifev-env-rp/lifev-em-install-debug/lifev/em/examples/example_EMHeart/distancefiles/distances_" + oss.str() + ".dat"; //2020.02.05 lg
+                                //std::string path = "/cluster/home/pamstad/LIFE5/lifev-env/lifev-em-build/lifev/em/examples/example_EMHeart/distancefiles/distances_" + oss.str() + ".dat"; //2020.02.05 lg
+                                std::ofstream writer(path.c_str(), std::ios_base::app);
+                                if(writer.is_open()==false)
+                                {
+                                    std::cout << "error occured while opening the file" << std::endl;
+                                }
+                                writer << coordinates(0) << "\t\t" << coordinates(1) << "\t\t" << coordinates(2) << "\t\t"  << distance << std::endl;
+                                writer.close();
+                                //////////////////Here the writing to the file ends
+
+
+                            }
+                            else
+                            {
+                                distance = 0.0;
+                            }
+
+                            Vector3D displacement_vector;
+                            displacement_vector[0] = distance*direction[0]; // distance*direction[0];
+                            displacement_vector[1] = distance*direction[1]; //  distance*direction[1];
+                            displacement_vector[2] = distance*direction[2]; // distance*direction[2];
+
+                    //std::cout << "This is displacmeent VEctor: " <<  displacement_vector(0) << "          " << displacement_vector(1) << "         " << displacement_vector(2) << std::endl;
+
+                            (*p2PatchDisplacement)[iGID] = displacement_vector[0];
+                            (*p2PatchDisplacement)[jGID] = displacement_vector[1];
+                            (*p2PatchDisplacement)[kGID] = displacement_vector[2];
+
+                            /*
+                            (*m_p2currentPositionVector)[iGID] = (*m_p2currentPositionVector)[iGID] + (*p2PatchDisplacement)[iGID];
+                            (*m_p2currentPositionVector)[jGID] = (*m_p2currentPositionVector)[jGID] + (*p2PatchDisplacement)[jGID];
+                            (*m_p2currentPositionVector)[kGID] = (*m_p2currentPositionVector)[kGID] + (*p2PatchDisplacement)[kGID];
+                            */
+                            /*
+                            auto currentprocessor = dFeSpace->mesh()->comm()->MyPID();
+                            std::ostringstream oss;//this is to convert int to string
+                            oss << currentprocessor;
+
+                            std::string path_two = "/cluster/home/pamstad/LIFE5/lifev-env/lifev-em-build/lifev/em/examples/example_EMHeart/currentPositionVector/currentPositionVector_" + oss.str() + ".dat";
+                            std::ofstream writer_two(path_two.c_str(), std::ios_base::app);
+                            if(writer_two.is_open()==false)
+                            {
+                                          std::cout << "error occured while opening the file" << std::endl;
+                            }
+                            writer_two << (*m_p2currentPositionVector)[iGID] << "\t\t" << (*m_p2currentPositionVector)[jGID] << "\t\t" << (*m_p2currentPositionVector)[kGID] << std::endl;
+                            writer_two.close();
+                            */
+
+
+                }
+                //p2PositionVector += *p2PatchDisplacement;
+                //*m_p2currentPositionVector += *p2PatchDisplacement;
+            
+            if(time == 0)
+            {
+                *p2PatchDisplacement *= 0.0;
+            }
+
+                return p2PatchDisplacement;
+
+    }
+    
 vector_Type displayDirectionalVectorField(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver, const Real& time)
 {
     Real distance;
@@ -651,7 +858,7 @@ vector_Type displayDirectionalVectorField(EMSolver<RegionMesh<LinearTetra>, EMMo
     
     Vector3D current_point_on_plane=starting_point;
     
-    if ( solver.comm()->MyPID() == 0 ) std::cout << "\n\nvector direction=( " << direction[0] << ", " << direction[1] << ", " << direction[2] << "\n\n"; // 2020.02.06 lg
+    if ( solver.comm()->MyPID() == 0 ) std::cout << "\n\nvector direction=( " << direction[0] << ", " << direction[1] << ", " << direction[2] << ")\n\n"; // 2020.02.06 lg
     
     //first we want to set up the initial vector
     auto p2dFeSpace = solver.structuralOperatorPtr()->dispFESpacePtr();
