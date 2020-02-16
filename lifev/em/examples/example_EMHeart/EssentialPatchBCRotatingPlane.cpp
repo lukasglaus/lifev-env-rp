@@ -67,25 +67,28 @@ void setup(const GetPot& dataFile, const std::string& name,EMSolver<RegionMesh<L
     
     //Import the initial opening angle of the patches
     maximum_angle = dataFile ( ("solid/boundary_conditions/" + m_Name + "/maximum_angle").c_str(), 1.0 );
-    maximum_angle = (maximum_angle * 3.141)/180;
+    //maximum_angle = (maximum_angle * 3.141)/180;
+    std::cout<<"initial maximum_angle = "<<maximum_angle;
     rotation_direction = dataFile ( ("solid/boundary_conditions/" + m_Name + "/rotation_direction").c_str(), 1.0 );
     
     //Import the final (=smallest) opening angle of the patches
     minimum_angle = dataFile ( ("solid/boundary_conditions/" + m_Name + "/minimum_angle").c_str(), 1.0 );
-    minimum_angle = (minimum_angle * 3.141)/180;
-    
+    //minimum_angle = (minimum_angle * 3.141)/180;
+    std::cout<<"initial minimum_angle = "<<minimum_angle;
     //In order to have no translation of the patches
     m_maxDisplacement=0;
     
     // Temporal activation parameter
     m_tmax = dataFile ( "solid/patches/tmax", 0. );
     m_tduration = dataFile ( "solid/patches/tduration", 0. );
+    std::cout<<"initial m_tduration = "<<m_tduration;
     
     //initial normal vector for applyPatchBC
     angleOfTime=calculate_angleOfTime (0.0,solver);
     normal_vector=createNormalVector (direction_to_axis,axis_direction,angleOfTime);
     
-    if ( solver.comm()->MyPID() == 0 ) std::cout<<"setup completed";
+    //if ( solver.comm()->MyPID() == 0 ) std::cout<<"setup completed";
+    std::cout<<"setup completed"
 }
 
 //Normalizes a vector
@@ -117,10 +120,10 @@ Vector3D calculate_pAxis (const Vector3D pointOnHeart,const Vector3D direction_t
 //Calculate the opening angle(Degree) in function of time
 Real calculate_angleOfTime (Real time, EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver)
     {
-        std::cout<<"\ntime"<<time;
-        std::cout<<"\nmaximum_angle"<<maximum_angle;
-        std::cout<<"\nminimum_angle"<<minimum_angle;
-        std::cout<<"\nm_tduration"<<m_tduration;
+        std::cout<<"\ntime= "<<time;
+        std::cout<<"\nmaximum_angle= "<<maximum_angle;
+        std::cout<<"\nminimum_angle= "<<minimum_angle;
+        std::cout<<"\nm_tduration= "<<m_tduration;
         
         if (std::fmod(time,m_tduration)/m_tduration < 0.5)
             {
