@@ -36,10 +36,10 @@ public:
     int rotation_direction;
     Real angleOfTime;
     
-void setup(const GetPot& dataFile, const std::string& name,EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver)
+void setup(const GetPot& dataFile, const std::string& name)
 {
     super::setup(dataFile, name);
-    
+
     //Import starting point on heart
     for (UInt i (0); i < 3 ;++i )
     {
@@ -101,8 +101,8 @@ Vector3D normalize_vector (Vector3D vector)
             vector[1]=vector[1]/abs;
             vector[2]=vector[2]/abs;
         }
-        if (abs!=1){std::cout<<"\nCareful:During import a vector had to be normalized";}
-        if (abs=0){std::cout<<"\nCareful:Absolute value of a supposed to be normalized vector is zero";}
+        if (abs!=1){std::cout<<"\nCareful:During import a vector had to be normalized"<<endl;}
+        if (abs=0){std::cout<<"\nCareful:Absolute value of a supposed to be normalized vector is zero"<<endl;}
     return vector;
     }
 
