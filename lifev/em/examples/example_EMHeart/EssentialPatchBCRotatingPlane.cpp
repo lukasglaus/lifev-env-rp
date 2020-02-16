@@ -199,7 +199,7 @@ Vector3D rotateVectorAroundAxis (const Vector3D direction_to_axis,const Vector3D
     Vector3D axis_perp_t = rotateVectorAroundAxis(direction_to_axis,axis_direction,angleOfTime);
     Vector3D normalToPlane;
     
-    normalToPlane=axis_perp_t(axis_direction);
+    normalToPlane=axis_perp_t.cross(axis_direction);
     
     /*
     normalToPlane[0]=axis_direction[1]*axis_perp_t[2]-axis_direction[2]*axis_perp_t[1];
