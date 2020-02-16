@@ -124,7 +124,7 @@ Vector3D calculate_pAxis (const Vector3D pointOnHeart,const Vector3D direction_t
     }
 
 //Calculate the opening angle(Degree) in function of time
-Real calculate_angleOfTime (Real time)
+double calculate_angleOfTime (Real time)
     {
         double angle;
         
@@ -151,7 +151,7 @@ Real calculate_angleOfTime (Real time)
         std::cout<<"\nTime= "<< time<<endl;
         std::cout<<"\nstarting_point = ("<<starting_point[0]<<","<<starting_point[1]<<","<<starting_point[2]<<")"<<endl;
         std::cout<<"\nsetup:normal_vector = ("<<normal_vector[0]<<","<<normal_vector[1]<<","<<normal_vector[2]<<")"<<endl;
-        std::cout<<"\nangleOfTime= "<< angleOfTime<<endl;
+        std::cout<<"\nangleOfTime= "<< angleOfTime*180/PI<<" degree"<<endl;
         std::cout<<"\ninitial maximum_angle = "<<maximum_angle*180/PI<<" degree"<<endl;
         std::cout<<"\ninitial minimum_angle = "<<minimum_angle*180/PI<<" degree"<<endl;
         std::cout<<"\ninitial m_tduration = "<<m_tduration<<endl;
@@ -159,7 +159,7 @@ Real calculate_angleOfTime (Real time)
 
 //cos in degree or radian?
 //Changes direction and rotates "direction_to_axis" around "axis_direction" with the angle "angleOfTime"
-Vector3D rotateVectorAroundAxis (const Vector3D direction_to_axis,const Vector3D axis_direction, Real angleOfTime)
+Vector3D rotateVectorAroundAxis (double angleOfTime)
     {
     Vector3D normalOfPatch;
     Vector3D rotatedVector;
@@ -196,7 +196,7 @@ Vector3D rotateVectorAroundAxis (const Vector3D direction_to_axis,const Vector3D
     {
         
     double angleOfTime = calculate_angleOfTime(time);
-    Vector3D axis_perp_t = rotateVectorAroundAxis(direction_to_axis,axis_direction,angleOfTime);
+    Vector3D axis_perp_t = rotateVectorAroundAxis(angleOfTime);
     Vector3D normalToPlane;
     
     normalToPlane=axis_perp_t.cross(axis_direction);
