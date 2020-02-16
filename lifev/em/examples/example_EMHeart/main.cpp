@@ -694,7 +694,7 @@ int main (int argc, char** argv)
         LifeChrono chronoExport;
         chronoExport.start();
         
-        for (int k (0); k <= simple_iterations; k++) // here begins the time looping
+        for (int k (0); k <= simple_iterations-1; k++) // here begins the time looping
         {
             
             pseudotime=(m_tduration/2)*(k/simple_iterations);
