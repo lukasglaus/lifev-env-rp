@@ -92,7 +92,7 @@ void setup(const GetPot& dataFile, const std::string& name)
     //if ( solver.comm()->MyPID() == 0 ) std::cout<<"setup completed";
     //std::cout<<"\nsetup:setup completed"<<endl;
     
-    displayImportantVariables;
+    displayImportantVariables();
 }
 
 //Normalizes a vector
