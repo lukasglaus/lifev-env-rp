@@ -27,7 +27,7 @@ public:
     vectorPtr_Type m_p2currentPositionVector;
     Real m_maxDisplacement;
     Vector3D normal_vector;
-    double angleOfTime
+    double angleOfTime;
     Vector3D starting_point;
     Vector3D direction_to_axis; //2020.02.10 lg
     Vector3D axis_direction; //2020.02.10 lg
