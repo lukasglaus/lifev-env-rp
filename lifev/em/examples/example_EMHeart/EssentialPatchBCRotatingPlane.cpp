@@ -88,7 +88,7 @@ void setup(const GetPot& dataFile, const std::string& name,EMSolver<RegionMesh<L
     normal_vector=createNormalVector (direction_to_axis,axis_direction,angleOfTime);
     
     //if ( solver.comm()->MyPID() == 0 ) std::cout<<"setup completed";
-    std::cout<<"setup completed"
+    std::cout<<"setup completed";
 }
 
 //Normalizes a vector
