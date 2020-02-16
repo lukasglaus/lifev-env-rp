@@ -27,6 +27,7 @@ public:
     vectorPtr_Type m_p2currentPositionVector;
     Real m_maxDisplacement;
     Vector3D normal_vector;
+    double angleOfTime
     Vector3D starting_point;
     Vector3D direction_to_axis; //2020.02.10 lg
     Vector3D axis_direction; //2020.02.10 lg
@@ -87,6 +88,7 @@ void setup(const GetPot& dataFile, const std::string& name)
     //std::cout<<"\nsetup:initial m_tduration = "<<m_tduration<<endl;
     
     //initial normal vector for applyPatchBC
+    angleOfTime=calculate_angleOfTime(0.0);
     normal_vector=createNormalVector (0.0);
     
     //if ( solver.comm()->MyPID() == 0 ) std::cout<<"setup completed";
@@ -147,11 +149,12 @@ Real calculate_angleOfTime (Real time)
         std::cout<<"\n// displayImportantVariables";
         std::cout<<"\n//============================================";
         std::cout<<"\nTime= "<< time<<endl;
-        std::cout<<"\nsetup:starting_point = ("<<starting_point[0]<<","<<starting_point[1]<<","<<starting_point[2]<<")"<<endl;
+        std::cout<<"\nstarting_point = ("<<starting_point[0]<<","<<starting_point[1]<<","<<starting_point[2]<<")"<<endl;
         std::cout<<"\nsetup:normal_vector = ("<<normal_vector[0]<<","<<normal_vector[1]<<","<<normal_vector[2]<<")"<<endl;
-        std::cout<<"\nsetup:initial maximum_angle = "<<maximum_angle*180/PI<<"° degree"<<endl;
-        std::cout<<"seteup:initial minimum_angle = "<<minimum_angle*180/PI<<"° degree"<<endl;
-        std::cout<<"\nsetup:initial m_tduration = "<<m_tduration<<endl;
+        std::cout<<"\nangleOfTime= "<< angleOfTime<<endl;
+        std::cout<<"\ninitial maximum_angle = "<<maximum_angle*180/PI<<" degree"<<endl;
+        std::cout<<"\ninitial minimum_angle = "<<minimum_angle*180/PI<<" degree"<<endl;
+        std::cout<<"\ninitial m_tduration = "<<m_tduration<<endl;
     }
 
 //cos in degree or radian?
@@ -195,10 +198,15 @@ Vector3D rotateVectorAroundAxis (const Vector3D direction_to_axis,const Vector3D
     double angleOfTime = calculate_angleOfTime(time);
     Vector3D axis_perp_t = rotateVectorAroundAxis(direction_to_axis,axis_direction,angleOfTime);
     Vector3D normalToPlane;
+    
+    normalToPlane=axis_perp_t(axis_direction.cross);
+    
+    /*
     normalToPlane[0]=axis_direction[1]*axis_perp_t[2]-axis_direction[2]*axis_perp_t[1];
     normalToPlane[1]=axis_direction[2]*axis_perp_t[0]-axis_direction[0]*axis_perp_t[2];
     normalToPlane[2]=axis_direction[0]*axis_perp_t[1]-axis_direction[1]*axis_perp_t[0];
-    
+    */
+        
     normalToPlane=normalize_vector(normalToPlane)*rotation_direction;
                     
     return normalToPlane;
@@ -332,7 +340,7 @@ void modifyPatchArea(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<Region
 
 void modifyPatchBC(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver, const Real& time, int& PatchFlag)
 {
-    double angleOfTime=calculate_angleOfTime(time);
+    angleOfTime=calculate_angleOfTime(time);
     normal_vector=createNormalVector (time);
     m_patchDirection=normal_vector;
     
