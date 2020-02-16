@@ -322,6 +322,7 @@ void modifyPatchArea(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<Region
 
 void modifyPatchBC(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver, const Real& time, int& PatchFlag)
 {
+    double angleOfTime=calculate_angleOfTime(time);
     normal_vector=createNormalVector (time);
     m_patchDirection=normal_vector;
         
