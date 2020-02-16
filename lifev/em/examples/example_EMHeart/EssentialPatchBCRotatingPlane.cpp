@@ -66,31 +66,31 @@ void setup(const GetPot& dataFile, const std::string& name)
     axis_direction = normalize_vector(axis_direction);
     
     starting_point=calculate_pAxis(pointOnHeart,direction_to_axis,distance_to_axis);//starting_point already defined in EssentialPatchBC.hpp
-    std::cout<<"\nsetup:starting_point = ("<<starting_point[0]<<","<<starting_point[1]<<","<<starting_point[2]<<")";
+    //std::cout<<"\nsetup:starting_point = ("<<starting_point[0]<<","<<starting_point[1]<<","<<starting_point[2]<<")"<<endl;
     
     //Import the initial opening angle of the patches
     maximum_angle = dataFile ( ("solid/boundary_conditions/" + m_Name + "/maximum_angle").c_str(), 1.0 );
     maximum_angle = (maximum_angle * PI)/180;
-    std::cout<<"setup:initial maximum_angle = "<<maximum_angle*180/PI<<"° degree"<<endl;
+    //std::cout<<"\nsetup:initial maximum_angle = "<<maximum_angle*180/PI<<"° degree"<<endl;
     rotation_direction = dataFile ( ("solid/boundary_conditions/" + m_Name + "/rotation_direction").c_str(), 1.0 );
     
     //Import the final (=smallest) opening angle of the patches
     minimum_angle = dataFile ( ("solid/boundary_conditions/" + m_Name + "/minimum_angle").c_str(), 1.0 );
     minimum_angle = (minimum_angle * 3.141)/180;
-    std::cout<<"seteup:initial minimum_angle = "<<minimum_angle*180/PI<<"° degree"<<endl;
+    //std::cout<<"seteup:initial minimum_angle = "<<minimum_angle*180/PI<<"° degree"<<endl;
     //In order to have no translation of the patches
     m_maxDisplacement=0;
     
     // Temporal activation parameter
     m_tmax = dataFile ( "solid/patches/tmax", 0. );
     m_tduration = dataFile ( "solid/patches/tduration", 0. );
-    std::cout<<"\nsetup:initial m_tduration = "<<m_tduration<<endl;
+    //std::cout<<"\nsetup:initial m_tduration = "<<m_tduration<<endl;
     
     //initial normal vector for applyPatchBC
     normal_vector=createNormalVector (0.0);
     
     //if ( solver.comm()->MyPID() == 0 ) std::cout<<"setup completed";
-    std::cout<<"\nssetup:etup completed"<<endl;
+    //std::cout<<"\nsetup:setup completed"<<endl;
 }
 
 //Normalizes a vector
@@ -137,11 +137,19 @@ Real calculate_angleOfTime (Real time)
             {
                 angle=minimum_angle/2 + (maximum_angle/2 - minimum_angle/2)*(std::fmod(time,(m_tduration/2)))/(m_tduration/2);
             }
-        std::cout << "\nangle= " <<angle<<endl;
+        std::cout << "\nangle= " <<angle*180/PI<<"°"<<endl;
         angle=angle*rotation_direction;
-        std::cout << "\nangle after multiplication with rotation_direction= " <<angle<<endl;
+        std::cout << "\nangle after multiplication with rotation_direction= " <<angle*180/PI<<"°"<<endl;
         
         return angle;
+    }
+    
+    void displayImportantVariables (){
+        
+        std::cout<<"\nsetup:starting_point = ("<<starting_point[0]<<","<<starting_point[1]<<","<<starting_point[2]<<")"<<endl;
+        std::cout<<"\nsetup:initial maximum_angle = "<<maximum_angle*180/PI<<"° degree"<<endl;
+        std::cout<<"seteup:initial minimum_angle = "<<minimum_angle*180/PI<<"° degree"<<endl;
+        std::cout<<"\nsetup:initial m_tduration = "<<m_tduration<<endl;
     }
 
 //cos in degree or radian?
