@@ -646,6 +646,7 @@ int main (int argc, char** argv)
     // Simple_run
     //============================================
     const bool simple_run = dataFile ( "solid/simple_run/simple_run", false );
+    if ( 0 == comm->MyPID() ){std::cout<<"simple_run = "<<simple_run;}
     
     if (simple_run==true)
     {
