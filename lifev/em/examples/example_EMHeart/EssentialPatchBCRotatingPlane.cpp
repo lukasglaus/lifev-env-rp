@@ -37,7 +37,6 @@ public:
     Real m_tduration;
     Real m_tmax;
     int rotation_direction;
-    Real angleOfTime;
     
 void setup(const GetPot& dataFile, const std::string& name)
 {
@@ -67,31 +66,31 @@ void setup(const GetPot& dataFile, const std::string& name)
     axis_direction = normalize_vector(axis_direction);
     
     starting_point=calculate_pAxis(pointOnHeart,direction_to_axis,distance_to_axis);//starting_point already defined in EssentialPatchBC.hpp
-    std::cout<<"starting_point in setup = ("<<starting_point[0]<<","<<starting_point[1]<<","<<starting_point[2]<<")";
+    std::cout<<"\nsetup:starting_point = ("<<starting_point[0]<<","<<starting_point[1]<<","<<starting_point[2]<<")";
     
     //Import the initial opening angle of the patches
     maximum_angle = dataFile ( ("solid/boundary_conditions/" + m_Name + "/maximum_angle").c_str(), 1.0 );
     maximum_angle = (maximum_angle * PI)/180;
-    std::cout<<"initial maximum_angle = "<<maximum_angle*180/PI<<"° degree"<<endl;
+    std::cout<<"setup:initial maximum_angle = "<<maximum_angle*180/PI<<"° degree"<<endl;
     rotation_direction = dataFile ( ("solid/boundary_conditions/" + m_Name + "/rotation_direction").c_str(), 1.0 );
     
     //Import the final (=smallest) opening angle of the patches
     minimum_angle = dataFile ( ("solid/boundary_conditions/" + m_Name + "/minimum_angle").c_str(), 1.0 );
     minimum_angle = (minimum_angle * 3.141)/180;
-    std::cout<<"initial minimum_angle = "<<minimum_angle*180/PI<<"° degree"<<endl;
+    std::cout<<"seteup:initial minimum_angle = "<<minimum_angle*180/PI<<"° degree"<<endl;
     //In order to have no translation of the patches
     m_maxDisplacement=0;
     
     // Temporal activation parameter
     m_tmax = dataFile ( "solid/patches/tmax", 0. );
     m_tduration = dataFile ( "solid/patches/tduration", 0. );
-    std::cout<<"initial m_tduration = "<<m_tduration;
+    std::cout<<"\nsetup:initial m_tduration = "<<m_tduration<<endl;
     
     //initial normal vector for applyPatchBC
     normal_vector=createNormalVector (0.0);
     
     //if ( solver.comm()->MyPID() == 0 ) std::cout<<"setup completed";
-    std::cout<<"\nsetup completed"<<endl;
+    std::cout<<"\nssetup:etup completed"<<endl;
 }
 
 //Normalizes a vector
@@ -123,6 +122,7 @@ Vector3D calculate_pAxis (const Vector3D pointOnHeart,const Vector3D direction_t
 //Calculate the opening angle(Degree) in function of time
 Real calculate_angleOfTime (Real time)
     {
+        double angle;
         std::cout<<"\ntime= "<<time;
         std::cout<<"\nmaximum_angle= "<<maximum_angle;
         std::cout<<"\nminimum_angle= "<<minimum_angle;
@@ -130,20 +130,18 @@ Real calculate_angleOfTime (Real time)
         
         if (std::fmod(time,m_tduration)/m_tduration < 0.5)
             {
-                angleOfTime=maximum_angle/2 - (maximum_angle/2 - minimum_angle/2)*(std::fmod(time,(m_tduration/2)))/(m_tduration/2);
+                angle=maximum_angle/2 - (maximum_angle/2 - minimum_angle/2)*(std::fmod(time,(m_tduration/2)))/(m_tduration/2);
                
             }
             else
             {
-                angleOfTime=minimum_angle/2 + (maximum_angle/2 - minimum_angle/2)*(std::fmod(time,(m_tduration/2)))/(m_tduration/2);
+                angle=minimum_angle/2 + (maximum_angle/2 - minimum_angle/2)*(std::fmod(time,(m_tduration/2)))/(m_tduration/2);
             }
-        std::cout << "\nangleOfTime " <<angleOfTime;
-        angleOfTime=angleOfTime*rotation_direction;
-        //if ( solver.comm()->MyPID() == 0 ) std::cout << "\nangleOfTime " <<angleOfTime;
-        angleOfTime=angleOfTime*rotation_direction;
-        //if ( solver.comm()->MyPID() == 0 ) std::cout << "\nangleOfTime after multiplication with rotation_direction " <<angleOfTime;
-        std::cout << "\nangleOfTime after multiplication with rotation_direction " <<angleOfTime;
-        return angleOfTime;
+        std::cout << "\nangle= " <<angle<<endl;
+        angle=angle*rotation_direction;
+        std::cout << "\nangle after multiplication with rotation_direction= " <<angle<<endl;
+        
+        return angle;
     }
 
 //cos in degree or radian?
