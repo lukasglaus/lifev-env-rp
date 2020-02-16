@@ -92,7 +92,7 @@ void setup(const GetPot& dataFile, const std::string& name)
     //if ( solver.comm()->MyPID() == 0 ) std::cout<<"setup completed";
     //std::cout<<"\nsetup:setup completed"<<endl;
     
-    displayImportantVariables(time);
+    displayImportantVariables(0);
 }
 
 //Normalizes a vector
@@ -337,7 +337,7 @@ void modifyPatchBC(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMe
     m_patchDirection=normal_vector;
     
     if ( solver.comm()->MyPID() == 0 )std::cout<<"in modifyPatchBC:";
-    if ( solver.comm()->MyPID() == 0 )displayImportantVariables();
+    if ( solver.comm()->MyPID() == 0 )displayImportantVariables(time);
     
     //std::cout << "This is value of time variable: "<< time << std::endl;
     //int adder = 12;
