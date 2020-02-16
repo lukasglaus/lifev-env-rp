@@ -92,7 +92,7 @@ void setup(const GetPot& dataFile, const std::string& name)
     //if ( solver.comm()->MyPID() == 0 ) std::cout<<"setup completed";
     //std::cout<<"\nsetup:setup completed"<<endl;
     
-    displayImportantVariables();
+    displayImportantVariables(time);
 }
 
 //Normalizes a vector
@@ -125,10 +125,6 @@ Vector3D calculate_pAxis (const Vector3D pointOnHeart,const Vector3D direction_t
 Real calculate_angleOfTime (Real time)
     {
         double angle;
-        std::cout<<"\ntime= "<<time;
-        std::cout<<"\nmaximum_angle= "<<maximum_angle;
-        std::cout<<"\nminimum_angle= "<<minimum_angle;
-        std::cout<<"\nm_tduration= "<<m_tduration;
         
         if (std::fmod(time,m_tduration)/m_tduration < 0.5)
             {
@@ -139,16 +135,20 @@ Real calculate_angleOfTime (Real time)
             {
                 angle=minimum_angle/2 + (maximum_angle/2 - minimum_angle/2)*(std::fmod(time,(m_tduration/2)))/(m_tduration/2);
             }
-        std::cout << "\nangle= " <<angle*180/PI<<"°"<<endl;
+        //std::cout << "\nangle= " <<angle*180/PI<<"degree"<<endl;
         angle=angle*rotation_direction;
-        std::cout << "\nangle after multiplication with rotation_direction= " <<angle*180/PI<<"°"<<endl;
+        //std::cout << "\nangle after multiplication with rotation_direction= " <<angle*180/PI<<"degree"<<endl;
         
         return angle;
     }
     
-    void displayImportantVariables (){
-        
+    void displayImportantVariables (Real time){
+        std::cout<<"\n//============================================";
+        std::cout<<"\n// displayImportantVariables";
+        std::cout<<"\n//============================================";
+        std::cout<<"\nTime= "<< time<<endl;
         std::cout<<"\nsetup:starting_point = ("<<starting_point[0]<<","<<starting_point[1]<<","<<starting_point[2]<<")"<<endl;
+        std::cout<<"\nsetup:normal_vector = ("<<normal_vector[0]<<","<<normal_vector[1]<<","<<normal_vector[2]<<")"<<endl;
         std::cout<<"\nsetup:initial maximum_angle = "<<maximum_angle*180/PI<<"° degree"<<endl;
         std::cout<<"seteup:initial minimum_angle = "<<minimum_angle*180/PI<<"° degree"<<endl;
         std::cout<<"\nsetup:initial m_tduration = "<<m_tduration<<endl;
@@ -335,7 +335,10 @@ void modifyPatchBC(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMe
     double angleOfTime=calculate_angleOfTime(time);
     normal_vector=createNormalVector (time);
     m_patchDirection=normal_vector;
-        
+    
+    if ( solver.comm()->MyPID() == 0 )std::cout<<"in modifyPatchBC:";
+    if ( solver.comm()->MyPID() == 0 )displayImportantVariables();
+    
     //std::cout << "This is value of time variable: "<< time << std::endl;
     //int adder = 12;
         //const int constantPatchFlag = PatchFlag;
