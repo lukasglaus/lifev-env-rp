@@ -6,6 +6,9 @@
  *      Author: lglaus
  */
 
+#ifndef EssentialPatchBCRotatingPlane_hpp
+#define EssentialPatchBCRotatingPlane_hpp
+
 //#include "EssentialPatchBCRotatingPlane.h"
 #include <stdio.h>
 #include <lifev/em/examples/example_EMHeart/EssentialPatchBC.hpp>
@@ -64,17 +67,18 @@ void setup(const GetPot& dataFile, const std::string& name)
     axis_direction = normalize_vector(axis_direction);
     
     starting_point=calculate_pAxis(pointOnHeart,direction_to_axis,distance_to_axis);//starting_point already defined in EssentialPatchBC.hpp
+    std::cout<<"starting_point in setup = ("<<starting_point[0]<<","<<starting_point[1]<<","<<starting_point[2]<<")";
     
     //Import the initial opening angle of the patches
     maximum_angle = dataFile ( ("solid/boundary_conditions/" + m_Name + "/maximum_angle").c_str(), 1.0 );
-    //maximum_angle = (maximum_angle * 3.141)/180;
-    std::cout<<"initial maximum_angle = "<<maximum_angle;
+    maximum_angle = (maximum_angle * PI)/180;
+    std::cout<<"initial maximum_angle = "<<maximum_angle*180/PI<<"° degree"<<endl;
     rotation_direction = dataFile ( ("solid/boundary_conditions/" + m_Name + "/rotation_direction").c_str(), 1.0 );
     
     //Import the final (=smallest) opening angle of the patches
     minimum_angle = dataFile ( ("solid/boundary_conditions/" + m_Name + "/minimum_angle").c_str(), 1.0 );
-    //minimum_angle = (minimum_angle * 3.141)/180;
-    std::cout<<"initial minimum_angle = "<<minimum_angle;
+    minimum_angle = (minimum_angle * 3.141)/180;
+    std::cout<<"initial minimum_angle = "<<minimum_angle*180/PI<<"° degree"<<endl;
     //In order to have no translation of the patches
     m_maxDisplacement=0;
     
@@ -84,11 +88,10 @@ void setup(const GetPot& dataFile, const std::string& name)
     std::cout<<"initial m_tduration = "<<m_tduration;
     
     //initial normal vector for applyPatchBC
-    angleOfTime=calculate_angleOfTime (0.0);
-    normal_vector=createNormalVector (direction_to_axis,axis_direction,angleOfTime);
+    normal_vector=createNormalVector (0.0);
     
     //if ( solver.comm()->MyPID() == 0 ) std::cout<<"setup completed";
-    std::cout<<"setup completed";
+    std::cout<<"\nsetup completed"<<endl;
 }
 
 //Normalizes a vector
@@ -178,8 +181,10 @@ Vector3D rotateVectorAroundAxis (const Vector3D direction_to_axis,const Vector3D
     }
  
  //Cross product between two vectors creates a vector normal to them: c = a x b
- Vector3D createNormalVector (const Vector3D direction_to_axis,const Vector3D axis_direction, Real angleOfTime)
+ Vector3D createNormalVector (Real time)
     {
+        
+    double angleOfTime = calculate_angleOfTime(time);
     Vector3D axis_perp_t = rotateVectorAroundAxis(direction_to_axis,axis_direction,angleOfTime);
     Vector3D normalToPlane;
     normalToPlane[0]=axis_direction[1]*axis_perp_t[2]-axis_direction[2]*axis_perp_t[1];
@@ -319,9 +324,7 @@ void modifyPatchArea(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<Region
 
 void modifyPatchBC(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver, const Real& time, int& PatchFlag)
 {
-
-    Real angleOfTime=calculate_angleOfTime(time);
-    normal_vector=createNormalVector (direction_to_axis,axis_direction,angleOfTime);
+    normal_vector=createNormalVector (time);
     m_patchDirection=normal_vector;
         
     //std::cout << "This is value of time variable: "<< time << std::endl;
@@ -916,3 +919,4 @@ vectorPtr_Type EssentialPatchBCMovingPlane::directionalVectorField(const boost::
 REGISTER(EssentialPatchBC, EssentialPatchBCRotatingPlane);
 
 }
+#endif /* EssentialPatchBCRotatingPlane_hpp */

@@ -1540,7 +1540,7 @@ protected:
     	*m_directionVecFieldPtr *=0.0;
         for (auto& patch : m_patchBCPtrVec)//neu trial lg 05.02.2020
         {//neu trial lg 05.02.2020
-                            *m_directionVecFieldPtr += m_patchBCPtrVec[0]->displayDirectionalVectorField(solver, time);
+                            *m_directionVecFieldPtr += patch->displayDirectionalVectorField(solver, time);
         }//neu trial lg 05.02.2020
     }
 
