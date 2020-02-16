@@ -137,9 +137,9 @@ double calculate_angleOfTime (Real time)
             {
                 angle=minimum_angle/2 + (maximum_angle/2 - minimum_angle/2)*(std::fmod(time,(m_tduration/2)))/(m_tduration/2);
             }
-        //std::cout << "\nangle= " <<angle*180/PI<<"degree"<<endl;
+        std::cout << "\nangle= " <<angle*180/PI<<"degree"<<endl;
         angle=angle*rotation_direction;
-        //std::cout << "\nangle after multiplication with rotation_direction= " <<angle*180/PI<<"degree"<<endl;
+        std::cout << "\nangle after multiplication with rotation_direction= " <<angle*180/PI<<"degree"<<endl;
         
         return angle;
     }
@@ -148,13 +148,13 @@ double calculate_angleOfTime (Real time)
         std::cout<<"\n//============================================";
         std::cout<<"\n// displayImportantVariables";
         std::cout<<"\n//============================================";
-        std::cout<<"\nTime= "<< time<<endl;
-        std::cout<<"\nstarting_point = ("<<starting_point[0]<<","<<starting_point[1]<<","<<starting_point[2]<<")"<<endl;
-        std::cout<<"\nsetup:normal_vector = ("<<normal_vector[0]<<","<<normal_vector[1]<<","<<normal_vector[2]<<")"<<endl;
-        std::cout<<"\nangleOfTime= "<< angleOfTime*180/PI<<" degree"<<endl;
-        std::cout<<"\ninitial maximum_angle = "<<maximum_angle*180/PI<<" degree"<<endl;
-        std::cout<<"\ninitial minimum_angle = "<<minimum_angle*180/PI<<" degree"<<endl;
-        std::cout<<"\ninitial m_tduration = "<<m_tduration<<endl;
+        std::cout<<"\nTime= "<< time;
+        std::cout<<"\nstarting_point = ("<<starting_point[0]<<","<<starting_point[1]<<","<<starting_point[2]<<")";
+        std::cout<<"\nsetup:normal_vector = ("<<normal_vector[0]<<","<<normal_vector[1]<<","<<normal_vector[2]<<")";
+        std::cout<<"\nangleOfTime= "<< angleOfTime*180/PI<<" degree";
+        std::cout<<"\ninitial maximum_angle = "<<maximum_angle*180/PI<<" degree";
+        std::cout<<"\ninitial minimum_angle = "<<minimum_angle*180/PI<<" degree";
+        std::cout<<"\ninitial m_tduration = "<<m_tduration<<;
     }
 
 //cos in degree or radian?
@@ -188,6 +188,7 @@ Vector3D rotateVectorAroundAxis (double angleOfTime)
         
     rotatedVector[2]= -1 * (product7 + product8 + product9);
     
+    std::cout<<"rotatedVector= ("<<rotatedVector[0]<<","<<rotatedVector[1]<<","<<rotatedVector[2]<<")";
     return rotatedVector;
     }
  
@@ -195,8 +196,8 @@ Vector3D rotateVectorAroundAxis (double angleOfTime)
  Vector3D createNormalVector (Real time)
     {
         
-    double angleOfTime = calculate_angleOfTime(time);
-    Vector3D axis_perp_t = rotateVectorAroundAxis(angleOfTime);
+    double angle = calculate_angleOfTime(time);
+    Vector3D axis_perp_t = rotateVectorAroundAxis(angle);
     Vector3D normalToPlane;
     
     normalToPlane=axis_perp_t.cross(axis_direction);
@@ -207,7 +208,7 @@ Vector3D rotateVectorAroundAxis (double angleOfTime)
     normalToPlane[2]=axis_direction[0]*axis_perp_t[1]-axis_direction[1]*axis_perp_t[0];
     */
         
-    normalToPlane=normalize_vector(normalToPlane)*rotation_direction;
+    normalToPlane=(normalToPlane.normalize())*rotation_direction;
                     
     return normalToPlane;
     }
@@ -344,7 +345,7 @@ void modifyPatchBC(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMe
     normal_vector=createNormalVector (time);
     m_patchDirection=normal_vector;
     
-    if ( solver.comm()->MyPID() == 0 )std::cout<<"in modifyPatchBC:";
+    if ( solver.comm()->MyPID() == 0 )std::cout<<"\nin modifyPatchBC:";
     if ( solver.comm()->MyPID() == 0 )displayImportantVariables(time);
     
     //std::cout << "This is value of time variable: "<< time << std::endl;
@@ -637,6 +638,8 @@ vector_Type displayDirectionalVectorField(EMSolver<RegionMesh<LinearTetra>, EMMo
     //normalVector[0] = 0.665647;
     //normalVector[1] = 0.695607;
     //normalVector[2] = -0.270367;
+    
+    if ( solver.comm()->MyPID() == 0 ){std::cout<<"\nangleOfTime in displayDirectionalVectorfield= "<<angleOfTime;}
     
     Vector3D direction = normalVector; // 2020.02.08 lg
     direction.normalize(); // 2020.02.08 lg
