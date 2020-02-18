@@ -90,6 +90,7 @@ void setup(const GetPot& dataFile, const std::string& name)
     //initial normal vector for applyPatchBC
     angleOfTime=calculate_angleOfTime(0.0);
     normal_vector=createNormalVector (0.0);
+    m_patchDirection=normal_vector;
     
     //if ( solver.comm()->MyPID() == 0 ) std::cout<<"setup completed";
     //std::cout<<"\nsetup:setup completed"<<endl;
@@ -128,6 +129,29 @@ double calculate_angleOfTime (Real time)
     {
         double angle;
         
+        if (std::fmod(time,800.)/m_tduration < 0.5)
+            {
+                angle=maximum_angle/2 - (maximum_angle/2 - minimum_angle/2)*(std::fmod(time,800.)/(m_tduration/2));
+            }
+        if (std::fmod(time,800.)/m_tduration >= 0.5 && std::fmod(time,800.)/m_tduration<1)
+            {
+                angle=minimum_angle/2 + (maximum_angle/2 - minimum_angle/2)*(std::fmod(time,800.)-(m_tduration/2))/(m_tduration/2);
+            }
+        else angle=0;
+                
+        std::cout << "\nangle= " <<angle*180/PI<<"degree"<<endl;
+        angle=angle*rotation_direction;
+        std::cout << "\nangle after multiplication with rotation_direction= " <<angle*180/PI<<"degree"<<endl;
+        
+        return angle;
+    }
+    
+/* old
+//Calculate the opening angle(Degree) in function of time
+double calculate_angleOfTime (Real time)
+    {
+        double angle;
+        
         if (std::fmod(time,m_tduration)/m_tduration < 0.5)
             {
                 angle=maximum_angle/2 - (maximum_angle/2 - minimum_angle/2)*(std::fmod(time,(m_tduration/2)))/(m_tduration/2);
@@ -143,6 +167,8 @@ double calculate_angleOfTime (Real time)
         
         return angle;
     }
+*/
+    
     
     void displayImportantVariables (Real time){
         std::cout<<"\n//============================================";
