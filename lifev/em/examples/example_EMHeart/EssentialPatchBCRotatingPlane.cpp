@@ -138,8 +138,10 @@ double calculate_angleOfTime (Real time)
             {
                 angle=minimum_angle/2 + (maximum_angle/2 - minimum_angle/2)*(std::fmod(time,800.)-(m_tduration/2))/(m_tduration/2);
             }
-        else angle=0;
-                
+        if (std::fmod(time,800.)/m_tduration >= 1)
+            {
+                angle=maximum_angle/2;
+            }
         //std::cout << "\nangle= " <<angle*180/PI<<"degree"<<endl;
         angle=angle*rotation_direction;
         //std::cout << "\nangle after multiplication with rotation_direction= " <<angle*180/PI<<"degree"<<endl;

@@ -511,7 +511,7 @@ int main (int argc, char** argv)
 
             if ( 0 == comm->MyPID() )
             {
-                //std::cout << "\n*****************************************************************";
+                std::cout << "\n*****************************************************************";
                 std::cout << "  Restart data at TIME = " << t_ << " imported after " << chronoRestart.diff() << " s";
                 std::cout << "\n\n*****************************************************************\n";
             }
@@ -697,7 +697,7 @@ int main (int argc, char** argv)
         for (int k (0); k <= simple_iterations-1; k++) // here begins the time looping
         {
             
-            pseudotime=(m_tduration/2)*(k/simple_iterations);
+            pseudotime=(m_tduration)*(k/simple_iterations);
             if ( 0 == comm->MyPID() )
                 {
                     std::cout << "\n*****************************************************************";
@@ -722,8 +722,8 @@ int main (int argc, char** argv)
                 {
                     std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
                     std::cout << "\nLoad step at simple_iteration = " << k<<" / "<<simple_iterations;
-                    std::cout << "\nLin. LV-Pressure " <<  bcValues[0];
-                    std::cout << "\nLin. RV-Pressure " <<  bcValues[1];
+                    std::cout << "\nLV-Pressure " <<  bcValues[0];
+                    std::cout << "\nRV-Pressure " <<  bcValues[1];
                     std::cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n";
                 }
 
