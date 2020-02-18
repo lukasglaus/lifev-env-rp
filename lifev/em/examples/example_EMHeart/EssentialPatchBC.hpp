@@ -93,52 +93,50 @@ public:
 
     	 for (int j(0); j < mesh->numBoundaryFacets(); j++) //returns number of boundary facets
     	 {
-    	       auto& face = mesh->boundaryFacet(j);
-    	       auto faceFlag = face.markerID();
+           auto& face = mesh->boundaryFacet(j);
+           auto faceFlag = face.markerID();
 		
-		//std::cout << "This is faceFlag in createPatchArea before changing: " << faceFlag << std::endl;
-		//std::cout << "This is value of m_PrevFlag (should be 464): " << m_PrevFlag << std::endl;
+            //std::cout << "This is faceFlag in createPatchArea before changing: " << faceFlag << std::endl;
+            //std::cout << "This is value of m_PrevFlag (should be 464): " << m_PrevFlag << std::endl;
 
 
-    	       if (faceFlag == m_PrevFlag)
+            if (faceFlag == m_PrevFlag)
     	       {
     	            int numPointsOnFace(0);
 
     	            for (int k(0); k < 3; ++k)
-    	            {
+                        {
 
-    	               	ID pointGlobalId = face.point(k).id();
-    	               	auto coord = face.point(k).coordinates();
-    	              // 	auto pointInPatch = nodeOnPatch
+                            ID pointGlobalId = face.point(k).id();
+                            auto coord = face.point(k).coordinates();
+                            // 	auto pointInPatch = nodeOnPatch
 
-    	               	auto pointInPatch = nodeOnPatchCurrent(coord, time);
+                            auto pointInPatch = nodeOnPatchCurrent(coord, time);
 
-    	               	if(pointInPatch == true)
-    	                {
-    	               		++numPointsOnFace;
-    	                  	for(int n = 0; n < p1ScalarFieldFacesDof; n++)
-    	                  	{
-    	                  		if(pointGlobalId == globalIdArray[n])
-    	                  		{
-    		                  		p1ScalarFieldFaces[pointGlobalId] = 1.0;
-	
-    	                  		}
-    	                  	}
-    	               	}
+                            if(pointInPatch == true)
+                                {
+                                    ++numPointsOnFace;
+                                    for(int n = 0; n < p1ScalarFieldFacesDof; n++)
+                                        {
+                                            if(pointGlobalId == globalIdArray[n])
+                                                {
+                                                    p1ScalarFieldFaces[pointGlobalId] = 1.0;
+                    
+                                                }
+                                        }
+                                }
 
-    	              }
+                        }
 
+                   //if (numPointsOnFace > 2) // if there are more than two points on face we execute the if statement; not completly sure here
 
-    	 //if (numPointsOnFace > 2) // if there are more than two points on face we execute the if statement; not completly sure here
-
-    	 	      if(numPointsOnFace >= 1)
-    	          {
-    	                     face.setMarkerID(m_patchFlag);
-				auto faceFlagChanged = face.markerID();
-				//std::cout << "This is changed faceFlag in createPatchArea: " << faceFlagChanged << std::endl;
-
-    	          }
-    	  }
+                    if(numPointsOnFace >= 1)
+                      {
+                          face.setMarkerID(m_patchFlag);
+                          auto faceFlagChanged = face.markerID();
+                          //std::cout << "This is changed faceFlag in createPatchArea: " << faceFlagChanged << std::endl;
+                      }
+               }
     	 }
 
     	 m_patchFacesLocationPtr.reset(new vector_Type (p2FeSpace->map() ));

@@ -38,6 +38,7 @@ public:
     Real m_tduration;
     Real m_tmax;
     int rotation_direction;
+    unsigned int nodeOnPatchCounter;
     
 void setup(const GetPot& dataFile, const std::string& name)
 {
@@ -146,7 +147,7 @@ double calculate_angleOfTime (Real time)
         return angle;
     }
     
-/* old
+/* old: out of duty since 18.02.2020
 //Calculate the opening angle(Degree) in function of time
 double calculate_angleOfTime (Real time)
     {
@@ -270,7 +271,7 @@ const bool nodeOnPatchCurrent(const Vector3D& coord, const Real& time)
     bool nodeInArea = 0;
 
     //as shift we had + 0.35
-        if((normal_vector[0]*coord[0] + normal_vector[1]*coord[1] + normal_vector[2]*coord[2] - normal_vector[0]*starting_point[0]- normal_vector[1]*starting_point[1]-normal_vector[2]*starting_point[2] - activationFunction(time)) <= 0)
+        if((normal_vector[0]*coord[0] + normal_vector[1]*coord[1] + normal_vector[2]*coord[2] - normal_vector[0]*starting_point[0]- normal_vector[1]*starting_point[1]-normal_vector[2]*starting_point[2]) <= 0)
         {
             nodeInArea = true;
         }
@@ -315,39 +316,39 @@ void modifyPatchArea(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<Region
             //getPatchRegion(solver, m_patchFlag, time);
 
                 // Create patches by changing the markerID (flag) locally
-                unsigned int numNodesOnPatch(0); //here we just initalise an unsigned integer variable
+                nodeOnPatchCounter=0; //here we just initalise an unsigned integer variable
+                
                 for (int j(0); j < mesh->numBoundaryFacets(); j++) //returns number of boundary facets
                         {
-                             auto& face = mesh->boundaryFacet(j);
-                             auto faceFlag = face.markerID();
-                             //std::cout << "This is face marker ID: " << face.markerID() << std::endl;
-                          //if (faceFlag == m_PrevFlag)
-                          //{
-                             int numPointsOnFace(0);
+                            auto& face = mesh->boundaryFacet(j);
+                            auto faceFlag = face.markerID();
+                            //std::cout << "This is face marker ID: " << face.markerID() << std::endl;
+                            //if (faceFlag == m_PrevFlag)
+                            //{
+                            int numPointsOnFace(0);
 
-                             for (int k(0); k < 3; ++k) //k < 3 was before; this is just a test
-                             {
-                                        //auto coord = face.point(k).coordinates();
+                            for (int k(0); k < 3; ++k) //k < 3 was before; this is just a test
+                                 {
+                                     //auto coord = face.point(k).coordinates();
                                      ID pointGlobalId = face.point(k).id();
                                      auto coord = face.point(k).coordinates();
                                      auto pointInPatch = nodeOnPatchCurrent(coord, time);
 
                                      if(pointInPatch == true)
-                                     {
-                                         ++numPointsOnFace;
-                                         for(int n = 0; n < p1ScalarFieldFacesDof; n++)
                                          {
-                                             if(pointGlobalId == globalIdArray[n])
-                                             {
-                                             //++numPointsOnFace;
-                                             p1ScalarFieldFaces[pointGlobalId] = 1.0;
-
-                                             }
+                                             ++numPointsOnFace;
+                                             for(int n = 0; n < p1ScalarFieldFacesDof; n++)
+                                                 {
+                                                     if(pointGlobalId == globalIdArray[n])
+                                                         {
+                                                         //++numPointsOnFace;
+                                                         p1ScalarFieldFaces[pointGlobalId] = 1.0;
+                                                         }
+                                                 }
                                          }
-                                     }
 
-                             }
-                /*
+                                 }
+                
                              if (numPointsOnFace >= 1) // if there are more than two points on face we execute the if statement; not completly sure here
                              {
                                      //std::cout << "We are now changing the faceID" << std::endl;
@@ -355,13 +356,14 @@ void modifyPatchArea(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<Region
                                      face.setMarkerID(m_patchFlag);
                                      //std::cout << "This is the set face flag: " ;
                                      //face.Marker::showMe(std::cout);
-                                    numNodesOnPatch++;
+                                    nodeOnPatchCounter++;
                              }
-                */
+                
                            //}
                         }
 
-
+                if ( solver.comm()->MyPID() == 0 ) std::cout<<"\nOn patch "<<m_name<<" "<<nodeOnPatchCounter<<" nodes hat to be moved"
+        
                 m_patchFacesLocationPtr.reset (new vector_Type (p2FeSpace->map() ));
                 *m_patchFacesLocationPtr = p2FeSpace->feToFEInterpolate(p1FESpace, p1ScalarFieldFaces);
                 //*m_patchFacesLocationPtr = p1ScalarFieldFaces;
