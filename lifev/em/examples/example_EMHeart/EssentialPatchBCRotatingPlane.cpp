@@ -140,9 +140,9 @@ double calculate_angleOfTime (Real time)
             }
         else angle=0;
                 
-        std::cout << "\nangle= " <<angle*180/PI<<"degree"<<endl;
+        //std::cout << "\nangle= " <<angle*180/PI<<"degree"<<endl;
         angle=angle*rotation_direction;
-        std::cout << "\nangle after multiplication with rotation_direction= " <<angle*180/PI<<"degree"<<endl;
+        //std::cout << "\nangle after multiplication with rotation_direction= " <<angle*180/PI<<"degree"<<endl;
         
         return angle;
     }
@@ -215,7 +215,7 @@ Vector3D rotateVectorAroundAxis (double angleOfTime)
         
     rotatedVector[2]= -1 * (product7 + product8 + product9);
     
-    std::cout<<"rotatedVector= ("<<rotatedVector[0]<<","<<rotatedVector[1]<<","<<rotatedVector[2]<<")";
+    //std::cout<<"\nrotatedVector= ("<<rotatedVector[0]<<","<<rotatedVector[1]<<","<<rotatedVector[2]<<")";
     return rotatedVector;
     }
  
@@ -378,7 +378,7 @@ void modifyPatchBC(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMe
     normal_vector=createNormalVector (time);
     m_patchDirection=normal_vector;
     
-    if ( solver.comm()->MyPID() == 0 )std::cout<<"\nin modifyPatchBC:";
+    if ( solver.comm()->MyPID() == 0 )std::cout<<"\nin modifyPatchBC: "<<m_Name;
     if ( solver.comm()->MyPID() == 0 )displayImportantVariables(time);
     
     //std::cout << "This is value of time variable: "<< time << std::endl;
