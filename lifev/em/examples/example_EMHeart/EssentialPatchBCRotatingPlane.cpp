@@ -38,7 +38,8 @@ public:
     Real m_tduration;
     Real m_tmax;
     int rotation_direction;
-    unsigned int nodeOnPatchCounter;
+    unsigned int nodeOnPatchCounterone;
+    unsigned int nodeOnPatchCountertwo;
     
 void setup(const GetPot& dataFile, const std::string& name)
 {
@@ -318,8 +319,9 @@ void modifyPatchArea(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<Region
             //getPatchRegion(solver, m_patchFlag, time);
 
                 // Create patches by changing the markerID (flag) locally
-                nodeOnPatchCounter=0; //here we just initalise an unsigned integer variable
-                
+                nodeOnPatchCounterone=0; //here we just initalise an unsigned integer variable
+                nodeOnPatchCountertwo=0;
+    
                 for (int j(0); j < mesh->numBoundaryFacets(); j++) //returns number of boundary facets
                         {
                             auto& face = mesh->boundaryFacet(j);
@@ -338,6 +340,7 @@ void modifyPatchArea(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<Region
 
                                      if(pointInPatch == true)
                                          {
+                                             nodeOnPatchCounterone++;
                                              ++numPointsOnFace;
                                              for(int n = 0; n < p1ScalarFieldFacesDof; n++)
                                                  {
@@ -358,13 +361,13 @@ void modifyPatchArea(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<Region
                                      face.setMarkerID(m_patchFlag);
                                      //std::cout << "This is the set face flag: " ;
                                      //face.Marker::showMe(std::cout);
-                                    nodeOnPatchCounter++;
+                                    nodeOnPatchCountertwo++;
                              }
                 
                            //}
                         }
 
-                if ( solver.comm()->MyPID() == 0 ) std::cout<<"\nOn patch "<<m_Name<<" "<<nodeOnPatchCounter<<" nodes hat to be moved";
+                if ( solver.comm()->MyPID() == 0 ) std::cout<<"\nOn patch "<<m_Name<<" "<<nodeOnPatchCounterone<<" nodes had to be moved"<<nodeOnPatchCountertwo;
         
                 m_patchFacesLocationPtr.reset (new vector_Type (p2FeSpace->map() ));
                 *m_patchFacesLocationPtr = p2FeSpace->feToFEInterpolate(p1FESpace, p1ScalarFieldFaces);
@@ -415,7 +418,7 @@ void modifyPatchBC(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMe
         modifyPatchArea(solver, currentPatchFlag, time);
 
         Real currentPatchDisp = activationFunction(time);
-        if ( 0 == solver.comm()->MyPID() ) std::cout << "\nEssentialPatchBC: " << m_Name << " rotated to angle " << (angleOfTime*180)/PI << " degree of ["<<(minimum_angle*180)/(2*PI)<<","<<(maximum_angle*180)/(2*PI)<<"]";
+        if ( 0 == solver.comm()->MyPID() ) std::cout << "\nEssentialPatchBC: " << m_Name << " rotated to angle " << (angleOfTime*180)/PI << " degree of ["<<(minimum_angle*180*rotation_direction)/(2*PI)<<","<<(maximum_angle*180*rotation_direction)/(2*PI)<<"]";
 
         m_patchDispPtr = directionalVectorField(solver,dFeSpace, m_patchDirection, currentPatchDisp, time);
 
