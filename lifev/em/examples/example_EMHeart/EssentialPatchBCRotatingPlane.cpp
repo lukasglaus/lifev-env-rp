@@ -272,12 +272,7 @@ const bool nodeOnPatch(const Vector3D& coord, const Real& time)
 const bool nodeOnPatchCurrent(const Vector3D& coord, const Real& time)
 {
     bool nodeInArea = 0;
-    
-    std::cout<<"nodeOnPatchCurrent:normal_vector= ("<<normal_vector[0]<<","<<normal_vector[1]<<","<<normal_vector[2]<<")";
-    std::cout<<"nodeOnPatchCurrent:coord= ("<<coord[0]<<","<<coord[1]<<","<<coord[2]<<")";
-    std::cout<<"nodeOnPatchCurrent:starting_point= ("<<starting_point[0]<<","<<starting_point[1]<<","<<starting_point[2]<<")";
-    std::cout<<"nodeOnPatchCurrent:Skalarprodukt="<<(normal_vector[0]*coord[0] + normal_vector[1]*coord[1] + normal_vector[2]*coord[2] - normal_vector[0]*starting_point[0]- normal_vector[1]*starting_point[1]-normal_vector[2]*starting_point[2]);
-    
+
     //as shift we had + 0.35
         if((normal_vector[0]*coord[0] + normal_vector[1]*coord[1] + normal_vector[2]*coord[2] - normal_vector[0]*starting_point[0]- normal_vector[1]*starting_point[1]-normal_vector[2]*starting_point[2]) <= 0)
         {
@@ -293,6 +288,15 @@ const bool nodeOnPatchCurrent(const Vector3D& coord, const Real& time)
 
 }
 
+    void nodeOnPatchdisplayer(const Vector3D& coord, const Real& time)
+    {
+        
+        std::cout<<"\nnodeOnPatchCurrent:normal_vector= ("<<normal_vector[0]<<","<<normal_vector[1]<<","<<normal_vector[2]<<")";
+        std::cout<<"\nnodeOnPatchCurrent:coord= ("<<coord[0]<<","<<coord[1]<<","<<coord[2]<<")";
+        std::cout<<"\nnodeOnPatchCurrent:starting_point= ("<<starting_point[0]<<","<<starting_point[1]<<","<<starting_point[2]<<")";
+        std::cout<<"\nnodeOnPatchCurrent:Skalarprodukt="<<(normal_vector[0]*coord[0] + normal_vector[1]*coord[1] + normal_vector[2]*coord[2] - normal_vector[0]*starting_point[0]- normal_vector[1]*starting_point[1]-normal_vector[2]*starting_point[2]);
+        
+    }
 
 void modifyPatchArea(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver,const int& newFlag, const Real& time)
 {
@@ -342,7 +346,10 @@ void modifyPatchArea(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<Region
                                      ID pointGlobalId = face.point(k).id();
                                      auto coord = face.point(k).coordinates();
                                      auto pointInPatch = nodeOnPatchCurrent(coord, time);
-
+                                     
+                                     if ( solver.comm()->MyPID() == 0 ) std::cout<<"node number"<<mesh->numBoundaryFacets();
+                                     if ( solver.comm()->MyPID() == 0 ) nodeOnPatchdisplayer();
+                                     
                                      if(pointInPatch == true)
                                          {
                                              nodeOnPatchCounterone++;
