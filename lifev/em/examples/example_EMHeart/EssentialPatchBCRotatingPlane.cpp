@@ -27,7 +27,6 @@ public:
     vectorPtr_Type m_p2currentPositionVector;
     Real m_maxDisplacement;
     Vector3D normal_vector;
-    Vector3D axis_perp_t;
     double angleOfTime;
     Vector3D starting_point;
     Vector3D direction_to_axis; //2020.02.10 lg
@@ -128,7 +127,7 @@ Vector3D calculate_pAxis (const Vector3D pointOnHeart,const Vector3D direction_t
     }
 
 //Calculate the opening angle(Degree) in function of time
-void calculate_angleOfTime (Real time)
+double calculate_angleOfTime (Real time)
     {
         double angle;
         
@@ -148,7 +147,7 @@ void calculate_angleOfTime (Real time)
         angle=angle*rotation_direction;
         //std::cout << "\nangle after multiplication with rotation_direction= " <<angle*180/PI<<"degree"<<endl;
         
-        //return angle;
+        return angle;
     }
     
 /* old: out of duty since 18.02.2020
@@ -224,15 +223,16 @@ Vector3D rotateVectorAroundAxis (double angleOfTime)
     }
  
  //Cross product between two vectors creates a vector normal to them: c = a x b
- void Vector3D createNormalVector (Real time)
+ Vector3D createNormalVector (Real time)
     {
     //std::cout<<"\ncreateNormalVector: time= "<<time;
-    angleOfTime = calculate_angleOfTime(time);
+    double angle = calculate_angleOfTime(time);
     //std::cout<<"\ncreateNormalVector: angle= "<<angle*180/PI;
-    axis_perp_t = rotateVectorAroundAxis(angleOfTime);
+    Vector3D axis_perp_t = rotateVectorAroundAxis(angle);
     //std::cout<<"\ncreateNormalVector: axis_perp_t= ("<<axis_perp_t[0]<<","<<axis_perp_t[1]<<","<<axis_perp_t[2]<<")";
+    Vector3D normalToPlane;
     //std::cout<<"\ncreateNormalVector: axis_direction= ("<<axis_direction[0]<<","<<axis_direction[1]<<","<<axis_direction[2]<<")";
-    normal_vector=axis_perp_t.cross(axis_direction);
+    normalToPlane=axis_perp_t.cross(axis_direction);
     //std::cout<<"\ncreateNormalVector: axis_perp_t cross axis_direction=normalToPlane= ("<<normalToPlane[0]<<","<<normalToPlane[1]<<","<<normalToPlane[2]<<")";
     /*
     normalToPlane[0]=axis_direction[1]*axis_perp_t[2]-axis_direction[2]*axis_perp_t[1];
@@ -240,12 +240,12 @@ Vector3D rotateVectorAroundAxis (double angleOfTime)
     normalToPlane[2]=axis_direction[0]*axis_perp_t[1]-axis_direction[1]*axis_perp_t[0];
     */
         
-    normal_vector.normalize();
+    normalToPlane.normalize();
     //std::cout<<"createNormalVector: normalToPlane (normalized)= ("<<normalToPlane[0]<<","<<normalToPlane[1]<<","<<normalToPlane[2]<<")";
-    normal_vector=normal_vector*rotation_direction;
+    normalToPlane=normalToPlane*rotation_direction;
     //std::cout<<"createNormalVector: rotation_direction = "<<rotation_direction;
     //std::cout<<"createNormalVector: normalToPlane (normalized+multiplied with rotation_direction)= ("<<normalToPlane[0]<<","<<normalToPlane[1]<<","<<normalToPlane[2]<<")";
-    //return normal_vector;
+    return normalToPlane;
     }
                                                                                    
 //ggf hier eine Zeitabhängigkeit in normal_vector und starting_point einfügen, m_maxDisplacement ggf durch activationFunction(time)) ersetzen
@@ -395,10 +395,8 @@ void modifyPatchArea(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<Region
 
 void modifyPatchBC(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver, const Real& time, int& PatchFlag)
 {
-    calculate_angleOfTime(time);
-    createNormalVector (time);
-    //angleOfTime=calculate_angleOfTime(time);
-    //normal_vector=createNormalVector (time);
+    angleOfTime=calculate_angleOfTime(time);
+    normal_vector=createNormalVector (time);
     m_patchDirection=normal_vector;
     
     if ( solver.comm()->MyPID() == 0 )std::cout<<"\nin modifyPatchBC: "<<m_Name;
