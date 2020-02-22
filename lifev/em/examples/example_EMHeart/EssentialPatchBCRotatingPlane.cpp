@@ -348,9 +348,11 @@ void modifyPatchArea(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<Region
                                      auto coord = face.point(k).coordinates();
                                      auto pointInPatch = nodeOnPatchCurrent(coord, time);
                                      
-                                    if ( solver.comm()->MyPID() == 0 ) std::cout<<"\n\nnodedisplayer for: "<<m_Name;
-                                     if ( solver.comm()->MyPID() == 0 ) std::cout<<"\nnode number "<<j<<" of "<<mesh->numBoundaryFacets();
-                                     if ( solver.comm()->MyPID() == 0 ) nodeOnPatchdisplayer(coord, time);
+                                     if (k==0 && std::fmod(j,10)==0){
+                                         if ( solver.comm()->MyPID() == 0 ) std::cout<<"\n\nnodedisplayer for: "<<m_Name;
+                                         if ( solver.comm()->MyPID() == 0 ) std::cout<<"\nnode number "<<j<<" of "<<mesh->numBoundaryFacets();
+                                         if ( solver.comm()->MyPID() == 0 ) nodeOnPatchdisplayer(coord, time);
+                                     }
                                      
                                      if(pointInPatch == true)
                                          {
