@@ -229,7 +229,7 @@ Vector3D rotateVectorAroundAxis (double angleOfTime)
     //std::cout<<"\ncreateNormalVector: time= "<<time;
     angleOfTime = calculate_angleOfTime(time);
     //std::cout<<"\ncreateNormalVector: angle= "<<angle*180/PI;
-    axis_perp_t = rotateVectorAroundAxis(angle);
+    axis_perp_t = rotateVectorAroundAxis(angleOfTime);
     //std::cout<<"\ncreateNormalVector: axis_perp_t= ("<<axis_perp_t[0]<<","<<axis_perp_t[1]<<","<<axis_perp_t[2]<<")";
     //std::cout<<"\ncreateNormalVector: axis_direction= ("<<axis_direction[0]<<","<<axis_direction[1]<<","<<axis_direction[2]<<")";
     normal_vector=axis_perp_t.cross(axis_direction);
@@ -242,7 +242,7 @@ Vector3D rotateVectorAroundAxis (double angleOfTime)
         
     normal_vector.normalize();
     //std::cout<<"createNormalVector: normalToPlane (normalized)= ("<<normalToPlane[0]<<","<<normalToPlane[1]<<","<<normalToPlane[2]<<")";
-    normal_vector=normalToPlane*rotation_direction;
+    normal_vector=normal_vector*rotation_direction;
     //std::cout<<"createNormalVector: rotation_direction = "<<rotation_direction;
     //std::cout<<"createNormalVector: normalToPlane (normalized+multiplied with rotation_direction)= ("<<normalToPlane[0]<<","<<normalToPlane[1]<<","<<normalToPlane[2]<<")";
     return normal_vector;
