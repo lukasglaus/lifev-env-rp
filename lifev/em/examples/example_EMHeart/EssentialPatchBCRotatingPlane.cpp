@@ -128,7 +128,7 @@ Vector3D calculate_pAxis (const Vector3D pointOnHeart,const Vector3D direction_t
     }
 
 //Calculate the opening angle(Degree) in function of time
-double calculate_angleOfTime (Real time)
+void calculate_angleOfTime (Real time)
     {
         double angle;
         
@@ -148,7 +148,7 @@ double calculate_angleOfTime (Real time)
         angle=angle*rotation_direction;
         //std::cout << "\nangle after multiplication with rotation_direction= " <<angle*180/PI<<"degree"<<endl;
         
-        return angle;
+        //return angle;
     }
     
 /* old: out of duty since 18.02.2020
@@ -224,7 +224,7 @@ Vector3D rotateVectorAroundAxis (double angleOfTime)
     }
  
  //Cross product between two vectors creates a vector normal to them: c = a x b
- Vector3D createNormalVector (Real time)
+ void Vector3D createNormalVector (Real time)
     {
     //std::cout<<"\ncreateNormalVector: time= "<<time;
     angleOfTime = calculate_angleOfTime(time);
@@ -245,7 +245,7 @@ Vector3D rotateVectorAroundAxis (double angleOfTime)
     normal_vector=normal_vector*rotation_direction;
     //std::cout<<"createNormalVector: rotation_direction = "<<rotation_direction;
     //std::cout<<"createNormalVector: normalToPlane (normalized+multiplied with rotation_direction)= ("<<normalToPlane[0]<<","<<normalToPlane[1]<<","<<normalToPlane[2]<<")";
-    return normal_vector;
+    //return normal_vector;
     }
                                                                                    
 //ggf hier eine Zeitabhängigkeit in normal_vector und starting_point einfügen, m_maxDisplacement ggf durch activationFunction(time)) ersetzen
@@ -395,8 +395,10 @@ void modifyPatchArea(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<Region
 
 void modifyPatchBC(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver, const Real& time, int& PatchFlag)
 {
-    angleOfTime=calculate_angleOfTime(time);
-    normal_vector=createNormalVector (time);
+    calculate_angleOfTime(time);
+    createNormalVector (time);
+    //angleOfTime=calculate_angleOfTime(time);
+    //normal_vector=createNormalVector (time);
     m_patchDirection=normal_vector;
     
     if ( solver.comm()->MyPID() == 0 )std::cout<<"\nin modifyPatchBC: "<<m_Name;
