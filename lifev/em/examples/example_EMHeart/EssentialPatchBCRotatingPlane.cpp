@@ -290,6 +290,8 @@ const bool nodeOnPatchCurrent(const Vector3D& coord, const Real& time)
 
     void nodeOnPatchdisplayer(const Vector3D& coord, const Real& time)
     {
+        double angle = calculate_angleOfTime(time);
+        Vector3D axis_perp_t = rotateVectorAroundAxis(angle);
         
         std::cout<<"\nnodeOnPatchCurrent:axis_perp_t= ("<<axis_perp_t[0]<<","<<axis_perp_t[1]<<","<<axis_perp_t[2]<<")";
         std::cout<<"\nnodeOnPatchCurrent:normal_vector= ("<<normal_vector[0]<<","<<normal_vector[1]<<","<<normal_vector[2]<<")";
