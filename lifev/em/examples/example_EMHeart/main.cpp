@@ -698,7 +698,7 @@ int main (int argc, char** argv)
         
         for (int k (0); k <= simple_iterations-1; k++) // here begins the time looping
         {
-            
+            //8.1.0
             pseudotime=(m_tduration)*(k/simple_iterations);
             if ( 0 == comm->MyPID() )
                 {
