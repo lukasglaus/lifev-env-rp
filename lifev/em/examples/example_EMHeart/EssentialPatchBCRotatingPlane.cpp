@@ -902,7 +902,7 @@ vector_Type displayDirectionalVectorField(EMSolver<RegionMesh<LinearTetra>, EMMo
     //normalVector[1] = 0.695607;
     //normalVector[2] = -0.270367;
     
-    if ( solver.comm()->MyPID() == 0 ){std::cout<<"\nangleOfTime in displayDirectionalVectorfield= "<<angleOfTime;}
+    if ( solver.comm()->MyPID() == 0 ){std::cout<<"\nangleOfTime in displayDirectionalVectorfield= "<<angleOfTime*180/PI;}
     
     Vector3D direction = normalVector; // 2020.02.08 lg
     direction.normalize(); // 2020.02.08 lg

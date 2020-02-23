@@ -230,14 +230,14 @@ monodomain_xml_file = ParamListE.xml
             
             #Settings:
             distance_to_axis        = 50                 #mm, default=..
-            maximum_angle           = 90                #°, default=..
-            minimum_angle           = 35                 #°, default=..
+            maximum_angle           = 35                #°, default=..
+            minimum_angle           = 5                 #°, default=..
             rotation_direction      = 1
             
             #Default Settings, no need to change them
             pointOnHeart            = '3.71 -7.61 1.78'  #Starting point on heart
                                     //pointOnHeart(3.71 -7.61 1.78), normal (0.85,-0.28,0.45)
-            direction_to_axis       = '1.0 0.0 0.0'     #Direction from startingpoint to point in axis
+            direction_to_axis       = '0.85,-0.28,0.45'     #Direction from startingpoint to point in axis
             axis_direction          = '0.0 1.0 0.0'     #Direction
             component               = '0 2'
             type                    = EssentialPatchBCRotatingPlane
@@ -247,15 +247,15 @@ monodomain_xml_file = ParamListE.xml
            
             #Settings:
             distance_to_axis        = 50                   #mm, default=..
-            maximum_angle           = 90                  #°, default=..
-            minimum_angle           = 35                   #°, default=..
+            maximum_angle           = 35                  #°, default=..
+            minimum_angle           = 5                   #°, default=..
             rotation_direction      = -1
            
             #Default Settings, no need to change them
             pointOnHeart            = '3.71 -7.61 1.78'  #Starting point on heart
                 //pointOnHeart(3.71 -7.61 1.78), normal (0.85,-0.28,0.45)
                 
-            direction_to_axis       = '1.0 0.0 0.0'     #Direction from startingpoint to point in axis
+            direction_to_axis       = '0.85,-0.28,0.45'     #Direction from startingpoint to point in axis
             axis_direction          = '0.0 1.0 0.0'     #Direction
             component               = '0 2'
             type                    = EssentialPatchBCRotatingPlane
