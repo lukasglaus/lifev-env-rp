@@ -699,7 +699,7 @@ int main (int argc, char** argv)
         for (int k (0); k <= simple_iterations-1; k++) // here begins the time looping
         {
             
-            pseudotime=(m_tduration/2)*(k/simple_iterations);
+            pseudotime=(m_tduration)*(k/simple_iterations);
             if ( 0 == comm->MyPID() )
                 {
                     std::cout << "\n*****************************************************************";
@@ -708,17 +708,7 @@ int main (int argc, char** argv)
                     std::cout << "\n*****************************************************************\n";
                 }
             
-      //-added
-            //============================================
-            // Simple run: Solve electrophysiology and activation
-            //============================================
 
-            auto maxI4fValue ( solver.activationModelPtr()->I4f().maxValue() );
-            auto minI4fValue ( solver.activationModelPtr()->I4f().minValue() );
-            
-            solver.solveElectrophysiology (stim, pseudotime);
-            solver.solveActivation (dt_activation);
-      //>
             //=====================================================
             // Simple run: Load steps mechanics (activation & b.c.)
             //=====================================================
@@ -747,35 +737,14 @@ int main (int argc, char** argv)
             patchHandler.modifyPatchBC(solver, pseudotime); //this we survive; crash probably comes in next one
             solver.bcInterfacePtr() -> updatePhysicalSolverVariables();
             solver.solveMechanics();
-    //-added
-            VFeNew[0] = LV.volume(disp, dETFESpace, - 1);
-            VFeNew[1] = RV.volume(disp, dETFESpace, 1);
             
-            VFe = VFeNew;
-            
-            Real leftVentPower = heartSolver.externalPower(disp, dispPre, dETFESpace, p("lv"), dt_mechanics, 454);
-            Real rightVentPower = heartSolver.externalPower(disp, dispPre, dETFESpace, p("rv"), dt_mechanics, 455);
-
-            AvgWorkVent(0) += leftVentPower * dt_mechanics;
-            AvgWorkVent(1) += rightVentPower * dt_mechanics;
-            
-            if ( 0 == comm->MyPID() )
-            {
-                std::cout << "\n******************************************";
-                std::cout << "\nInstantaneous vent. power: \t" << leftVentPower << " / " << rightVentPower;
-                std::cout << "\nAveraged vent. power: \t" << AvgWorkVent(0) / t << " / " << AvgWorkVent(1) / t;
-                std::cout << "\n******************************************\n\n";
-            }
-            
-            dispPre = disp;
-     //->
             //============================================
             // Simple run: Export FE-solution
             //============================================
             bool save ( std::abs(std::remainder(pseudotime, dt_save)) < 0.01 );
             if ( save )
                 {
-                    heartSolver.postProcess(t);
+                    heartSolver.postProcess(pseudotime);
                     
                     Real chronoTimeNow = chronoExport.diff();
                     Real chronoDiffToLastSave = chronoTimeNow - exportTime;
