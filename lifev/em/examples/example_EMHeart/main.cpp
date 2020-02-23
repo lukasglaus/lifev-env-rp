@@ -718,7 +718,7 @@ int main (int argc, char** argv)
             //const bool makeMechanicsCirculationCoupling (k % mechanicsCouplingIter == 0);
             
             // Linear b.c. extrapolation
-            auto bcValuesLoadstep ( bcValues );
+            auto bcValuesLoadstep ( simplebcValues );
 
             if ( 0 == comm->MyPID() )
                 {
