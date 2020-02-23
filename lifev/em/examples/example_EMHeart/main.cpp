@@ -691,13 +691,15 @@ int main (int argc, char** argv)
         const double simple_iterations = dataFile ( "solid/simple_run/simple_iterations", 50 );
         double pseudotime;
         
+        const auto simplebcValues = bcValues;
+        
         LifeChrono chronoExport;
         chronoExport.start();
         
         for (int k (0); k <= simple_iterations-1; k++) // here begins the time looping
         {
             
-            pseudotime=(m_tduration/2)*(k/simple_iterations);
+            pseudotime=(m_tduration)*(k/simple_iterations);
             if ( 0 == comm->MyPID() )
                 {
                     std::cout << "\n*****************************************************************";
@@ -741,7 +743,7 @@ int main (int argc, char** argv)
             bool save ( std::abs(std::remainder(pseudotime, dt_save)) < 0.01 );
             if ( save )
                 {
-                    heartSolver.postProcess(t);
+                    heartSolver.postProcess(pseudotime);
                     
                     Real chronoTimeNow = chronoExport.diff();
                     Real chronoDiffToLastSave = chronoTimeNow - exportTime;
