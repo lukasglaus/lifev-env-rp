@@ -696,10 +696,10 @@ int main (int argc, char** argv)
         LifeChrono chronoExport;
         chronoExport.start();
         
-        for (int k (0); k <= simple_iterations-1; k++) // here begins the time looping
+        for (int k (1); k <= simple_iterations; k++) // here begins the time looping
         {
             //8.1.0
-            pseudotime=(m_tduration)*(k/simple_iterations);
+            pseudotime=(m_tduration)*((k-1)/simple_iterations);
             if ( 0 == comm->MyPID() )
                 {
                     std::cout << "\n*****************************************************************";
@@ -740,7 +740,8 @@ int main (int argc, char** argv)
             //============================================
             // Simple run: Export FE-solution
             //============================================
-            bool save ( std::abs(std::remainder(pseudotime, dt_save)) < 0.01 );
+            bool save = true;
+            //bool save ( std::abs(std::remainder(pseudotime, dt_save)) < 0.01 ); //ggf immer saven?
             if ( save )
                 {
                     heartSolver.postProcess(pseudotime);

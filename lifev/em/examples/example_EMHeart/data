@@ -72,7 +72,7 @@ monodomain_xml_file = ParamListE.xml
     lawType         = nonlinear
 
     [../boundary_conditions]
-    numPreloadSteps  = 2 //50 for a starting pressure of 5mmHg in left and right ventricle
+    numPreloadSteps  = 50 for a starting pressure of 5mmHg in left and right ventricle
 
     list = 'BaseSemilunar BaseAV AorticRing MitralRing TricuspidRing Epicardium'
 
