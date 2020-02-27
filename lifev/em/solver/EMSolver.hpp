@@ -927,10 +927,17 @@ template<typename Mesh , typename ElectroSolver>
 void
 EMSolver<Mesh, ElectroSolver>::closeExporters()
 {
+    std::cout<<"M_electroExporterPtr -> closeFile(); in solver"
     M_electroExporterPtr -> closeFile();
+    
+    std::cout<<"M_activationExporterPtr -> closeFile(); in solver"
     M_activationExporterPtr -> closeFile();
     //M_activationTimeExporterPtr -> closeFile();
+    
+    std::cout<<"M_mechanicsExporterPtr -> closeFile(); in solver"
     M_mechanicsExporterPtr -> closeFile();
+    
+    std::cout<<"M_vonMisesStressExporterPtr -> closeFile(); in solver"
     M_vonMisesStressExporterPtr -> closeFile();
 }
 
