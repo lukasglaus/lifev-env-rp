@@ -928,7 +928,7 @@ void
 EMSolver<Mesh, ElectroSolver>::closeExporters()
 {
     std::cout<<"M_electroExporterPtr -> closeFile(); in solver";
-    M_electroExporterPtr -> closeFile();
+    //M_electroExporterPtr -> closeFile();
     
     std::cout<<"M_activationExporterPtr -> closeFile(); in solver";
     M_activationExporterPtr -> closeFile();
