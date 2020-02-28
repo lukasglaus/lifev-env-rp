@@ -110,7 +110,7 @@ Vector3D normalize_vector (Vector3D vector)
             vector[1]=vector[1]/abs;
             vector[2]=vector[2]/abs;
         }
-        if (abs!=1){std::cout<<"\nCareful:During import a vector had to be normalized"<<endl;}
+        if (abs!=1){std::cout<<"\n\nCareful:During import a vector had to be normalized"<<endl;}
         if (abs=0){std::cout<<"\nCareful:Absolute value of a supposed to be normalized vector is zero"<<endl;}
     return vector;
     }
