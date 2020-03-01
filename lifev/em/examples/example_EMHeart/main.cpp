@@ -658,6 +658,8 @@ int main (int argc, char** argv)
                 std::cout << "\n*****************************************************************\n";
             }
         
+        Real pseudotime=0;
+        
         VFe[0] = LV.volume(disp, dETFESpace, - 1);
         VFe[1] = RV.volume(disp, dETFESpace, 1);
         VCirc = VFe;
@@ -683,7 +685,7 @@ int main (int argc, char** argv)
 
         if ( ! restart )
             {
-                heartSolver.postProcess(t);
+                heartSolver.postProcess(pseudotime);
                 circulationSolver.exportSolution( circulationOutputFile );
             }
 
@@ -741,10 +743,10 @@ int main (int argc, char** argv)
             //============================================
             // Simple run: Export FE-solution
             //============================================
-            bool save = true;
+            //bool save = true;
             //bool save ( std::abs(std::remainder(pseudotime, dt_save)) < 0.01 ); //ggf immer saven?
-            if ( save )
-                {
+            //if ( save )
+                //{
                     heartSolver.postProcess(pseudotime);
                     
                     Real chronoTimeNow = chronoExport.diff();
@@ -758,7 +760,7 @@ int main (int argc, char** argv)
                             std::cout << "\nPrevious step ms computed in " << chronoDiffToLastSave << " s";
                             std::cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n\n";
                         }
-                }
+                //}
         }
     }
     
