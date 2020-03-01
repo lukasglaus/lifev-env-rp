@@ -758,7 +758,7 @@ int main (int argc, char** argv)
             {
                 std::cout << "\n******************************************";
                 std::cout << "\nInstantaneous vent. power: \t" << leftVentPower << " / " << rightVentPower;
-                std::cout << "\nAveraged vent. power: \t" << AvgWorkVent(0) / t << " / " << AvgWorkVent(1) / t;
+                std::cout << "\nAveraged vent. power: \t" << AvgWorkVent(0) / pseudotime << " / " << AvgWorkVent(1) / pseudotime;
                 std::cout << "\n******************************************\n\n";
             }
             
@@ -797,7 +797,7 @@ int main (int argc, char** argv)
             //bool save ( std::abs(std::remainder(pseudotime, dt_save)) < 0.01 ); //ggf immer saven?
             //if ( save )
                 //{
-                    heartSolver.postProcess(pseudotime);
+                    heartSolver.postProcess(k-1);
                     circulationSolver.exportSolution( circulationOutputFile );
             
                     Real chronoTimeNow = chronoExport.diff();
