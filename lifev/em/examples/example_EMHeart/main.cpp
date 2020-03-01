@@ -700,6 +700,7 @@ int main (int argc, char** argv)
         {
             //8.1.0
             pseudotime=(m_tduration)*((k-1)/(simple_iterations-1));
+            pseudotime=std::round(pseudotime);
             if ( 0 == comm->MyPID() )
                 {
                     std::cout << "\n*****************************************************************";
