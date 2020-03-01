@@ -688,8 +688,8 @@ int main (int argc, char** argv)
 
         if ( ! restart )
             {
-                //heartSolver.postProcess(pseudotime);
-                circulationSolver.exportSolution( circulationOutputFile );
+                //heartSolver.postProcess(pseudotime); !ACHTUNG!
+                //circulationSolver.exportSolution( circulationOutputFile );
             }
 
 
@@ -799,8 +799,7 @@ int main (int argc, char** argv)
             //bool save ( std::abs(std::remainder(pseudotime, dt_save)) < 0.01 ); //ggf immer saven?
             //if ( save )
                 //{
-                    heartSolver.postProcess(k-1);
-                    circulationSolver.exportSolution( circulationOutputFile );
+                    heartSolver.postProcess(pseudotime);
             
                     Real chronoTimeNow = chronoExport.diff();
                     Real chronoDiffToLastSave = chronoTimeNow - exportTime;
