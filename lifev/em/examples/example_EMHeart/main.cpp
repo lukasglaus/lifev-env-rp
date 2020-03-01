@@ -659,6 +659,9 @@ int main (int argc, char** argv)
             }
         
         Real pseudotime=0;
+        const double m_tduration = dataFile ( "solid/patches/tduration", 0. );
+        const double simple_iterations = dataFile ( "solid/simple_run/simple_iterations", 50 );
+        const auto simplebcValues = bcValues;
         
         VFe[0] = LV.volume(disp, dETFESpace, - 1);
         VFe[1] = RV.volume(disp, dETFESpace, 1);
@@ -689,10 +692,7 @@ int main (int argc, char** argv)
                 circulationSolver.exportSolution( circulationOutputFile );
             }
 
-        const double m_tduration = dataFile ( "solid/patches/tduration", 0. );
-        const double simple_iterations = dataFile ( "solid/simple_run/simple_iterations", 50 );
-        
-        const auto simplebcValues = bcValues;
+
         
         LifeChrono chronoExport;
         chronoExport.start();
@@ -702,6 +702,7 @@ int main (int argc, char** argv)
             //8.1.0
             pseudotime=(m_tduration)*((k-1)/(simple_iterations-1));
             pseudotime=std::round(pseudotime);
+            
             if ( 0 == comm->MyPID() )
                 {
                     std::cout << "\n*****************************************************************";
@@ -710,17 +711,66 @@ int main (int argc, char** argv)
                     std::cout << "\n*****************************************************************\n";
                 }
             
-            //=====================================================
-            // Simple run: Load steps mechanics (activation & b.c.)
-            //=====================================================
+            //============================================
+            // Solve electrophysiology and activation
+            //============================================
+
+            auto maxI4fValue ( solver.activationModelPtr()->I4f().maxValue() );
+            auto minI4fValue ( solver.activationModelPtr()->I4f().minValue() );
+            
+            solver.solveElectrophysiology (stim, pseudotime);
+            solver.solveActivation (dt_activation);
+            
             auto minActivationValue ( solver.activationModelPtr() -> fiberActivationPtr() -> minValue() );
 
             const bool activationBelowLoadstepThreshold (minActivationValue < activationLimit_loadstep);
             const bool makeLoadstep (k % mechanicsLoadstepIter == 0 && activationBelowLoadstepThreshold);
-            //const bool makeMechanicsCirculationCoupling (k % mechanicsCouplingIter == 0);
+            const bool makeMechanicsCirculationCoupling (k % mechanicsCouplingIter == 0);
             
-            // Linear b.c. extrapolation
-            auto bcValuesLoadstep ( simplebcValues );
+            const double dt_circulation ( dt_mechanics / 1000 );
+            solver.structuralOperatorPtr() -> data() -> dataTime() -> setTime(t);
+            
+            LifeChrono chronoCoupling;
+            chronoCoupling.start();
+            
+            bcValues = simplebcValues;
+            
+            patchHandler.modifyPatchBC(solver, pseudotime);
+            modifyPressureBC(bcValues);
+            solver.bcInterfacePtr() -> updatePhysicalSolverVariables();
+            solver.solveMechanics();
+            
+            VFeNew[0] = LV.volume(disp, dETFESpace, - 1);
+            VFeNew[1] = RV.volume(disp, dETFESpace, 1);
+
+            VCirc = VFeNew;
+            VFe = VFeNew;
+            
+            if ( 0 == comm->MyPID() ) circulationSolver.exportSolution( circulationOutputFile );
+            
+            Real leftVentPower = heartSolver.externalPower(disp, dispPre, dETFESpace, p("lv"), dt_mechanics, 454);
+            Real rightVentPower = heartSolver.externalPower(disp, dispPre, dETFESpace, p("rv"), dt_mechanics, 455);
+            
+            AvgWorkVent(0) += leftVentPower * dt_mechanics;
+            AvgWorkVent(1) += rightVentPower * dt_mechanics;
+
+            if ( 0 == comm->MyPID() )
+            {
+                std::cout << "\n******************************************";
+                std::cout << "\nInstantaneous vent. power: \t" << leftVentPower << " / " << rightVentPower;
+                std::cout << "\nAveraged vent. power: \t" << AvgWorkVent(0) / t << " / " << AvgWorkVent(1) / t;
+                std::cout << "\n******************************************\n\n";
+            }
+            
+            dispPre = disp;
+            
+            /*
+            //=====================================================
+            // Simple run: Load steps mechanics (activation & b.c.)
+            //=====================================================
+
+            
+
 
             if ( 0 == comm->MyPID() )
                 {
@@ -738,6 +788,7 @@ int main (int argc, char** argv)
             patchHandler.modifyPatchBC(solver, pseudotime); //this we survive; crash probably comes in next one
             solver.bcInterfacePtr() -> updatePhysicalSolverVariables();
             solver.solveMechanics();
+            */
             
             //============================================
             // Simple run: Export FE-solution
