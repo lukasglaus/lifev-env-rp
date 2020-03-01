@@ -688,8 +688,8 @@ int main (int argc, char** argv)
 
         if ( ! restart )
             {
-                //heartSolver.postProcess(pseudotime); !ACHTUNG!
-                //circulationSolver.exportSolution( circulationOutputFile );
+                heartSolver.postProcess(pseudotime);
+                circulationSolver.exportSolution( circulationOutputFile );
             }
 
 
@@ -748,7 +748,7 @@ int main (int argc, char** argv)
             VCirc = VFeNew;
             VFe = VFeNew;
             
-            if ( 0 == comm->MyPID() ) circulationSolver.exportSolution( circulationOutputFile );
+            //if ( 0 == comm->MyPID() ) circulationSolver.exportSolution( circulationOutputFile );
             
             Real leftVentPower = heartSolver.externalPower(disp, dispPre, dETFESpace, p("lv"), dt_mechanics, 454);
             Real rightVentPower = heartSolver.externalPower(disp, dispPre, dETFESpace, p("rv"), dt_mechanics, 455);
