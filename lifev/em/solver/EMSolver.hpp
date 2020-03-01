@@ -931,12 +931,12 @@ EMSolver<Mesh, ElectroSolver>::closeExporters()
     //M_electroExporterPtr -> closeFile();
     
     std::cout<<"\nM_activationExporterPtr -> closeFile(); in solver";
-    //M_activationExporterPtr -> closeFile();
+    M_activationExporterPtr -> closeFile();
     //M_activationTimeExporterPtr -> closeFile();
     
     std::cout<<"\n************************************************";
     std::cout<<"\nM_mechanicsExporterPtr -> closeFile(); in solver";
-    //M_mechanicsExporterPtr -> closeFile();
+    M_mechanicsExporterPtr -> closeFile();
     
     std::cout<<"\nM_vonMisesStressExporterPtr -> closeFile(); in solver";
     //M_vonMisesStressExporterPtr -> closeFile();
