@@ -688,7 +688,7 @@ int main (int argc, char** argv)
 
         if ( ! restart )
             {
-                heartSolver.postProcess(pseudotime);
+                //heartSolver.postProcess(pseudotime);
                 circulationSolver.exportSolution( circulationOutputFile );
             }
 
@@ -721,14 +721,16 @@ int main (int argc, char** argv)
             solver.solveElectrophysiology (stim, pseudotime);
             solver.solveActivation (dt_activation);
             
+            //Stuff from loadstep
             auto minActivationValue ( solver.activationModelPtr() -> fiberActivationPtr() -> minValue() );
 
             const bool activationBelowLoadstepThreshold (minActivationValue < activationLimit_loadstep);
             const bool makeLoadstep (k % mechanicsLoadstepIter == 0 && activationBelowLoadstepThreshold);
             const bool makeMechanicsCirculationCoupling (k % mechanicsCouplingIter == 0);
             
+            //make circulation coupling
             const double dt_circulation ( dt_mechanics / 1000 );
-            solver.structuralOperatorPtr() -> data() -> dataTime() -> setTime(t);
+            solver.structuralOperatorPtr() -> data() -> dataTime() -> setTime(pseudotime);
             
             LifeChrono chronoCoupling;
             chronoCoupling.start();
