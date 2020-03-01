@@ -747,7 +747,8 @@ int main (int argc, char** argv)
             //if ( save )
                 //{
                     heartSolver.postProcess(pseudotime);
-                    
+                    circulationSolver.exportSolution( circulationOutputFile );
+            
                     Real chronoTimeNow = chronoExport.diff();
                     Real chronoDiffToLastSave = chronoTimeNow - exportTime;
                     exportTime = chronoTimeNow;
