@@ -690,8 +690,7 @@ int main (int argc, char** argv)
             }
 
         const double m_tduration = dataFile ( "solid/patches/tduration", 0. );
-        const double simple_iterations = dataFile ( "solid/simple_run/simple_iterations", 50 );
-        double pseudotime;
+        const double simple_iterations = dataFile ( "solid/simple_run/simple_iterations", 50 )
         
         const auto simplebcValues = bcValues;
         
