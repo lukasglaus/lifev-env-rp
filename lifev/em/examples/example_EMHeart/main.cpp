@@ -814,6 +814,13 @@ int main (int argc, char** argv)
                         }
                 //}
         }
+        
+        //============================================
+        // Close all exporters
+        //============================================
+        if (simple_run==true) std::cout<<"we arrived at <close all exporters>";
+        solver.closeExporters();
+        heartSolver.exporter()->closeFile();
     }
     
     //============================================
@@ -1152,14 +1159,14 @@ int main (int argc, char** argv)
                     }
                     
                 }//here ends the time loop
+                
+                //============================================
+                // Close all exporters
+                //============================================
+                solver.closeExporters();
+                heartSolver.exporter()->closeFile();
+            
             }//here ends the simple_run==false loop
-    
-    //============================================
-    // Close all exporters
-    //============================================
-    if (simple_run==true) std::cout<<"we arrived at <close all exporters>";
-    //solver.closeExporters();
-    heartSolver.exporter()->closeFile();
     
 
 #ifdef HAVE_MPI
