@@ -819,8 +819,12 @@ int main (int argc, char** argv)
         // Close all exporters
         //============================================
         if (simple_run==true) std::cout<<"we arrived at <close all exporters>";
-        solver.closeExporters();
-        heartSolver.exporter()->closeFile();
+        
+        if ( 0 == comm->MyPID() )
+            {
+            solver.closeExporters();
+            heartSolver.exporter()->closeFile();
+            }
     }
     
     //============================================
