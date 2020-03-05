@@ -689,7 +689,7 @@ int main (int argc, char** argv)
         if ( ! restart )
             {
                 heartSolver.postProcess(pseudotime);
-                //circulationSolver.exportSolution( circulationOutputFile );
+                circulationSolver.exportSolution( circulationOutputFile );
             }
 
 
