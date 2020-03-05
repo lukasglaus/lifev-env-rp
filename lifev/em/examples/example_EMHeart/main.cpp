@@ -743,7 +743,8 @@ int main (int argc, char** argv)
             VFeNew[1] = RV.volume(disp, dETFESpace, 1);
 
             VCircNew=VFeNew;
-            R = 0.0; //R=VFeNew - VCircNew;
+            R[0] = 0.0; //R=VFeNew - VCircNew;
+            R[1] = 0.0;
             printCoupling("Residual Computation");
             
             VCirc = VCircNew;
