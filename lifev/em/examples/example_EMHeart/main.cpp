@@ -714,41 +714,42 @@ int main (int argc, char** argv)
             //============================================
             // Solve electrophysiology and activation
             //============================================
-
             auto maxI4fValue ( solver.activationModelPtr()->I4f().maxValue() );
             auto minI4fValue ( solver.activationModelPtr()->I4f().minValue() );
-            
             solver.solveElectrophysiology (stim, pseudotime);
             solver.solveActivation (dt_activation);
-            
-            //Stuff from loadstep
+            //============================================
+            // Load steps mechanics (activation & b.c.)
+            //============================================
             auto minActivationValue ( solver.activationModelPtr() -> fiberActivationPtr() -> minValue() );
-
             const bool activationBelowLoadstepThreshold (minActivationValue < activationLimit_loadstep);
             const bool makeLoadstep (k % mechanicsLoadstepIter == 0 && activationBelowLoadstepThreshold);
             const bool makeMechanicsCirculationCoupling (k % mechanicsCouplingIter == 0);
-            
-            //make circulation coupling
+            //============================================
+            // Iterate mechanics / circulation
+            //============================================
+            iter = 0;
             const double dt_circulation ( dt_mechanics / 1000 );
             solver.structuralOperatorPtr() -> data() -> dataTime() -> setTime(pseudotime);
-            
             LifeChrono chronoCoupling;
             chronoCoupling.start();
             
-            bcValues = simplebcValues;
-            
             patchHandler.modifyPatchBC(solver, pseudotime);
-            modifyPressureBC(bcValues);
+            modifyPressureBC(simplebcValues);
             solver.bcInterfacePtr() -> updatePhysicalSolverVariables();
             solver.solveMechanics();
             
             VFeNew[0] = LV.volume(disp, dETFESpace, - 1);
             VFeNew[1] = RV.volume(disp, dETFESpace, 1);
 
-            VCirc = VFeNew;
-            VFe = VFeNew;
+            VCircNew=VFeNew;
+            R = 0.0; //R=VFeNew - VCircNew;
+            printCoupling("Residual Computation");
             
-            //if ( 0 == comm->MyPID() ) circulationSolver.exportSolution( circulationOutputFile );
+            VCirc = VCircNew;
+            VFe = VFeNew;
+            if ( 0 == comm->MyPID() ) circulationSolver.exportSolution( circulationOutputFile );
+            
             
             Real leftVentPower = heartSolver.externalPower(disp, dispPre, dETFESpace, p("lv"), dt_mechanics, 454);
             Real rightVentPower = heartSolver.externalPower(disp, dispPre, dETFESpace, p("rv"), dt_mechanics, 455);
@@ -765,54 +766,23 @@ int main (int argc, char** argv)
             }
             
             dispPre = disp;
+            //============================================
+            // Export FE-solution
+            //============================================
             
-            /*
-            //=====================================================
-            // Simple run: Load steps mechanics (activation & b.c.)
-            //=====================================================
-
+            heartSolver.postProcess(pseudotime);
+    
+            Real chronoTimeNow = chronoExport.diff();
+            Real chronoDiffToLastSave = chronoTimeNow - exportTime;
+            exportTime = chronoTimeNow;
             
-
-
             if ( 0 == comm->MyPID() )
                 {
                     std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
-                    std::cout << "\nLoad step at simple_iteration = " << k<<" / "<<simple_iterations;
-                    std::cout << "\nLV-Pressure " <<  bcValues[0];
-                    std::cout << "\nRV-Pressure " <<  bcValues[1];
-                    std::cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n";
+                    std::cout << "\nTotal simulation time at iteration k = " << k << " ms is " << chronoTimeNow << " s";
+                    std::cout << "\nPrevious step ms computed in " << chronoDiffToLastSave << " s";
+                    std::cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n\n";
                 }
-
-            // Load step mechanics
-            solver.structuralOperatorPtr() -> data() -> dataTime() -> setTime(pseudotime);
-            modifyPressureBC(bcValuesLoadstep);
-            //modifyEssentialPatchBC(t);
-            patchHandler.modifyPatchBC(solver, pseudotime); //this we survive; crash probably comes in next one
-            solver.bcInterfacePtr() -> updatePhysicalSolverVariables();
-            solver.solveMechanics();
-            */
-            
-            //============================================
-            // Simple run: Export FE-solution
-            //============================================
-            //bool save = true;
-            //bool save ( std::abs(std::remainder(pseudotime, dt_save)) < 0.01 ); //ggf immer saven?
-            //if ( save )
-                //{
-                    heartSolver.postProcess(pseudotime);
-            
-                    Real chronoTimeNow = chronoExport.diff();
-                    Real chronoDiffToLastSave = chronoTimeNow - exportTime;
-                    exportTime = chronoTimeNow;
-                    
-                    if ( 0 == comm->MyPID() )
-                        {
-                            std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
-                            std::cout << "\nTotal simulation time at iteration k = " << k << " ms is " << chronoTimeNow << " s";
-                            std::cout << "\nPrevious step ms computed in " << chronoDiffToLastSave << " s";
-                            std::cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n\n";
-                        }
-                //}
         }
         
         //============================================
@@ -1173,8 +1143,8 @@ int main (int argc, char** argv)
             }//here ends the simple_run==false loop
     
 
-#ifdef HAVE_MPI
-    MPI_Finalize();
-#endif
+    #ifdef HAVE_MPI
+        MPI_Finalize();
+    #endif
     return 0;
 }
