@@ -647,8 +647,8 @@ int main (int argc, char** argv)
     //============================================
     const bool simple_run = dataFile ( "solid/simple_run/simple_run", false );
     const bool simple_run2 = dataFile ( "solid/simple_run/simple_run2", false );
-    const real simple_pleft = dataFile ( "solid/simple_run/simple_pleft", 0.1 );
-    const real simple_pright = dataFile ( "solid/simple_run/simple_right", 0.1 );
+    const Real simple_pleft = dataFile ( "solid/simple_run/simple_pleft", 0.1 );
+    const Real simple_pright = dataFile ( "solid/simple_run/simple_right", 0.1 );
     const auto bcValuesSimple = bcValues;
     bcValuesSimple[0]=simple_pleft;
     bcValuesSimple[1]=simple_pright;
