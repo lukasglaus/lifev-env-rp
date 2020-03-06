@@ -879,13 +879,13 @@ int main (int argc, char** argv)
 
                     const bool activationBelowLoadstepThreshold (minActivationValue < activationLimit_loadstep);
                     
-                    if (simplerun2 = false)
+                    if (simple_run2 = false)
                         {
                         const bool makeLoadstep (k % mechanicsLoadstepIter == 0 && activationBelowLoadstepThreshold);
                         const bool makeMechanicsCirculationCoupling (k % mechanicsCouplingIter == 0);
                         }
                     
-                    if (simplerun2 = true)
+                    if (simple_run2 = true)
                         {
                         const bool makeLoadstep = true;
                         const bool makeMechanicsCirculationCoupling = false;
@@ -911,12 +911,12 @@ int main (int argc, char** argv)
                         // Load step mechanics
                         solver.structuralOperatorPtr() -> data() -> dataTime() -> setTime(t);
                         
-                        if (simplerun2 = false)
+                        if (simple_run2 = false)
                             {
                             modifyPressureBC(bcValuesLoadstep);
                             }
                         
-                        if (simplerun2 = true)
+                        if (simple_run2 = true)
                             {
                             modifyPressureBC(bcValuesSimple);
                             }
