@@ -646,6 +646,13 @@ int main (int argc, char** argv)
     // Simple_run
     //============================================
     const bool simple_run = dataFile ( "solid/simple_run/simple_run", false );
+    const bool simple_run2 = dataFile ( "solid/simple_run/simple_run2", false );
+    const real simple_pleft = dataFile ( "solid/simple_run/simple_pleft", 0.1 );
+    const real simple_pright = dataFile ( "solid/simple_run/simple_right", 0.1 );
+    const auto bcValuesSimple = bcValues;
+    bcValuesSimple[0]=simple_pleft;
+    bcValuesSimple[1]=simple_pright;
+    
     if ( 0 == comm->MyPID() ){std::cout<<"simple_run = "<<simple_run;}
     
     if (simple_run==true)
@@ -873,9 +880,19 @@ int main (int argc, char** argv)
                     auto minActivationValue ( solver.activationModelPtr() -> fiberActivationPtr() -> minValue() );
 
                     const bool activationBelowLoadstepThreshold (minActivationValue < activationLimit_loadstep);
-                    const bool makeLoadstep (k % mechanicsLoadstepIter == 0 && activationBelowLoadstepThreshold);
-                    const bool makeMechanicsCirculationCoupling (k % mechanicsCouplingIter == 0);
-
+                    
+                    if (simplerun2 = false)
+                        {
+                        const bool makeLoadstep (k % mechanicsLoadstepIter == 0 && activationBelowLoadstepThreshold);
+                        const bool makeMechanicsCirculationCoupling (k % mechanicsCouplingIter == 0);
+                        }
+                    
+                    if (simplerun2 = true)
+                        {
+                        const bool makeLoadstep = true;
+                        const bool makeMechanicsCirculationCoupling = false;
+                        }
+                    
                     if ( makeLoadstep && !makeMechanicsCirculationCoupling )
                     {
                         // Linear b.c. extrapolation
@@ -895,7 +912,17 @@ int main (int argc, char** argv)
 
                         // Load step mechanics
                         solver.structuralOperatorPtr() -> data() -> dataTime() -> setTime(t);
-                        modifyPressureBC(bcValuesLoadstep);
+                        
+                        if (simplerun2 = false)
+                            {
+                            modifyPressureBC(bcValuesLoadstep);
+                            }
+                        
+                        if (simplerun2 = true)
+                            {
+                            modifyPressureBC(bcValuesSimple);
+                            }
+
                         //modifyEssentialPatchBC(t);
                         patchHandler.modifyPatchBC(solver, t); //this we survive; crash probably comes in next one
                         solver.bcInterfacePtr() -> updatePhysicalSolverVariables();
