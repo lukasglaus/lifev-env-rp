@@ -879,16 +879,37 @@ int main (int argc, char** argv)
 
                     const bool activationBelowLoadstepThreshold (minActivationValue < activationLimit_loadstep);
                     
+                    bool makeLoadstep;
+                    bool makeMechanicsCirculationCoupling
+                    
                     if (simple_run2 == false)
                         {
-                        const bool makeLoadstep (k % mechanicsLoadstepIter == 0 && activationBelowLoadstepThreshold);
-                        const bool makeMechanicsCirculationCoupling (k % mechanicsCouplingIter == 0);
+                            const bool makeLoadstep (k % mechanicsLoadstepIter == 0 && activationBelowLoadstepThreshold);
+                            const bool makeMechanicsCirculationCoupling (k % mechanicsCouplingIter == 0);
+                            if ( 0 == comm->MyPID() )
+                                {
+                                std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
+                                std::cout<<"\nWe are in if (simple_run2 == false)"
+                                std::cout << "\nsimple_run2 ="<<simple_run2;
+                                std::cout << "\nmakeLoadstep ="<<makeLoadstep;
+                                std::cout << "\nmakeMechanicsCirculationCoupling ="<<makeMechanicsCirculationCoupling;
+                                std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
+                                }
                         }
                     
                     if (simple_run2 == true)
                         {
                         const bool makeLoadstep = true;
                         const bool makeMechanicsCirculationCoupling = false;
+                        if ( 0 == comm->MyPID() )
+                            {
+                            std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
+                            std::cout<<"\nWe are in if (simple_run2 == true)"
+                            std::cout << "\nsimple_run2 ="<<simple_run2;
+                            std::cout << "\nmakeLoadstep ="<<makeLoadstep;
+                            std::cout << "\nmakeMechanicsCirculationCoupling ="<<makeMechanicsCirculationCoupling;
+                            std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
+                            }
                         }
                     
                     if ( makeLoadstep && !makeMechanicsCirculationCoupling )
