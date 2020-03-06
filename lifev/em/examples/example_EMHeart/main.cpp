@@ -889,7 +889,7 @@ int main (int argc, char** argv)
                             if ( 0 == comm->MyPID() )
                                 {
                                 std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
-                                std::cout<<"\nWe are in if (simple_run2 == false)"
+                                std::cout<<"\nWe are in if (simple_run2 == false)";
                                 std::cout << "\nsimple_run2 ="<<simple_run2;
                                 std::cout << "\nmakeLoadstep ="<<makeLoadstep;
                                 std::cout << "\nmakeMechanicsCirculationCoupling ="<<makeMechanicsCirculationCoupling;
