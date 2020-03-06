@@ -880,7 +880,7 @@ int main (int argc, char** argv)
                     const bool activationBelowLoadstepThreshold (minActivationValue < activationLimit_loadstep);
                     
                     bool makeLoadstep;
-                    bool makeMechanicsCirculationCoupling
+                    bool makeMechanicsCirculationCoupling;
                     
                     if (simple_run2 == false)
                         {
