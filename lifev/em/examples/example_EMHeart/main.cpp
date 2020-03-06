@@ -649,7 +649,7 @@ int main (int argc, char** argv)
     const bool simple_run2 = dataFile ( "solid/simple_run/simple_run2", false );
     const Real simple_pleft = dataFile ( "solid/simple_run/simple_pleft", 0.1 );
     const Real simple_pright = dataFile ( "solid/simple_run/simple_right", 0.1 );
-    const auto bcValuesSimple = {simple_pleft,simple_pright};
+    const std::vector<Real> bcValuesSimple = {simple_pleft,simple_pright};
     
     if ( 0 == comm->MyPID() ){std::cout<<"simple_run = "<<simple_run;}
     
