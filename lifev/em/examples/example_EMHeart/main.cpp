@@ -884,8 +884,8 @@ int main (int argc, char** argv)
                     
                     if (simple_run2 == false)
                         {
-                            const bool makeLoadstep (k % mechanicsLoadstepIter == 0 && activationBelowLoadstepThreshold);
-                            const bool makeMechanicsCirculationCoupling (k % mechanicsCouplingIter == 0);
+                            makeLoadstep (k % mechanicsLoadstepIter == 0 && activationBelowLoadstepThreshold);
+                            makeMechanicsCirculationCoupling (k % mechanicsCouplingIter == 0);
                             if ( 0 == comm->MyPID() )
                                 {
                                 std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
@@ -899,8 +899,8 @@ int main (int argc, char** argv)
                     
                     if (simple_run2 == true)
                         {
-                        const bool makeLoadstep = true;
-                        const bool makeMechanicsCirculationCoupling = false;
+                        makeLoadstep = true;
+                        makeMechanicsCirculationCoupling = false;
                         if ( 0 == comm->MyPID() )
                             {
                             std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
@@ -913,7 +913,7 @@ int main (int argc, char** argv)
                             }
                         }
                     
-                    if ( makeLoadstep==1 && !makeMechanicsCirculationCoupling==1 )
+                    if ( makeLoadstep && !makeMechanicsCirculationCoupling )
                     {
                         if ( 0 == comm->MyPID() )
                             {
