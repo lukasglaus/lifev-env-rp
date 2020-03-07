@@ -899,7 +899,7 @@ int main (int argc, char** argv)
                     
                     if (simple_run2 == true)
                         {
-                        makeLoadstep = true;
+                        makeLoadstep = (k % save == 0 && activationBelowLoadstepThreshold);;
                         makeMechanicsCirculationCoupling = false;
                         if ( 0 == comm->MyPID() )
                             {
