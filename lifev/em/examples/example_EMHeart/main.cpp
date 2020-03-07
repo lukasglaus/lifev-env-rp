@@ -913,7 +913,7 @@ int main (int argc, char** argv)
                             }
                         }
                     
-                    if ( makeLoadstep && !makeMechanicsCirculationCoupling )
+                    if ( makeLoadstep==1 && !makeMechanicsCirculationCoupling==1 )
                     {
                         if ( 0 == comm->MyPID() )
                             {
