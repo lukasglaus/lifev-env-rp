@@ -918,7 +918,7 @@ int main (int argc, char** argv)
                         if ( 0 == comm->MyPID() )
                             {
                             std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
-                            std::cout<<"\nWe are in Loadstep)";
+                            std::cout<<"\nWe are in Loadstep";
                             std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
                             }
                         
