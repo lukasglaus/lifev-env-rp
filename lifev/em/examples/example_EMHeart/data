@@ -72,7 +72,7 @@ monodomain_xml_file = ParamListE.xml
     lawType         = nonlinear
 
     [../boundary_conditions]
-    numPreloadSteps  = 50 for a starting pressure of 5mmHg in left and right ventricle
+    numPreloadSteps  = 2 for a starting pressure of 5mmHg in left and right ventricle
 
     list = 'BaseSemilunar BaseAV AorticRing MitralRing TricuspidRing Epicardium'
 
@@ -230,8 +230,8 @@ monodomain_xml_file = ParamListE.xml
             
             #Settings:
             distance_to_axis        = 50                 #mm, default=..
-            maximum_angle           = 35                #°, default=..
-            minimum_angle           = 5                 #°, default=..
+            maximum_angle           = 20                #°, default=..
+            minimum_angle           = 2                 #°, default=..
             rotation_direction      = 1
             
             #Default Settings, no need to change them
@@ -247,7 +247,7 @@ monodomain_xml_file = ParamListE.xml
            
             #Settings:
             distance_to_axis        = 50                   #mm, default=..
-            maximum_angle           = 35                  #°, default=..
+            maximum_angle           = 25                  #°, default=..
             minimum_angle           = 5                   #°, default=..
             rotation_direction      = -1
            
@@ -292,7 +292,7 @@ monodomain_xml_file = ParamListE.xml
     simple_run2             = true
     simple_pleft            = 0.1
     simple_pright           = 0.1
-    simple_iterations       = 50
+    simple_iterations       = 50 #only for simple_run
     
     [../coupling]
     pPerturbationFe         = 1e-3
