@@ -908,12 +908,20 @@ int main (int argc, char** argv)
                             std::cout << "\nsimple_run2 ="<<simple_run2;
                             std::cout << "\nmakeLoadstep ="<<makeLoadstep;
                             std::cout << "\nmakeMechanicsCirculationCoupling ="<<makeMechanicsCirculationCoupling;
+                                std::cout<<"\nmakeLoadstep&&!makeMech..="<<makeLoadstep && !makeMechanicsCirculationCoupling;
                             std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
                             }
                         }
                     
                     if ( makeLoadstep && !makeMechanicsCirculationCoupling )
                     {
+                        if ( 0 == comm->MyPID() )
+                            {
+                            std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
+                            std::cout<<"\nWe are in Loadstep)";
+                            std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
+                            }
+                        
                         // Linear b.c. extrapolation
                         auto bcValuesLoadstep ( bcValues );
                         bcValuesLoadstep[0] = bcValues[0] + ( bcValues4thOAB[0] - bcValues[0] ) * ( k % mechanicsCouplingIter ) / mechanicsCouplingIter;
