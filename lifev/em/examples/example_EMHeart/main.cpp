@@ -884,8 +884,8 @@ int main (int argc, char** argv)
                     
                     if (simple_run2 == false)
                         {
-                            makeLoadstep (k % mechanicsLoadstepIter == 0 && activationBelowLoadstepThreshold);
-                            makeMechanicsCirculationCoupling (k % mechanicsCouplingIter == 0);
+                            makeLoadstep = (k % mechanicsLoadstepIter == 0 && activationBelowLoadstepThreshold);
+                            makeMechanicsCirculationCoupling = (k % mechanicsCouplingIter == 0);
                             if ( 0 == comm->MyPID() )
                                 {
                                 std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
