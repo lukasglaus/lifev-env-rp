@@ -927,8 +927,8 @@ template<typename Mesh , typename ElectroSolver>
 void
 EMSolver<Mesh, ElectroSolver>::closeExporters()
 {
-    std::cout<<"\nM_electroExporterPtr -> closeFile(); in solver";
-    M_electroExporterPtr -> closeFile();
+    //std::cout<<"\nM_electroExporterPtr -> closeFile(); in solver";
+    //M_electroExporterPtr -> closeFile();
     
     std::cout<<"\nM_activationExporterPtr -> closeFile(); in solver";
     M_activationExporterPtr -> closeFile();
