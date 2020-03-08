@@ -930,9 +930,9 @@ EMSolver<Mesh, ElectroSolver>::closeExporters()
     //std::cout<<"\nM_electroExporterPtr -> closeFile(); in solver";
     //M_electroExporterPtr -> closeFile();
     
-    std::cout<<"\nM_activationExporterPtr -> closeFile(); in solver";
-    M_activationExporterPtr -> closeFile();
-    //M_activationTimeExporterPtr -> closeFile();
+    //std::cout<<"\nM_activationExporterPtr -> closeFile(); in solver";
+    //M_activationExporterPtr -> closeFile();
+    //M_activationTimeExporterPtr -> closeFile(); //already before inactivated
     
     std::cout<<"\n************************************************";
     std::cout<<"\nM_mechanicsExporterPtr -> closeFile(); in solver";
