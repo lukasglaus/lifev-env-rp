@@ -1039,7 +1039,7 @@ int main (int argc, char** argv)
     //============================================
     // Close all exporters
     //============================================
-    solver.closeExporters();
+    //solver.closeExporters();
     heartSolver.exporter()->closeFile();
     
 
