@@ -21,8 +21,8 @@ monodomain_xml_file = ParamListE.xml
     normalDiffusion = 3 #0.176 #3.0
     
     [../time_discretization]
-    endtime         = 100000
-    timestep        = 0.05
+    endtime         = 400 #100000
+    timestep        = 1 #0.05
     
     [../discretization]
     LumpedMass = false
