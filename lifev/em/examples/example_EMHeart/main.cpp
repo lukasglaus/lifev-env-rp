@@ -750,7 +750,7 @@ int main (int argc, char** argv)
                 if ( 0 == comm->MyPID() )
                     {
                     std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
-                    std::cout<<"\nWe are in if (simple_run == true)";
+                    std::cout<<  "\nWe are in if (simple_run == true)";
                     std::cout << "\nsimple_run ="<<simple_run;
                     std::cout << "\nmakeLoadstep ="<<makeLoadstep;
                     std::cout << "\nmakeMechanicsCirculationCoupling ="<<makeMechanicsCirculationCoupling;
@@ -800,6 +800,16 @@ int main (int argc, char** argv)
                     patchHandler.modifyPatchBC(solver, t); //this we survive; crash probably comes in next one
                     solver.bcInterfacePtr() -> updatePhysicalSolverVariables();
                     solver.solveMechanics();
+                    
+                    if (simple_run == true)
+                    {
+                        VFeNew[0] = LV.volume(disp, dETFESpace, - 1);
+                        VFeNew[1] = RV.volume(disp, dETFESpace, 1);
+                        std::cout<<"LV-Volume = "<<VFeNew[0];
+                        std::cout<<"RV-Volume = "<<VFeNew[1];
+                    }
+
+                    
             }
             
             
