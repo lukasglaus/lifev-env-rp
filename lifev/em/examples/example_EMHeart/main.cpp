@@ -799,9 +799,9 @@ int main (int argc, char** argv)
                     //modifyEssentialPatchBC(t);
                     patchHandler.modifyPatchBC(solver, t); //this we survive; crash probably comes in next one
                     solver.bcInterfacePtr() -> updatePhysicalSolverVariables();
-                    solver.solveMechanics();
+                    solver.solveMechanicsLin();
                     
-                    if (simple_run == true)
+                    if (simple_run == true && 0 == comm->MyPID())
                     {
                         VFeNew[0] = LV.volume(disp, dETFESpace, - 1);
                         VFeNew[1] = RV.volume(disp, dETFESpace, 1);
