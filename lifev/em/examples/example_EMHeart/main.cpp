@@ -799,7 +799,7 @@ int main (int argc, char** argv)
                     //modifyEssentialPatchBC(t);
                     patchHandler.modifyPatchBC(solver, t); //this we survive; crash probably comes in next one
                     solver.bcInterfacePtr() -> updatePhysicalSolverVariables();
-                    solver.solveMechanicsLin();
+                    solver.solveMechanics();
                     
                     if (simple_run == true && 0 == comm->MyPID())
                     {
