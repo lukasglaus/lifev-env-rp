@@ -765,6 +765,7 @@ int main (int argc, char** argv)
                         {
                         std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
                         std::cout<<"\nWe are in Loadstep";
+                        std::cout<<"\nCurrently needed time : "<<chronoTimeNow;
                         std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
                         }
                 
@@ -786,6 +787,8 @@ int main (int argc, char** argv)
                     // Load step mechanics
                     solver.structuralOperatorPtr() -> data() -> dataTime() -> setTime(t);
                     
+                    patchHandler.modifyPatchBC(solver, t); //this we survive; crash probably comes in next one
+                    
                     if (simple_run == false)
                         {
                         modifyPressureBC(bcValuesLoadstep);
@@ -797,7 +800,7 @@ int main (int argc, char** argv)
                         }
 
                     //modifyEssentialPatchBC(t);
-                    patchHandler.modifyPatchBC(solver, t); //this we survive; crash probably comes in next one
+                    
                     solver.bcInterfacePtr() -> updatePhysicalSolverVariables();
                     solver.solveMechanics();
                     
