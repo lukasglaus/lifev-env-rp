@@ -745,14 +745,20 @@ int main (int argc, char** argv)
             
             if (simple_run == true)
                 {
-                makeLoadstep = (k % mechanicsLoadstepIter == 0);
-                //makeLoadstep = (std::abs(std::remainder(t, dt_save)) < 0.01 && activationBelowLoadstepThreshold);
-                makeMechanicsCirculationCoupling = false;
-                if ( 0 == comm->MyPID() )
+                    if ( 0 == comm->MyPID() )
                     {
                     std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
-                    std::cout<<  "\nWe are in if (simple_run == true)";
-                    std::cout << "\nsimple_run ="<<simple_run;
+                                   std::cout<<  "\nWe are in if (simple_run == true)";
+                                    std::cout << "\nsimple_run ="<<simple_run;
+                    }
+                    
+                    makeLoadstep = true;
+                    //makeLoadstep = (k % mechanicsLoadstepIter == 0 && activationBelowLoadstepThreshold);
+                    //makeLoadstep = (std::abs(std::remainder(t, dt_save)) < 0.01 && activationBelowLoadstepThreshold);
+                    makeMechanicsCirculationCoupling = false;
+                
+                    if ( 0 == comm->MyPID() )
+                    {
                     std::cout << "\nmakeLoadstep ="<<makeLoadstep;
                     std::cout << "\nmakeMechanicsCirculationCoupling ="<<makeMechanicsCirculationCoupling;
                         std::cout<<"\nmakeLoadstep&&!makeMech..="<<makeLoadstep && !makeMechanicsCirculationCoupling;
