@@ -789,7 +789,7 @@ int main (int argc, char** argv)
                     
                     patchHandler.modifyPatchBC(solver, t); //this we survive; crash probably comes in next one
                     
-                    modifyPressureBC(bcValuesSimple);
+                    modifyPressureBC(bcValuesLoadstep);
                     /*
                     if (simple_run == false)
                         {
