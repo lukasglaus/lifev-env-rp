@@ -752,9 +752,7 @@ int main (int argc, char** argv)
                                     std::cout << "\nsimple_run ="<<simple_run;
                     }
                     
-                    makeLoadstep = true;
-                    //makeLoadstep = (k % mechanicsLoadstepIter == 0 && activationBelowLoadstepThreshold);
-                    //makeLoadstep = (std::abs(std::remainder(t, dt_save)) < 0.01 && activationBelowLoadstepThreshold);
+                    makeLoadstep = (std::abs(std::remainder(t, dt_save)) < 0.01 && activationBelowLoadstepThreshold);
                     makeMechanicsCirculationCoupling = false;
                 
                     if ( 0 == comm->MyPID() )
@@ -796,8 +794,8 @@ int main (int argc, char** argv)
                     
                     patchHandler.modifyPatchBC(solver, t); //this we survive; crash probably comes in next one
                     
-                    modifyPressureBC(bcValuesLoadstep);
-                    /*
+                    //modifyPressureBC(bcValuesLoadstep);
+                    
                     if (simple_run == false)
                         {
                         modifyPressureBC(bcValuesLoadstep);
@@ -807,7 +805,7 @@ int main (int argc, char** argv)
                         {
                         modifyPressureBC(bcValuesSimple);
                         }
-                    */
+                    
                     //modifyEssentialPatchBC(t);
                     
                     solver.bcInterfacePtr() -> updatePhysicalSolverVariables();
@@ -819,6 +817,8 @@ int main (int argc, char** argv)
                         VFeNew[1] = RV.volume(disp, dETFESpace, 1);
                         std::cout<<"LV-Volume = "<<VFeNew[0];
                         std::cout<<"RV-Volume = "<<VFeNew[1];
+                        std::cout<<"bvValuesSimple[0] = "<<bcValuesSimple[0];
+                        std::cout<<"bvValuesSimple[1] = "<<bcValuesSimple[1];
                     }
 
                     
