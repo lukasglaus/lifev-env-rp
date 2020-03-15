@@ -789,6 +789,8 @@ int main (int argc, char** argv)
                     
                     patchHandler.modifyPatchBC(solver, t); //this we survive; crash probably comes in next one
                     
+                    modifyPressureBC(bcValuesSimple);
+                    /*
                     if (simple_run == false)
                         {
                         modifyPressureBC(bcValuesLoadstep);
@@ -798,7 +800,7 @@ int main (int argc, char** argv)
                         {
                         modifyPressureBC(bcValuesSimple);
                         }
-
+                    */
                     //modifyEssentialPatchBC(t);
                     
                     solver.bcInterfacePtr() -> updatePhysicalSolverVariables();
