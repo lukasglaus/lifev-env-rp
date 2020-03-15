@@ -765,7 +765,7 @@ int main (int argc, char** argv)
                         {
                         std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
                         std::cout<<"\nWe are in Loadstep";
-                        std::cout<<"\nCurrently needed time : "<<chronoTimeNow;
+                        std::cout<<"\nCurrently needed time : "<<chronoExport.diff();
                         std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
                         }
                 
