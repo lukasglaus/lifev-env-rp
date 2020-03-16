@@ -756,8 +756,7 @@ int main (int argc, char** argv)
                                     std::cout << "\nsimple_run ="<<simple_run;
                     }
                     
-                    makeLoadstep = true;
-                    //makeLoadstep = (std::abs(std::remainder(t, dt_save)) < 0.01 && activationBelowLoadstepThreshold);
+                    makeLoadstep = (std::abs(std::remainder(t, dt_save)) < 0.01 && activationBelowLoadstepThreshold);
                     makeMechanicsCirculationCoupling = false;
                 
                     if ( 0 == comm->MyPID() )
@@ -808,7 +807,7 @@ int main (int argc, char** argv)
                     
                     if (simple_run == true)
                         {
-                        modifyPressureBC(bcValuesSimple);
+                        modifyPressureBC(bcValuesLoadstep);
                         }
                     
                     //modifyEssentialPatchBC(t);
