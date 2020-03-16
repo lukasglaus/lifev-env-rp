@@ -756,7 +756,8 @@ int main (int argc, char** argv)
                                     std::cout << "\nsimple_run ="<<simple_run;
                     }
                     
-                    makeLoadstep = (std::abs(std::remainder(t, dt_save)) < 0.01 && activationBelowLoadstepThreshold);
+                    makeLoadstep = true;
+                    //makeLoadstep = (std::abs(std::remainder(t, dt_save)) < 0.01 && activationBelowLoadstepThreshold);
                     makeMechanicsCirculationCoupling = false;
                 
                     if ( 0 == comm->MyPID() )
