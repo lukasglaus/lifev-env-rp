@@ -713,14 +713,34 @@ int main (int argc, char** argv)
             //============================================
             // Solve electrophysiology and activation
             //============================================
-
+            if ( 0 == comm->MyPID() )
+                {
+                    std::cout << "\n*****************************************************************";
+                    std::cout << "\nTIME = " << t+dt_activation;
+                    std::cout << "\nCOUT Nr. 1";
+                    std::cout << "\n*****************************************************************\n";
+                }
             auto maxI4fValue ( solver.activationModelPtr()->I4f().maxValue() );
             auto minI4fValue ( solver.activationModelPtr()->I4f().minValue() );
+            
+            if ( 0 == comm->MyPID() )
+                {
+                    std::cout << "\n*****************************************************************";
+                    std::cout << "\nTIME = " << t+dt_activation;
+                    std::cout << "\nCOUT Nr. 2";
+                    std::cout << "\n*****************************************************************\n";
+                }
             
             solver.solveElectrophysiology (stim, t);
             solver.solveActivation (dt_activation);
             
-            
+            if ( 0 == comm->MyPID() )
+                {
+                    std::cout << "\n*****************************************************************";
+                    std::cout << "\nTIME = " << t+dt_activation;
+                    std::cout << "\nCOUT Nr. 3";
+                    std::cout << "\n*****************************************************************\n";
+                }
             //============================================
             // Load steps mechanics (activation & b.c.)
             //============================================
@@ -729,8 +749,24 @@ int main (int argc, char** argv)
 
             const bool activationBelowLoadstepThreshold (minActivationValue < activationLimit_loadstep);
             
+            if ( 0 == comm->MyPID() )
+                {
+                    std::cout << "\n*****************************************************************";
+                    std::cout << "\nTIME = " << t+dt_activation;
+                    std::cout << "\nCOUT Nr. 4";
+                    std::cout << "\n*****************************************************************\n";
+                }
+            
             bool makeLoadstep;
             bool makeMechanicsCirculationCoupling;
+            
+            if ( 0 == comm->MyPID() )
+                {
+                    std::cout << "\n*****************************************************************";
+                    std::cout << "\nTIME = " << t+dt_activation;
+                    std::cout << "\nCOUT Nr. 5";
+                    std::cout << "\n*****************************************************************\n";
+                }
             
             if (simple_run == false)
                 {
@@ -808,7 +844,8 @@ int main (int argc, char** argv)
                     
                     if (simple_run == true)
                         {
-                        modifyPressureBC(bcValuesLoadstep);
+                        //modifyPressureBC(bcValuesLoadstep);
+                        modifyPressureBC({5.755,2.445});
                         }
                     
                     //modifyEssentialPatchBC(t);
