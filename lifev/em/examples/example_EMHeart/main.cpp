@@ -792,8 +792,8 @@ int main (int argc, char** argv)
                                     std::cout << "\nsimple_run ="<<simple_run;
                     }
                     
-                    makeLoadstep=true;
-                    //makeLoadstep = (std::abs(std::remainder(t, dt_save)) < 0.01 && activationBelowLoadstepThreshold);
+                    //makeLoadstep=true;
+                    makeLoadstep = (std::abs(std::remainder(t, dt_save)) < 0.01 && activationBelowLoadstepThreshold);
                     makeMechanicsCirculationCoupling = false;
                 
                     if ( 0 == comm->MyPID() )
@@ -833,22 +833,36 @@ int main (int argc, char** argv)
                     // Load step mechanics
                     solver.structuralOperatorPtr() -> data() -> dataTime() -> setTime(t);
                     
-                    patchHandler.modifyPatchBC(solver, t); //this we survive; crash probably comes in next one
+                    //patchHandler.modifyPatchBC(solver, t); //this we survive; crash probably comes in next one
                     
                     //modifyPressureBC(bcValuesLoadstep);
                     
                     if (simple_run == false)
                         {
                         modifyPressureBC(bcValuesLoadstep);
+                        if ( 0 == comm->MyPID() )
+                            {
+                            std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
+                            std::cout<<"modifyPressureBC(bcValuesLoadstep) in simple_run==false";
+                            std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
+                            }
                         }
                     
                     if (simple_run == true)
                         {
                         //modifyPressureBC(bcValuesLoadstep);
                         modifyPressureBC({5.755,2.445});
+                        if ( 0 == comm->MyPID() )
+                            {
+                            std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
+                            std::cout<<"modifyPressureBC({5.755,2.445}) in simple_run==true";
+                            std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
+                            }
                         }
                     
                     //modifyEssentialPatchBC(t);
+                    
+                    patchHandler.modifyPatchBC(solver, t);
                     
                     solver.bcInterfacePtr() -> updatePhysicalSolverVariables();
                     solver.solveMechanics();
