@@ -793,7 +793,8 @@ int main (int argc, char** argv)
                     }
                     
                     //makeLoadstep=true;
-                    makeLoadstep = (std::abs(std::remainder(t, dt_save)) < 0.01 && activationBelowLoadstepThreshold);
+                    //makeLoadstep = (std::abs(std::remainder(t, dt_save)) < 0.01 && activationBelowLoadstepThreshold);
+                    makeLoadstep = (k % mechanicsLoadstepIter == 0;
                     makeMechanicsCirculationCoupling = false;
                 
                     if ( 0 == comm->MyPID() )
