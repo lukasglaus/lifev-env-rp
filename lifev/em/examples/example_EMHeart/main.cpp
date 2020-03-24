@@ -716,7 +716,7 @@ int main (int argc, char** argv)
             if ( 0 == comm->MyPID() )
                 {
                     std::cout << "\n*****************************************************************";
-                    std::cout << "\nTIME = " << t+dt_activation;
+                    std::cout << "\nTIME = " << t;
                     std::cout << "\nCOUT Nr. 1";
                     std::cout << "\n*****************************************************************\n";
                 }
@@ -726,7 +726,7 @@ int main (int argc, char** argv)
             if ( 0 == comm->MyPID() )
                 {
                     std::cout << "\n*****************************************************************";
-                    std::cout << "\nTIME = " << t+dt_activation;
+                    std::cout << "\nTIME = " << t;
                     std::cout << "\nCOUT Nr. 2";
                     std::cout << "\n*****************************************************************\n";
                 }
@@ -737,7 +737,7 @@ int main (int argc, char** argv)
             if ( 0 == comm->MyPID() )
                 {
                     std::cout << "\n*****************************************************************";
-                    std::cout << "\nTIME = " << t+dt_activation;
+                    std::cout << "\nTIME = " << t;
                     std::cout << "\nCOUT Nr. 3";
                     std::cout << "\n*****************************************************************\n";
                 }
@@ -752,7 +752,7 @@ int main (int argc, char** argv)
             if ( 0 == comm->MyPID() )
                 {
                     std::cout << "\n*****************************************************************";
-                    std::cout << "\nTIME = " << t+dt_activation;
+                    std::cout << "\nTIME = " << t;
                     std::cout << "\nCOUT Nr. 4";
                     std::cout << "\n*****************************************************************\n";
                 }
@@ -763,7 +763,7 @@ int main (int argc, char** argv)
             if ( 0 == comm->MyPID() )
                 {
                     std::cout << "\n*****************************************************************";
-                    std::cout << "\nTIME = " << t+dt_activation;
+                    std::cout << "\nTIME = " << t;
                     std::cout << "\nCOUT Nr. 5";
                     std::cout << "\n*****************************************************************\n";
                 }
@@ -850,8 +850,10 @@ int main (int argc, char** argv)
                     
                     if (simple_run == true)
                         {
+                        bcValuesLoadstep[0]=5.755;
+                        bcValuesLoadstep[1]=2.445;
                         //modifyPressureBC(bcValuesLoadstep);
-                        modifyPressureBC({5.755,2.445});
+                        modifyPressureBC(bcValuesLoadstep);
                         if ( 0 == comm->MyPID() )
                             {
                             std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
