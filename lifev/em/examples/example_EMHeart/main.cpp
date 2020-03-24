@@ -850,8 +850,8 @@ int main (int argc, char** argv)
                     
                     if (simple_run == true)
                         {
-                        bcValuesLoadstep[0]=5.755;
-                        bcValuesLoadstep[1]=2.445;
+                        bcValuesLoadstep[0]=0.1;
+                        bcValuesLoadstep[1]=0.1;
                         //modifyPressureBC(bcValuesLoadstep);
                         modifyPressureBC(bcValuesLoadstep);
                         if ( 0 == comm->MyPID() )
