@@ -209,7 +209,7 @@ Int NonLinearRichardson ( VectorEpetra& sol,
 	// lambda = 1.;
 	// /////////////////////////////////////////////
 	//lambda = 0.1;
-	lambda = 1.0; //2020.03.25: 0.2 -> 1
+	lambda = 0.2; //2020.03.25: 0.2 -> 1
 	//lambda = 0.2;//previously 0.4 lg
 
         slope  = normRes * normRes * ( linres * linres - 1 );
@@ -218,13 +218,13 @@ Int NonLinearRichardson ( VectorEpetra& sol,
         switch ( NonLinearLineSearch )
         {
             case 0: // no NonLinearLineSearch
-                if ( iter > 20 ) lambda = 0.6;
-                //if (iter > 7 ) lambda = 1.0;
-                //if(iter > 30) lambda = 1.0;
-                //if(normRes < 2000 && iter > 5) lambda = 1.0;//>5 war >3 lg
-                //else if(iter > 17 && iter < 25 ) lambda = 0.5;//>17 war >10 lg
-                //else if(iter > 25) lambda = 1.0;
-                //else if(normRes < 20000 && iter > 20) lambda = 0.6;
+                //if ( iter > 20 ) lambda = 0.6;
+                if (iter > 7 ) lambda = 1.0;
+                if(iter > 30) lambda = 1.0;
+                if(normRes < 2000 && iter > 5) lambda = 1.0;//>5 war >3 lg
+                else if(iter > 17 && iter < 25 ) lambda = 0.5;//>17 war >10 lg
+                else if(iter > 25) lambda = 1.0;
+                else if(normRes < 20000 && iter > 20) lambda = 0.6;
 
                 //if(iter > 25) lambda = 1.0;
                 //if(normRes < 4000 && iter > 20) lambda = 1.0; //Hier aendern zu lambda = 0.6
