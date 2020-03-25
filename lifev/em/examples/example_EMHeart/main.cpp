@@ -794,7 +794,7 @@ int main (int argc, char** argv)
                     
                     //makeLoadstep=true;
                     //makeLoadstep = (std::abs(std::remainder(t, dt_save)) < 0.01 && activationBelowLoadstepThreshold);
-                    makeLoadstep = (k % mechanicsLoadstepIter == 0);
+                    makeLoadstep = (k % mechanicsLoadstepIter == 0 && activationBelowLoadstepThreshold);
                     makeMechanicsCirculationCoupling = false;
                 
                     if ( 0 == comm->MyPID() )
@@ -869,10 +869,12 @@ int main (int argc, char** argv)
                     
                     //modifyEssentialPatchBC(t);
                     
-                    patchHandler.modifyPatchBC(solver, t);
+                    //patchHandler.modifyPatchBC(solver, t);
                     
                     solver.bcInterfacePtr() -> updatePhysicalSolverVariables();
                     solver.solveMechanics();
+                    
+                    std::cout<<"test";
                     
                     if (simple_run == true && 0 == comm->MyPID())
                     {
