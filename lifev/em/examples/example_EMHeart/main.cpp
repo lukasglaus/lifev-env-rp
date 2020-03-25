@@ -844,15 +844,15 @@ int main (int argc, char** argv)
                         if ( 0 == comm->MyPID() )
                             {
                             std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
-                            std::cout<<"modifyPressureBC(bcValuesLoadstep) in simple_run==false";
+                            std::cout<<"\nmodifyPressureBC(bcValuesLoadstep) in simple_run==false";
                             std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
                             }
                         }
                     
                     if (simple_run == true)
                         {
-                        bcValuesLoadstep[0]=0.1*k;
-                        bcValuesLoadstep[1]=0.1*k;
+                        bcValuesLoadstep[0]=0.1+0.1*std::sin(((k%5)/5)*3.141);
+                        bcValuesLoadstep[1]=0.1+0.1*std::sin(((k%5)/5)*3.141);
                         //bcValuesLoadstep[0]=0.1+(k%2)*0.05;
                         //bcValuesLoadstep[1]=0.1+(k%2)*0.05;
                         //modifyPressureBC(bcValuesLoadstep);
@@ -861,6 +861,8 @@ int main (int argc, char** argv)
                             {
                             std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
                             std::cout<<"\nmodifyPressureBC({5.755,2.445}) in simple_run==true";
+                            std::cout << "\nbcValuesLoadstep[0] = "<<  bcValuesLoadstep[0];
+                            std::cout << "\nbcValuesLoadstep[0] = "<<  bcValuesLoadstep[1];
                             std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
                             }
                         }
