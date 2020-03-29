@@ -851,8 +851,9 @@ int main (int argc, char** argv)
                     
                     if (simple_run == true)
                         {
-                        bcValuesLoadstep[0]=1.0+0.2*std::sin(((k % 4*mechanicsLoadstepIter)/(4*mechanicsLoadstepIter))*3.141);
-                        bcValuesLoadstep[1]=1.0+0.2*std::sin(((k % 4*mechanicsLoadstepIter)/(4*mechanicsLoadstepIter))*3.141);
+                        //bcValuesLoadstep[0]=1.0+0.2*std::sin(((k % 4*mechanicsLoadstepIter)/(4*mechanicsLoadstepIter))*3.141);
+                        //bcValuesLoadstep[1]=1.0+0.2*std::sin(((k % 4*mechanicsLoadstepIter)/(4*mechanicsLoadstepIter))*3.141);
+                        
                         //bcValuesLoadstep[0]=0.1+(k%2)*0.05;
                         //bcValuesLoadstep[1]=0.1+(k%2)*0.05;
                         //modifyPressureBC(bcValuesLoadstep);
@@ -869,7 +870,7 @@ int main (int argc, char** argv)
                     
                     //modifyEssentialPatchBC(t);
                     
-                    //patchHandler.modifyPatchBC(solver, t);
+                    patchHandler.modifyPatchBC(solver, t);
                     
                     solver.bcInterfacePtr() -> updatePhysicalSolverVariables();
                     solver.solveMechanics();
