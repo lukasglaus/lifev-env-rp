@@ -91,7 +91,7 @@ void setup(const GetPot& dataFile, const std::string& name)
     
     //initial normal vector for applyPatchBC
     angleOfTime=calculate_angleOfTime(0.0);
-    normal_vector=createNormalVector (0.0);
+    normal_vector=createNormalVector (angleOfTime);
     m_patchDirection=normal_vector;
     
     //if ( solver.comm()->MyPID() == 0 ) std::cout<<"setup completed";
@@ -223,10 +223,10 @@ Vector3D rotateVectorAroundAxis (double angleOfTime)
     }
  
  //Cross product between two vectors creates a vector normal to them: c = a x b
- Vector3D createNormalVector (Real time)
+ Vector3D createNormalVector (double angle)
     {
     //std::cout<<"\ncreateNormalVector: time= "<<time;
-    double angle = calculate_angleOfTime(time);
+    //double angle = calculate_angleOfTime(time);
     //std::cout<<"\ncreateNormalVector: angle= "<<angle*180/PI;
     Vector3D axis_perp_t = rotateVectorAroundAxis(angle);
     //std::cout<<"\ncreateNormalVector: axis_perp_t= ("<<axis_perp_t[0]<<","<<axis_perp_t[1]<<","<<axis_perp_t[2]<<")";
@@ -288,6 +288,27 @@ const bool nodeOnPatchCurrent(const Vector3D& coord, const Real& time)
 
 }
 
+const bool nodeOnPatchAngle(const Vector3D coord, const double angle)
+{
+    
+    bool nodeInArea = 0;
+    Vector3D normal_vector_angle = createNormalVector(angle);
+    
+    //as shift we had + 0.35
+        if((normal_vector_angle[0]*coord[0] + normal_vector_angle[1]*coord[1] + normal_vector_angle[2]*coord[2] - normal_vector_angle[0]*starting_point[0]- normal_vector_angle[1]*starting_point[1]-normal_vector_angle[2]*starting_point[2]) <= 0)
+        {
+            nodeInArea = true;
+        }
+        else
+        {
+            nodeInArea = false;
+        }
+
+
+        return nodeInArea;
+
+}
+    
     void nodeOnPatchdisplayer(const Vector3D& coord, const Real& time)
     {
         double angle = calculate_angleOfTime(time);
@@ -350,11 +371,12 @@ void modifyPatchArea(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<Region
                                      auto coord = face.point(k).coordinates();
                                      auto pointInPatch = nodeOnPatchCurrent(coord, time);
                                      
-                                     if (k==0 && std::fmod(j,50)==0){
+                                     if (k==0 && std::fmod(j,50)==0)
+                                        {
                                          if ( solver.comm()->MyPID() == 0 ) std::cout<<"\n\nnodedisplayer for: "<<m_Name;
                                          if ( solver.comm()->MyPID() == 0 ) std::cout<<"\nnode number "<<j<<" of "<<mesh->numBoundaryFacets();
                                          if ( solver.comm()->MyPID() == 0 ) nodeOnPatchdisplayer(coord, time);
-                                     }
+                                        }
                                      
                                      if(pointInPatch == true)
                                          {
@@ -394,11 +416,112 @@ void modifyPatchArea(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<Region
  }
 
 //this is directional vectorfield for p2 elements
+    
+//bewusst & vor solver entfernt damit solver nicht modifiziert wird
+    double startPositionFinder(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > > solver,const int newFlag)
+    {
+        if ( solver.comm()->MyPID() == 0 ) std::cout << "\nWE ARE IN startPositionFinder " << std::endl;
+        
+        bool nodesMoved=0;
+        double initialAngle=maximum_angle/2;
+        double finalangle;
+        
+        for (double angle=initialAngle, angle>0,angle=angle-0.1)
+        {
+                auto p2FeSpace = solver.electroSolverPtr()->feSpacePtr();
+                auto p2dFeSpace = solver.structuralOperatorPtr()->dispFESpacePtr();
+                FESpace<RegionMesh<LinearTetra>, MapEpetra > p1FESpace (p2FeSpace->mesh(), "P1", 1, p2FeSpace->mesh()->comm());
 
+                //create an epetra vector to set it equal to one where it is part of patch
+                VectorEpetra p1ScalarFieldFaces (p1FESpace.map());
+
+                p1ScalarFieldFaces *= 0.0;
+
+                Int p1ScalarFieldFacesDof = p1ScalarFieldFaces.epetraVector().MyLength();
+
+                int globalIdArray[p1ScalarFieldFacesDof];
+
+                p1ScalarFieldFaces.blockMap().MyGlobalElements(globalIdArray);
+
+                m_patchFlag = newFlag;
+
+                //std::cout << "This is patchFlag in modify Patch Area: " << m_patchFlag << std::endl;
+                const auto& mesh = solver.localMeshPtr(); // variable mesh which we use later for for loop; we assign a local Mesh pointer to it
+
+                const auto& meshfull = solver.fullMeshPtr();
+                //auto numPoints = meshfull->numPoints();
+
+                //getPatchRegion(solver, m_patchFlag, time);
+
+                    // Create patches by changing the markerID (flag) locally
+
+        
+                    for (int j(0); j < mesh->numBoundaryFacets(); j++) //returns number of boundary facets
+                            {
+                                auto& face = mesh->boundaryFacet(j);
+                                auto faceFlag = face.markerID();
+                                //std::cout << "This is face marker ID: " << face.markerID() << std::endl;
+                                //if (faceFlag == m_PrevFlag)
+                                //{
+                                int numPointsOnFace(0);
+
+                                for (int k(0); k < 3; ++k) //k < 3 was before; this is just a test
+                                     {
+                                         //auto coord = face.point(k).coordinates();
+                                         ID pointGlobalId = face.point(k).id();
+                                         auto coord = face.point(k).coordinates();
+                                         auto pointInPatch = nodeOnPatchAngle(coord, angle);
+                                         
+                                         if (k==0 && std::fmod(j,50)==0)
+                                            {
+                                             if ( solver.comm()->MyPID() == 0 ) std::cout<<"\n\nnodedisplayer for: "<<m_Name;
+                                             if ( solver.comm()->MyPID() == 0 ) std::cout<<"\nnode number "<<j<<" of "<<mesh->numBoundaryFacets();
+                                             if ( solver.comm()->MyPID() == 0 ) nodeOnPatchdisplayer(coord, time);
+                                            }
+                                         
+                                         if(pointInPatch == true)
+                                             {
+                                                 nodesMoved=true;
+                                                 ++numPointsOnFace;
+                                                 for(int n = 0; n < p1ScalarFieldFacesDof; n++)
+                                                     {
+                                                         if(pointGlobalId == globalIdArray[n])
+                                                             {
+                                                             //++numPointsOnFace;
+                                                             p1ScalarFieldFaces[pointGlobalId] = 1.0;
+                                                             }
+                                                     }
+                                             }
+
+                                     }
+                    
+                                 if (numPointsOnFace >= 1) // if there are more than two points on face we execute the if statement; not completly sure here
+                                 {
+                                         //std::cout << "We are now changing the faceID" << std::endl;
+                                         //std::cout << "" << std::endl;
+                                         face.setMarkerID(m_patchFlag);
+                                         //std::cout << "This is the set face flag: " ;
+                                         //face.Marker::showMe(std::cout);
+                                 }
+                    
+                               //}
+                            }
+        
+            if (nodesMoved=true)
+            {
+                std::cout<<"New Starting Position = "<<angle;
+                finalangle=angle;
+                break;
+            }
+        }
+        
+        return finalangle;
+     }
+    
 void modifyPatchBC(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver, const Real& time, int& PatchFlag)
 {
     angleOfTime=calculate_angleOfTime(time);
-    normal_vector=createNormalVector (time);
+    normal_vector=createNormalVector (angleOfTime);
     m_patchDirection=normal_vector;
     
     if ( solver.comm()->MyPID() == 0 )std::cout<<"\nin modifyPatchBC: "<<m_Name;
