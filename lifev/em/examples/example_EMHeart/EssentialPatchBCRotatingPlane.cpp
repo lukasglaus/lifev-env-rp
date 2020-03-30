@@ -426,7 +426,7 @@ void modifyPatchArea(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<Region
         double initialAngle=maximum_angle/2;
         double finalangle;
         
-        for (double angle=initialAngle, angle>0,angle=angle-0.1)
+        for (double angle=initialAngle; angle>0;angle=angle-0.1)
         {
                 auto p2FeSpace = solver.electroSolverPtr()->feSpacePtr();
                 auto p2dFeSpace = solver.structuralOperatorPtr()->dispFESpacePtr();
