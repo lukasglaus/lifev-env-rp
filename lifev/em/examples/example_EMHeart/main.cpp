@@ -787,8 +787,8 @@ int main (int argc, char** argv)
                 }
             
             //if (simple_run == true)
-            else
-            {
+            //else
+            //{
                 makeLoadstep = (k % mechanicsLoadstepIter == 0 && activationBelowLoadstepThreshold);
                 makeMechanicsCirculationCoupling = (k % mechanicsCouplingIter == 0);
                 if ( 0 == comm->MyPID() )
@@ -800,7 +800,7 @@ int main (int argc, char** argv)
                     std::cout << "\nmakeMechanicsCirculationCoupling ="<<makeMechanicsCirculationCoupling;
                     std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
                     }
-            }
+            //}
                    /*
                     if ( 0 == comm->MyPID() )
                     {
@@ -867,16 +867,16 @@ int main (int argc, char** argv)
                         }
                     
                     //if (simple_run == true)
-                    else
-                    {
-                    modifyPressureBC(bcValuesLoadstep);
-                    if ( 0 == comm->MyPID() )
-                        {
-                        std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
-                        std::cout<<"\nmodifyPressureBC(bcValuesLoadstep) in simple_run==true";
-                        std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
-                        }
-                    }
+                    //else
+                        //{
+                        modifyPressureBC(bcValuesLoadstep);
+                        if ( 0 == comm->MyPID() )
+                            {
+                            std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
+                            std::cout<<"\nmodifyPressureBC(bcValuesLoadstep) in simple_run==true";
+                            std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
+                            }
+                        //}
                     
                     //bcValuesLoadstep[0]=1.0+0.2*std::sin(((k % 4*mechanicsLoadstepIter)/(4*mechanicsLoadstepIter))*3.141);
                     //bcValuesLoadstep[1]=1.0+0.2*std::sin(((k % 4*mechanicsLoadstepIter)/(4*mechanicsLoadstepIter))*3.141);
@@ -893,7 +893,7 @@ int main (int argc, char** argv)
                     solver.solveMechanics();
                     
                     std::cout<<"test";
-                    
+                    /*
                     if (simple_run == true && 0 == comm->MyPID())
                     {
                         VFeNew[0] = LV.volume(disp, dETFESpace, - 1);
@@ -901,7 +901,7 @@ int main (int argc, char** argv)
                         std::cout<<"LV-Volume = "<<VFeNew[0];
                         std::cout<<"RV-Volume = "<<VFeNew[1];
                     }
-
+                    */
                     
             }
             
