@@ -786,7 +786,8 @@ int main (int argc, char** argv)
                         }
                 }
             
-            if (simple_run == true)
+            //if (simple_run == true)
+            else
             {
                 makeLoadstep = (k % mechanicsLoadstepIter == 0 && activationBelowLoadstepThreshold);
                 makeMechanicsCirculationCoupling = (k % mechanicsCouplingIter == 0);
@@ -865,7 +866,8 @@ int main (int argc, char** argv)
                             }
                         }
                     
-                    if (simple_run == true)
+                    //if (simple_run == true)
+                    else
                     {
                     modifyPressureBC(bcValuesLoadstep);
                     if ( 0 == comm->MyPID() )
