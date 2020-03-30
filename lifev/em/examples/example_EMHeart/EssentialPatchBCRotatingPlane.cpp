@@ -476,7 +476,7 @@ void modifyPatchArea(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<Region
                                             {
                                              if ( solver.comm()->MyPID() == 0 ) std::cout<<"\n\nnodedisplayer for: "<<m_Name;
                                              if ( solver.comm()->MyPID() == 0 ) std::cout<<"\nnode number "<<j<<" of "<<mesh->numBoundaryFacets();
-                                             if ( solver.comm()->MyPID() == 0 ) nodeOnPatchdisplayer(coord, time);
+                                             if ( solver.comm()->MyPID() == 0 ) nodeOnPatchdisplayer(coord, angle);
                                             }
                                          
                                          if(pointInPatch == true)
