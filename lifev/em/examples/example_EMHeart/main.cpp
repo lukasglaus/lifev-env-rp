@@ -646,11 +646,14 @@ int main (int argc, char** argv)
     // Simple_run
     //============================================
     const bool simple_run = dataFile ( "solid/simple_run/simple_run", false );
+    
+    /*
     const Real simple_pleft = dataFile ( "solid/simple_run/simple_pleft", 0.1 );
     const Real simple_pright = dataFile ( "solid/simple_run/simple_right", 0.1 );
     auto bcValuesSimple = bcValues;
     bcValuesSimple[0]=simple_pleft;
     bcValuesSimple[1]=simple_pright;
+    */
     
     //const std::vector<Real> bcValuesSimple = {simple_pleft,simple_pright};
     
@@ -784,19 +787,19 @@ int main (int argc, char** argv)
                 }
             
             if (simple_run == true)
-                {
-                    makeLoadstep = (k % mechanicsLoadstepIter == 0 && activationBelowLoadstepThreshold);
-                    makeMechanicsCirculationCoupling = (k % mechanicsCouplingIter == 0);
-                    if ( 0 == comm->MyPID() )
-                        {
-                        std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
-                        std::cout<<"\nWe are in if (simple_run == false)";
-                        std::cout << "\nsimple_run ="<<simple_run;
-                        std::cout << "\nmakeLoadstep ="<<makeLoadstep;
-                        std::cout << "\nmakeMechanicsCirculationCoupling ="<<makeMechanicsCirculationCoupling;
-                        std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
-                        }
-                    
+            {
+                makeLoadstep = (k % mechanicsLoadstepIter == 0 && activationBelowLoadstepThreshold);
+                makeMechanicsCirculationCoupling = (k % mechanicsCouplingIter == 0);
+                if ( 0 == comm->MyPID() )
+                    {
+                    std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
+                    std::cout<<"\nWe are in if (simple_run == true)";
+                    std::cout << "\nsimple_run ="<<simple_run;
+                    std::cout << "\nmakeLoadstep ="<<makeLoadstep;
+                    std::cout << "\nmakeMechanicsCirculationCoupling ="<<makeMechanicsCirculationCoupling;
+                    std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
+                    }
+            }
                    /*
                     if ( 0 == comm->MyPID() )
                     {
@@ -818,7 +821,6 @@ int main (int argc, char** argv)
                     std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
                     }
                     */
-                }
             
             if ( makeLoadstep && !makeMechanicsCirculationCoupling )
                 {
@@ -864,23 +866,22 @@ int main (int argc, char** argv)
                         }
                     
                     if (simple_run == true)
+                    {
+                    modifyPressureBC(bcValuesLoadstep);
+                    if ( 0 == comm->MyPID() )
                         {
-                        //bcValuesLoadstep[0]=1.0+0.2*std::sin(((k % 4*mechanicsLoadstepIter)/(4*mechanicsLoadstepIter))*3.141);
-                        //bcValuesLoadstep[1]=1.0+0.2*std::sin(((k % 4*mechanicsLoadstepIter)/(4*mechanicsLoadstepIter))*3.141);
-                        
-                        //bcValuesLoadstep[0]=0.1+(k%2)*0.05;
-                        //bcValuesLoadstep[1]=0.1+(k%2)*0.05;
-                        //modifyPressureBC(bcValuesLoadstep);
-                        modifyPressureBC(bcValuesLoadstep);
-                        if ( 0 == comm->MyPID() )
-                            {
-                            std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
-                            std::cout<<"\nmodifyPressureBC({5.755,2.445}) in simple_run==true";
-                            std::cout << "\nbcValuesLoadstep[0] = "<<  bcValuesLoadstep[0];
-                            std::cout << "\nbcValuesLoadstep[1] = "<<  bcValuesLoadstep[1];
-                            std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
-                            }
+                        std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
+                        std::cout<<"\nmodifyPressureBC(bcValuesLoadstep) in simple_run==true";
+                        std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
                         }
+                    }
+                    
+                    //bcValuesLoadstep[0]=1.0+0.2*std::sin(((k % 4*mechanicsLoadstepIter)/(4*mechanicsLoadstepIter))*3.141);
+                    //bcValuesLoadstep[1]=1.0+0.2*std::sin(((k % 4*mechanicsLoadstepIter)/(4*mechanicsLoadstepIter))*3.141);
+                    
+                    //bcValuesLoadstep[0]=0.1+(k%2)*0.05;
+                    //bcValuesLoadstep[1]=0.1+(k%2)*0.05;
+                    //modifyPressureBC(bcValuesLoadstep);
                     
                     //modifyEssentialPatchBC(t);
                     
@@ -897,8 +898,6 @@ int main (int argc, char** argv)
                         VFeNew[1] = RV.volume(disp, dETFESpace, 1);
                         std::cout<<"LV-Volume = "<<VFeNew[0];
                         std::cout<<"RV-Volume = "<<VFeNew[1];
-                        std::cout<<"bvValuesSimple[0] = "<<bcValuesSimple[0];
-                        std::cout<<"bvValuesSimple[1] = "<<bcValuesSimple[1];
                     }
 
                     
