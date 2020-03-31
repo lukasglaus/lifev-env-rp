@@ -788,7 +788,7 @@ int main (int argc, char** argv)
                 }
             */
             
-            if (simple_run == true)
+            if (simple_run)
             //else
             {
                 makeLoadstep = (k % mechanicsLoadstepIter == 0 && activationBelowLoadstepThreshold);
