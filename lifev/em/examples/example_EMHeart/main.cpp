@@ -645,8 +645,8 @@ int main (int argc, char** argv)
     //============================================
     // Simple_run
     //============================================
-    const bool simple_run = dataFile ( "solid/simple_run/simple_run", false );
-    
+    //const bool simple_run = dataFile ( "solid/simple_run/simple_run", false );
+    simple_run=true;
     /*
     const Real simple_pleft = dataFile ( "solid/simple_run/simple_pleft", 0.1 );
     const Real simple_pright = dataFile ( "solid/simple_run/simple_right", 0.1 );
