@@ -788,9 +788,9 @@ int main (int argc, char** argv)
                 }
             */
             
-            //if (simple_run == true)
+            if (simple_run == true)
             //else
-            //{
+            {
                 makeLoadstep = (k % mechanicsLoadstepIter == 0 && activationBelowLoadstepThreshold);
                 makeMechanicsCirculationCoupling = (k % mechanicsCouplingIter == 0);
                 if ( 0 == comm->MyPID() )
@@ -802,7 +802,7 @@ int main (int argc, char** argv)
                     std::cout << "\nmakeMechanicsCirculationCoupling ="<<makeMechanicsCirculationCoupling;
                     std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
                     }
-            //}
+            }
                    /*
                     if ( 0 == comm->MyPID() )
                     {
