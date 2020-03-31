@@ -771,6 +771,7 @@ int main (int argc, char** argv)
                     std::cout << "\n*****************************************************************\n";
                 }
             
+            /*
             if (simple_run == false)
                 {
                     makeLoadstep = (k % mechanicsLoadstepIter == 0 && activationBelowLoadstepThreshold);
@@ -785,6 +786,7 @@ int main (int argc, char** argv)
                         std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
                         }
                 }
+            */
             
             //if (simple_run == true)
             //else
@@ -855,6 +857,7 @@ int main (int argc, char** argv)
                     
                     //modifyPressureBC(bcValuesLoadstep);
                     
+                    /*
                     if (simple_run == false)
                         {
                         modifyPressureBC(bcValuesLoadstep);
@@ -865,6 +868,7 @@ int main (int argc, char** argv)
                             std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
                             }
                         }
+                    */
                     
                     //if (simple_run == true)
                     //else
