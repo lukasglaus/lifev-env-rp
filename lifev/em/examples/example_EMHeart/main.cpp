@@ -771,7 +771,7 @@ int main (int argc, char** argv)
                     std::cout << "\n*****************************************************************\n";
                 }
             
-            /*
+            
             if (simplerun == false)
                 {
                     makeLoadstep = (k % mechanicsLoadstepIter == 0 && activationBelowLoadstepThreshold);
@@ -786,10 +786,9 @@ int main (int argc, char** argv)
                         std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
                         }
                 }
-            */
             
-            if (simplerun)
-            //else
+            
+            if (simplerun == true)
             {
                 makeLoadstep = (k % mechanicsLoadstepIter == 0 && activationBelowLoadstepThreshold);
                 makeMechanicsCirculationCoupling = (k % mechanicsCouplingIter == 0);
@@ -857,7 +856,7 @@ int main (int argc, char** argv)
                     
                     //modifyPressureBC(bcValuesLoadstep);
                     
-                    /*
+                    
                     if (simplerun == false)
                         {
                         modifyPressureBC(bcValuesLoadstep);
@@ -868,11 +867,11 @@ int main (int argc, char** argv)
                             std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
                             }
                         }
-                    */
                     
-                    //if (simplerun == true)
+                    
+                    if (simplerun == true)
                     //else
-                        //{
+                        {
                         modifyPressureBC(bcValuesLoadstep);
                         if ( 0 == comm->MyPID() )
                             {
@@ -880,7 +879,7 @@ int main (int argc, char** argv)
                             std::cout<<"\nmodifyPressureBC(bcValuesLoadstep) in simplerun==true";
                             std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
                             }
-                        //}
+                        }
                     
                     //bcValuesLoadstep[0]=1.0+0.2*std::sin(((k % 4*mechanicsLoadstepIter)/(4*mechanicsLoadstepIter))*3.141);
                     //bcValuesLoadstep[1]=1.0+0.2*std::sin(((k % 4*mechanicsLoadstepIter)/(4*mechanicsLoadstepIter))*3.141);

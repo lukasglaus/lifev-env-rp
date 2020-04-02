@@ -287,10 +287,8 @@ monodomain_xml_file = ParamListE.xml
     tmax                = 176 #175 #250 #150 #200 #250
     tduration           = 350 #300
 
-    [../simple_run]
-    simple_run              = true
-    simple_pleft            = 0.1
-    simple_pright           = 0.1
+    [../simplerun]
+    simplerun              = true
     
     [../coupling]
     pPerturbationFe         = 1e-3
