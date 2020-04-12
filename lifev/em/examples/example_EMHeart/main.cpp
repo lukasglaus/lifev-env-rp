@@ -648,9 +648,9 @@ int main (int argc, char** argv)
     const bool simplerun = dataFile ( "solid/simplerun/simplerun", false );
     //bool simplerun=true;
     
-    const Real simplePleft = dataFile ( "solid/simplerun/simple_pleft", 0.1 );
-    const Real simplePright = dataFile ( "solid/simplerun/simple_right", 0.1 );
-
+    const Real simplePleft = dataFile ( "solid/simplerun/simplePleft", 0.1 );
+    const Real simplePright = dataFile ( "solid/simplerun/simplePright", 0.1 );
+    const int skipfactor = dataFile ( "solid/simplerun/skipfactor", 1 );
     
     //const std::vector<Real> bcValuesSimple = {simple_pleft,simple_pright};
     
@@ -790,13 +790,14 @@ int main (int argc, char** argv)
                 if ( 0 == comm->MyPID() )
                     {
                     std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
-                                   std::cout<<  "\nWe are in if (simplerun == true)";
-                                    std::cout << "\nsimplerun ="<<simplerun;
+                    std::cout<<  "\nWe are in if (simplerun == true)";
+                    std::cout << "\nsimplerun ="<<simplerun;
+                    std::cout << "\nskipfactor ="<<skipfactor;
                     }
                     
                     //makeLoadstep=true;
                     //makeLoadstep = (std::abs(std::remainder(t, dt_save)) < 0.01 && activationBelowLoadstepThreshold);
-                    makeLoadstep = (k % mechanicsLoadstepIter == 0 && activationBelowLoadstepThreshold);
+                    makeLoadstep = (k % (mechanicsLoadstepIter*skipfactor) == 0 && activationBelowLoadstepThreshold);
                     makeMechanicsCirculationCoupling = false;
                 
                     if ( 0 == comm->MyPID() )

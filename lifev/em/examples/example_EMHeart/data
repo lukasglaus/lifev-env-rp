@@ -289,8 +289,9 @@ monodomain_xml_file = ParamListE.xml
 
     [../simplerun]
     simplerun              = true
-    simplePleft            = 1.0
-    simplePright           = 1.0
+    simplePleft            = 5.755 #typical preload value 5.755
+    simplePright           = 2.445 #typical preload value 2.445
+    skipfactor             = 1
     
     [../coupling]
     pPerturbationFe         = 1e-3
