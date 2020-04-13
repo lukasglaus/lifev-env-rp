@@ -793,11 +793,13 @@ int main (int argc, char** argv)
                     std::cout<<  "\nWe are in if (simplerun == true)";
                     std::cout << "\nsimplerun ="<<simplerun;
                     std::cout << "\nskipfactor ="<<skipfactor;
+                    std::cout << "\nmechanicsLoadstepIter*skipfactor"<<mechanicsLoadstepIter*skipfactor;
+                        std::cout << "\nk % (mechanicsLoadstepIter*skipfactor"<<k % (mechanicsLoadstepIter*skipfactor);
                     }
                     
                     //makeLoadstep=true;
                     //makeLoadstep = (std::abs(std::remainder(t, dt_save)) < 0.01 && activationBelowLoadstepThreshold);
-                    makeLoadstep = (k % (mechanicsLoadstepIter*skipfactor) == 0 && activationBelowLoadstepThreshold);
+                    makeLoadstep = (k % (mechanicsLoadstepIter) == 0 && activationBelowLoadstepThreshold);
                     makeMechanicsCirculationCoupling = false;
                 
                     if ( 0 == comm->MyPID() )
