@@ -22,7 +22,7 @@ monodomain_xml_file = ParamListE.xml
     
     [../time_discretization]
     endtime         = 800 #100000
-    timestep        = 1 #0.05
+    timestep        = 0.05 #0.05
     
     [../discretization]
     LumpedMass = false
