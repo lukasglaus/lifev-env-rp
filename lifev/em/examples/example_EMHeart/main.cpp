@@ -880,14 +880,17 @@ int main (int argc, char** argv)
                     
                     std::cout<<"test";
                     
+                    /*
                     if (simplerun == true && 0 == comm->MyPID())
                     {
                         VFeNew[0] = LV.volume(disp, dETFESpace, - 1);
                         VFeNew[1] = RV.volume(disp, dETFESpace, 1);
                         std::cout<<"LV-Volume = "<<VFeNew[0];
                         std::cout<<"RV-Volume = "<<VFeNew[1];
+                        std::cout << "\nLin. LV-Pressure variator: "<<  bcValuesLoadstep[0];
+                        std::cout << "\nLin. RV-Pressure variator: "<<  bcValuesLoadstep[1];
                     }
-                    
+                    */
                     
             }
             
