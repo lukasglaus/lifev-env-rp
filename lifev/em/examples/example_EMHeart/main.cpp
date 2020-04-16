@@ -881,8 +881,8 @@ int main (int argc, char** argv)
                     std::cout<<"test";
                     
                     
-                    if (0 == comm->MyPID())
-                    {
+                    //if (0 == comm->MyPID())
+                    //{
                         if(simplerun == true)
                         {
                             VFeNew[0] = LV.volume(disp, dETFESpace, - 1);
@@ -892,7 +892,7 @@ int main (int argc, char** argv)
                             std::cout << "\nLin. LV-Pressure variator: "<<  bcValuesLoadstep[0];
                             std::cout << "\nLin. RV-Pressure variator: "<<  bcValuesLoadstep[1];
                         }
-                    }
+                    //}
                     
                     
             }
