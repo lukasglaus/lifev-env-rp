@@ -861,6 +861,8 @@ int main (int argc, char** argv)
                         {
                             bcValuesLoadstep[0]=simplePleft+0.1*std::sin(((k % 4*mechanicsLoadstepIter)/(4*mechanicsLoadstepIter))*3.141);
                             bcValuesLoadstep[1]=simplePright+0.1*std::sin(((k % 4*mechanicsLoadstepIter)/(4*mechanicsLoadstepIter))*3.141);
+                        
+                            modifyPressureBC(bcValuesLoadstep);
                         }
                     
                     //bcValuesLoadstep[0]=1.0+0.2*std::sin(((k % 4*mechanicsLoadstepIter)/(4*mechanicsLoadstepIter))*3.141);
