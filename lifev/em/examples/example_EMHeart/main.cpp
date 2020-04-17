@@ -859,10 +859,15 @@ int main (int argc, char** argv)
                     
                     if (simplerun == true)
                         {
-                            bcValuesLoadstep[0]=simplePleft+simplePleft*0.1*std::sin(((k % 4*mechanicsLoadstepIter)/(mechanicsLoadstepIter))*(3.14159/2));
-                            bcValuesLoadstep[1]=simplePright+simplePleft*0.1*std::sin(((k % 4*mechanicsLoadstepIter)/(mechanicsLoadstepIter))*(3.14159/2));
+                            bcValuesLoadstep[0]=simplePleft+simplePleft*0.1*std::sin(((k % (4*mechanicsLoadstepIter))/(mechanicsLoadstepIter))*(3.14159/2));
+                            bcValuesLoadstep[1]=simplePright+simplePleft*0.1*std::sin(((k % (4*mechanicsLoadstepIter))/(mechanicsLoadstepIter))*(3.14159/2));
                             if (0 == comm->MyPID())
                                 {
+                                    std::cout <<"\ntime="<<t;
+                                    std::cout <<"\nk="<<k;
+                                    std::cout <<"\nmechanicsLoadstepIter ="<<mechanicsLoadstepIter;
+                                    std::cout <<"\n(k % 4*mechanicsLoadstepIter)"<<(k % 4*mechanicsLoadstepIter);
+                                    std::cout <<"\n((k % 4*mechanicsLoadstepIter)/(mechanicsLoadstepIter))"<<((k % 4*mechanicsLoadstepIter)/(mechanicsLoadstepIter));
                                     std::cout << "\n Sin values= "<<std::sin(((k % 4*mechanicsLoadstepIter)/(mechanicsLoadstepIter))*(3.14159/2));
                                     std::cout << "\nLin. LV-Pressure variator before modify: "<<  bcValuesLoadstep[0];
                                     std::cout << "\nLin. RV-Pressure variator before modify: "<<  bcValuesLoadstep[1];
