@@ -859,9 +859,14 @@ int main (int argc, char** argv)
                     
                     if (simplerun == true)
                         {
-                            bcValuesLoadstep[0]=simplePleft+0.1*std::sin(((k % 4*mechanicsLoadstepIter)/(4*mechanicsLoadstepIter))*3.141);
-                            bcValuesLoadstep[1]=simplePright+0.1*std::sin(((k % 4*mechanicsLoadstepIter)/(4*mechanicsLoadstepIter))*3.141);
-                        
+                            bcValuesLoadstep[0]=simplePleft+0.05*std::sin(((k % 4*mechanicsLoadstepIter)/(mechanicsLoadstepIter))*(3.14159/2));
+                            bcValuesLoadstep[1]=simplePright+0.05*std::sin(((k % 4*mechanicsLoadstepIter)/(mechanicsLoadstepIter))*(3.14159/2));
+                            if (0 == comm->MyPID())
+                                {
+                                    std::cout << "\nLin. LV-Pressure variator before modify: "<<  bcValuesLoadstep[0];
+                                    std::cout << "\nLin. RV-Pressure variator before modify: "<<  bcValuesLoadstep[1];
+                            
+                                }
                             modifyPressureBC(bcValuesLoadstep);
                         }
                     
