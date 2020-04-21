@@ -866,9 +866,10 @@ int main (int argc, char** argv)
                                     std::cout <<"\ntime="<<t;
                                     std::cout <<"\nk="<<k;
                                     std::cout <<"\nmechanicsLoadstepIter ="<<mechanicsLoadstepIter;
-                                    std::cout <<"\n(k % 4*mechanicsLoadstepIter)"<<(k % 4*mechanicsLoadstepIter);
-                                    std::cout <<"\n((k % 4*mechanicsLoadstepIter)/(mechanicsLoadstepIter))"<<((k % 4*mechanicsLoadstepIter)/(mechanicsLoadstepIter));
-                                    std::cout << "\n Sin values= "<<std::sin(((k % 4*mechanicsLoadstepIter)/(mechanicsLoadstepIter))*(3.14159/2));
+                                    std::cout <<"\n(k % (4*mechanicsLoadstepIter))"<<(k % (4*mechanicsLoadstepIter));
+                                    std::cout <<"\n((k % (4*mechanicsLoadstepIter))/(mechanicsLoadstepIter))"<<((k % (4*mechanicsLoadstepIter))/(mechanicsLoadstepIter));
+                                    std::cout << "\n Argument for sinus in rad ="<<(((k % (4*mechanicsLoadstepIter))/(mechanicsLoadstepIter))*(3.14159/2));
+                                    std::cout << "\n Sin values= "<<std::sin(((k % (4*mechanicsLoadstepIter))/(mechanicsLoadstepIter))*(3.14159/2));
                                     std::cout << "\nLin. LV-Pressure variator before modify: "<<  bcValuesLoadstep[0];
                                     std::cout << "\nLin. RV-Pressure variator before modify: "<<  bcValuesLoadstep[1];
                             
