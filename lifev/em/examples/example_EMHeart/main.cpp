@@ -646,26 +646,13 @@ int main (int argc, char** argv)
     // Simplerun
     //============================================
     const bool simplerun = dataFile ( "solid/simplerun/simplerun", false );
-    //bool simplerun=true;
-    
     const Real simplePleft = dataFile ( "solid/simplerun/simplePleft", 0.1 );
     const Real simplePright = dataFile ( "solid/simplerun/simplePright", 0.1 );
     const int skipfactor = dataFile ( "solid/simplerun/skipfactor", 1 );
     
-    //const std::vector<Real> bcValuesSimple = {simple_pleft,simple_pright};
-    
-    
     //============================================
     // Time loop
     //============================================
-    
-
-    if ( 0 == comm->MyPID() )
-        {
-            std::cout << "\n*****************************************************************";
-            std::cout << "\nWe are starting a dynamic_run";
-            std::cout << "\n*****************************************************************\n";
-        }
     
     VFe[0] = LV.volume(disp, dETFESpace, - 1);
     VFe[1] = RV.volume(disp, dETFESpace, 1);
@@ -848,11 +835,8 @@ int main (int argc, char** argv)
                     solver.bcInterfacePtr() -> updatePhysicalSolverVariables();
                     solver.solveMechanics();
                     
-                    std::cout<<"test";
-                    
                     if(simplerun == true)
                     {
-                        
                         VFeNew[0] = LV.volume(disp, dETFESpace, - 1);
                         VFeNew[1] = RV.volume(disp, dETFESpace, 1);
                          
