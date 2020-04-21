@@ -713,34 +713,12 @@ int main (int argc, char** argv)
             //============================================
             // Solve electrophysiology and activation
             //============================================
-            if ( 0 == comm->MyPID() )
-                {
-                    std::cout << "\n*****************************************************************";
-                    std::cout << "\nTIME = " << t;
-                    std::cout << "\nCOUT Nr. 1";
-                    std::cout << "\n*****************************************************************\n";
-                }
             auto maxI4fValue ( solver.activationModelPtr()->I4f().maxValue() );
             auto minI4fValue ( solver.activationModelPtr()->I4f().minValue() );
-            
-            if ( 0 == comm->MyPID() )
-                {
-                    std::cout << "\n*****************************************************************";
-                    std::cout << "\nTIME = " << t;
-                    std::cout << "\nCOUT Nr. 2";
-                    std::cout << "\n*****************************************************************\n";
-                }
             
             solver.solveElectrophysiology (stim, t);
             solver.solveActivation (dt_activation);
             
-            if ( 0 == comm->MyPID() )
-                {
-                    std::cout << "\n*****************************************************************";
-                    std::cout << "\nTIME = " << t;
-                    std::cout << "\nCOUT Nr. 3";
-                    std::cout << "\n*****************************************************************\n";
-                }
             //============================================
             // Load steps mechanics (activation & b.c.)
             //============================================
@@ -749,30 +727,14 @@ int main (int argc, char** argv)
 
             const bool activationBelowLoadstepThreshold (minActivationValue < activationLimit_loadstep);
             
-            if ( 0 == comm->MyPID() )
-                {
-                    std::cout << "\n*****************************************************************";
-                    std::cout << "\nTIME = " << t;
-                    std::cout << "\nCOUT Nr. 4";
-                    std::cout << "\n*****************************************************************\n";
-                }
-            
             bool makeLoadstep;
             bool makeMechanicsCirculationCoupling;
-            
-            if ( 0 == comm->MyPID() )
-                {
-                    std::cout << "\n*****************************************************************";
-                    std::cout << "\nTIME = " << t;
-                    std::cout << "\nCOUT Nr. 5";
-                    std::cout << "\n*****************************************************************\n";
-                }
-            
             
             if (simplerun == false)
                 {
                     makeLoadstep = (k % mechanicsLoadstepIter == 0 && activationBelowLoadstepThreshold);
                     makeMechanicsCirculationCoupling = (k % mechanicsCouplingIter == 0);
+                    
                     if ( 0 == comm->MyPID() )
                         {
                         std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
@@ -797,16 +759,14 @@ int main (int argc, char** argv)
                         std::cout << "\nk % (mechanicsLoadstepIter*skipfactor"<<k % (mechanicsLoadstepIter*skipfactor);
                     }
                     
-                    //makeLoadstep=true;
-                    //makeLoadstep = (std::abs(std::remainder(t, dt_save)) < 0.01 && activationBelowLoadstepThreshold);
-                    makeLoadstep = (k % (mechanicsLoadstepIter * skipfactor) == 0 && activationBelowLoadstepThreshold);
+                    makeLoadstep = (k % (mechanicsLoadstepIter * skipfactor) == 0);
                     makeMechanicsCirculationCoupling = false;
                 
                     if ( 0 == comm->MyPID() )
                     {
                     std::cout << "\nmakeLoadstep ="<<makeLoadstep;
                     std::cout << "\nmakeMechanicsCirculationCoupling ="<<makeMechanicsCirculationCoupling;
-                        std::cout<<"\nmakeLoadstep&&!makeMech..="<<makeLoadstep && !makeMechanicsCirculationCoupling;
+                    std::cout<<"\nmakeLoadstep&&!makeMech..="<<makeLoadstep && !makeMechanicsCirculationCoupling;
                     std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
                     }
             }
@@ -861,6 +821,8 @@ int main (int argc, char** argv)
                         {
                             bcValuesLoadstep[0]=simplePleft+simplePleft*0.1*std::sin(((k % (4*mechanicsLoadstepIter))/(mechanicsLoadstepIter))*(3.14159/2));
                             bcValuesLoadstep[1]=simplePright+simplePleft*0.1*std::sin(((k % (4*mechanicsLoadstepIter))/(mechanicsLoadstepIter))*(3.14159/2));
+                            
+                            /* marked out on april 21, delte if not needed anymore
                             if (0 == comm->MyPID())
                                 {
                                     std::cout <<"\ntime="<<t;
@@ -874,15 +836,9 @@ int main (int argc, char** argv)
                                     std::cout << "\nLin. RV-Pressure variator before modify: "<<  bcValuesLoadstep[1];
                             
                                 }
+                             */
                             modifyPressureBC(bcValuesLoadstep);
                         }
-                    
-                    //bcValuesLoadstep[0]=1.0+0.2*std::sin(((k % 4*mechanicsLoadstepIter)/(4*mechanicsLoadstepIter))*3.141);
-                    //bcValuesLoadstep[1]=1.0+0.2*std::sin(((k % 4*mechanicsLoadstepIter)/(4*mechanicsLoadstepIter))*3.141);
-                    
-                    //bcValuesLoadstep[0]=0.1+(k%2)*0.05;
-                    //bcValuesLoadstep[1]=0.1+(k%2)*0.05;
-                    //modifyPressureBC(bcValuesLoadstep);
                     
                     
                     //modifyEssentialPatchBC(t);
@@ -902,11 +858,8 @@ int main (int argc, char** argv)
                          
                         if (0 == comm->MyPID())
                         {
-                            //std::cout<<"LV-Volume = "<<VFeNew[0];
-                            //std::cout<<"RV-Volume = "<<VFeNew[1];
                             std::cout << "\nLin. LV-Pressure variator: "<<  bcValuesLoadstep[0];
                             std::cout << "\nLin. RV-Pressure variator: "<<  bcValuesLoadstep[1];
-                    
                         }
                     }
                     
