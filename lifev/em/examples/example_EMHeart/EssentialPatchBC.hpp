@@ -811,79 +811,77 @@ public:
 
 
     	    	    	 for (int j (0); j < nCompLocalDof; ++j)
-    	    	    		        {
-    	    	    		                    // Get coordinates
+                            {
+                                // Get coordinates
 
-    	    	    		                    UInt iGID = p2PatchDisplacement->blockMap().GID (j);
-    	    	    		                    UInt jGID = p2PatchDisplacement->blockMap().GID (j + nCompLocalDof);
-    	    	    		                    UInt kGID = p2PatchDisplacement->blockMap().GID (j + 2 * nCompLocalDof);
+                                UInt iGID = p2PatchDisplacement->blockMap().GID (j);
+                                UInt jGID = p2PatchDisplacement->blockMap().GID (j + nCompLocalDof);
+                                UInt kGID = p2PatchDisplacement->blockMap().GID (j + 2 * nCompLocalDof);
 
-    	    	    		                    /*
-    	    	    		        			UInt iGID = p2PositionVector.blockMap().GID (j);
-    	    	    		        		    UInt jGID = p2PositionVector.blockMap().GID (j + nCompLocalDof);
-    	    	    		        		    UInt kGID = p2PositionVector.blockMap().GID (j + 2 * nCompLocalDof);
-    	    	    							*/
+                                /*
+                                UInt iGID = p2PositionVector.blockMap().GID (j);
+                                UInt jGID = p2PositionVector.blockMap().GID (j + nCompLocalDof);
+                                UInt kGID = p2PositionVector.blockMap().GID (j + 2 * nCompLocalDof);
+                                */
 
-    	    	    		                    Vector3D coordinates;
+                                Vector3D coordinates;
 
-    	    	    		                    /*
-    	    	    		                    coordinates(0) = (*m_currentPositionVector)[iGID];
-    	    	    		                    coordinates(1) = (*m_currentPositionVector)[jGID];
-    	    	    		                    coordinates(2) = (*m_currentPositionVector)[kGID];
-												*/
+                                /*
+                                coordinates(0) = (*m_currentPositionVector)[iGID];
+                                coordinates(1) = (*m_currentPositionVector)[jGID];
+                                coordinates(2) = (*m_currentPositionVector)[kGID];
+                                */
 
-    	    	    		                    coordinates(0) = p2PositionVector[iGID];
-    	    	    		                    coordinates(1) = p2PositionVector[jGID];
-    	    	    		                    coordinates(2) = p2PositionVector[kGID];
+                                coordinates(0) = p2PositionVector[iGID];
+                                coordinates(1) = p2PositionVector[jGID];
+                                coordinates(2) = p2PositionVector[kGID];
 
-    	    	    		                    Vector3D QP; //define here the vector that goes from Q (point on plane) to point P
+                                Vector3D QP; //define here the vector that goes from Q (point on plane) to point P
 
-    	    	    		                    QP = coordinates - current_point_on_plane;
+                                QP = coordinates - current_point_on_plane;
 
-    	    	    		                    if ( solver.comm()->MyPID() == 0 )
-    	    	    		                    {
-    	    	    		                    	//std::cout << "These are coordinates: " << coordinates(0) << "        " << coordinates(1) << "       " << coordinates(2) << std::endl;
-    	    	    		                    	//std::cout << "This is current point on plane " << current_point_on_plane(0) << "         " << current_point_on_plane(1) << "        " << current_point_on_plane(2) << std::endl;
-    	    	    		                    }
+                                if ( solver.comm()->MyPID() == 0 )
+                                {
+                                    //std::cout << "These are coordinates: " << coordinates(0) << "        " << coordinates(1) << "       " << coordinates(2) << std::endl;
+                                    //std::cout << "This is current point on plane " << current_point_on_plane(0) << "         " << current_point_on_plane(1) << "        " << current_point_on_plane(2) << std::endl;
+                                }
 
 
-    	    	    		                    if(QP.dot(direction) <= 0) //here i have change to > 0
-    	    	    		                    {
-    	    	    		                    			//distance = 1.0;
-    	    	    		                               	distance = abs(QP.dot(direction));
-    	    	    		                    }
-    	    	    		                    else
-    	    	    		                      {
-    	    	    		                              	distance = 0.0;
-    	    	    		                      }
+                                if(QP.dot(direction) <= 0) //here i have change to > 0
+                                    {
+                                        //distance = 1.0;
+                                        distance = abs(QP.dot(direction));
+                                    }
+                                else
+                                    {
+                                        distance = 0.0;
+                                    }
 
-    	    	    		                    Vector3D displacement_vector;
-    	    	    		                    displacement_vector[0] = distance*direction[0];
-    	    	    		                    displacement_vector[1] = distance*direction[1];
-    	    	    		                    displacement_vector[2] = distance*direction[2];
+                                Vector3D displacement_vector;
+                                displacement_vector[0] = distance*direction[0];
+                                displacement_vector[1] = distance*direction[1];
+                                displacement_vector[2] = distance*direction[2];
 
-    	    	    		                    if ( solver.comm()->MyPID() == 0 )
-    	    	    		                    {
-    	    	    		                    	//std::cout << "This is dispalcement vector: " << displacement_vector[0] << "       " << displacement_vector[1] << "          " << displacement_vector[2] << std::endl;
-    	    	    		                    }
+                                if ( solver.comm()->MyPID() == 0 )
+                                {
+                                    //std::cout << "This is dispalcement vector: " << displacement_vector[0] << "       " << displacement_vector[1] << "          " << displacement_vector[2] << std::endl;
+                                }
 
-    	    	    		                    (*p2PatchDisplacement)[iGID] = displacement_vector[0];
-    	    	    		                    (*p2PatchDisplacement)[jGID] = displacement_vector[1];
-    	    	    		                    (*p2PatchDisplacement)[kGID] = displacement_vector[2];
+                                (*p2PatchDisplacement)[iGID] = displacement_vector[0];
+                                (*p2PatchDisplacement)[jGID] = displacement_vector[1];
+                                (*p2PatchDisplacement)[kGID] = displacement_vector[2];
 
-    	    	    		                    	                    (*m_currentPositionVector)[iGID] = (*m_currentPositionVector)[iGID] + (*p2PatchDisplacement)[iGID];
-    	    	    		                    	                    (*m_currentPositionVector)[jGID] = (*m_currentPositionVector)[jGID] + (*p2PatchDisplacement)[jGID];
-    	    	    		                    	                    (*m_currentPositionVector)[kGID] = (*m_currentPositionVector)[kGID] + (*p2PatchDisplacement)[kGID];
+                                (*m_currentPositionVector)[iGID] = (*m_currentPositionVector)[iGID] + (*p2PatchDisplacement)[iGID];
+                                (*m_currentPositionVector)[jGID] = (*m_currentPositionVector)[jGID] + (*p2PatchDisplacement)[jGID];
+                                (*m_currentPositionVector)[kGID] = (*m_currentPositionVector)[kGID] + (*p2PatchDisplacement)[kGID];
 
-    	    	    		        }
+                            }
 
     	    	    	 return *p2PatchDisplacement;
     }
 
     vector_Type patchVectorField(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver, const Real& time)
     {
-
-
     	auto p2dFeSpace = solver.structuralOperatorPtr()->dispFESpacePtr();
     	const auto& meshFull = solver.fullMeshPtr();
     	FESpace<RegionMesh<LinearTetra>, MapEpetra > p1dFESpace (p2dFeSpace->mesh(), "P1", 3, p2dFeSpace->mesh()->comm());
@@ -908,16 +906,9 @@ public:
     	    	 p1VectorField[iGID] = 1.0;
     	    	 p1VectorField[jGID] = 0.0; //1.0;
     	    	 p1VectorField[kGID] = 0.0; //1.0;
-
     	     }
-
-
-
     	}
-
     	return p1VectorField;
-
-
    }
 
     vector_Type patchLocation()
@@ -1341,7 +1332,7 @@ public:
            	            std::ostringstream oss;//this is to convert int to string
            	            oss << currentprocessor;
 
-                        std::string path = "/cluster/home/lglaus/LIFE5/lifev-env-rp/lifev-em-install-debug/lifev/em/examples/example_EMHeart/coordinatefiles/coordinates_" + oss.str() + ".dat";//2020.02.05 lg
+                        std::string path = "/cluster/home/lglaus/LIFE5/lifev-env-rp/lifev-em-install/lifev/em/examples/example_EMHeart/coordinatefiles/coordinates_" + oss.str() + ".dat";//2020.02.05 lg
            	            //std::string path = "/cluster/home/pamstad/LIFE5/lifev-env/lifev-em-build/lifev/em/examples/example_EMHeart/coordinatefiles/coordinates_" + oss.str() + ".dat"; //2020.02.05 lg
            	            std::ofstream writer(path.c_str(), std::ios_base::app);
            	            if(writer.is_open()==false)
