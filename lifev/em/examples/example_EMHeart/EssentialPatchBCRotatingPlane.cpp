@@ -730,9 +730,11 @@ vectorPtr_Type directionalVectorField(EMSolver<RegionMesh<LinearTetra>, EMMonodo
                             std::ostringstream oss;//this is to convert int to string
                             oss << currentprocessor;
                             
-                            double time1 = time.to_double();
+                            std::ostringstream timee;//this is to convert int to string
+                            oss << time;
+                            //double time1 = time;
                             
-                            std::string path = "/cluster/home/lglaus/LIFE5/lifev-env-rp/lifev-em-install/lifev/em/examples/example_EMHeart/distancefiles/distances_" +std::to_string(m_Name)+std::to_string(time1)+ oss.str() + ".dat"; //2020.02.05 lg
+                            std::string path = "/cluster/home/lglaus/LIFE5/lifev-env-rp/lifev-em-install/lifev/em/examples/example_EMHeart/distancefiles/distances_" +std::to_string(m_Name)+time.str()+ oss.str() + ".dat"; //2020.02.05 lg
                             //std::string path = "/cluster/home/pamstad/LIFE5/lifev-env/lifev-em-build/lifev/em/examples/example_EMHeart/distancefiles/distances_" + oss.str() + ".dat"; //2020.02.05 lg
                             std::ofstream writer(path.c_str(), std::ios_base::app);
                             if(writer.is_open()==false)
