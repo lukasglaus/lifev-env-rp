@@ -731,10 +731,10 @@ vectorPtr_Type directionalVectorField(EMSolver<RegionMesh<LinearTetra>, EMMonodo
                             oss << currentprocessor;
                             
                             std::ostringstream timestream;//this is to convert int to string
-                            timestream <<m_Name << time;
+                            timestream <<"/"<<m_Name<<"/distance_" << time<<"_";
                             //double time1 = time;
                             //std::to_string(..)
-                            std::string path = "/cluster/home/lglaus/LIFE5/lifev-env-rp/lifev-em-install/lifev/em/examples/example_EMHeart/distancefiles/distances_"+timestream.str()+ oss.str() + ".dat"; //2020.02.05 lg
+                            std::string path = "/cluster/home/lglaus/LIFE5/lifev-env-rp/lifev-em-install/lifev/em/examples/example_EMHeart/distancefiles/"+timestream.str() + oss.str() + ".dat"; //2020.02.05 lg
                             
                             //std::string path = "/cluster/home/pamstad/LIFE5/lifev-env/lifev-em-build/lifev/em/examples/example_EMHeart/distancefiles/distances_" + oss.str() + ".dat"; //2020.02.05 lg
                             std::ofstream writer(path.c_str(), std::ios_base::app);
@@ -742,7 +742,7 @@ vectorPtr_Type directionalVectorField(EMSolver<RegionMesh<LinearTetra>, EMMonodo
                             {
                                 std::cout << "error occured while opening the file" << std::endl;
                             }
-                            writer <<time << coordinates(0) << "\t\t" << coordinates(1) << "\t\t" << coordinates(2) << "\t\t"  << distance << std::endl;
+                            writer <<time << "\t\t" << coordinates(0) << "\t\t" << coordinates(1) << "\t\t" << coordinates(2) << "\t\t"  << distance << std::endl;
                             writer.close();
                             //////////////////Here the writing to the file ends
 
