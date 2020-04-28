@@ -904,8 +904,8 @@ public:
     	     if(pointInPatch == true)
     	     {
     	    	 p1VectorField[iGID] = 1.0;
-    	    	 p1VectorField[jGID] = 0.0; //1.0;
-    	    	 p1VectorField[kGID] = 0.0; //1.0;
+    	    	 p1VectorField[jGID] = 1.0; //1.0; //used to be 0.0, changed 2020.04.28lg
+    	    	 p1VectorField[kGID] = 1.0; //1.0; //used to be 0.0, changed 2020.04.28lg
     	     }
     	}
     	return p1VectorField;

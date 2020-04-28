@@ -409,7 +409,7 @@ void modifyPatchArea(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<Region
 
                 //if ( solver.comm()->MyPID() == 0 ) std::cout<<"\nOn patch "<<m_Name<<" "<<nodeOnPatchCounterone<<" nodes had to be moved"<<nodeOnPatchCountertwo;
                 
-                std::cout<<"\nOn patch "<<m_Name<<" "<<nodeOnPatchCounterone<<" nodes had to be moved on node"<<solver.comm()->MyPID();
+                std::cout<<"\nOn patch "<<m_Name<<" "<<nodeOnPatchCounterone<<" nodes had to be moved on node"<<solver.comm()->MyPID()<< std::endl;
     
                 m_patchFacesLocationPtr.reset (new vector_Type (p2FeSpace->map() ));
                 *m_patchFacesLocationPtr = p2FeSpace->feToFEInterpolate(p1FESpace, p1ScalarFieldFaces);
