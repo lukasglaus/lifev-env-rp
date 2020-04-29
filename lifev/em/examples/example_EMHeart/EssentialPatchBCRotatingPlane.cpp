@@ -393,7 +393,7 @@ void modifyPatchArea(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<Region
                                          }
 
                                  }
-                            /*
+                            
                              if (numPointsOnFace >= 1) // if there are more than two points on face we execute the if statement; not completly sure here
                              {
                                      //std::cout << "We are now changing the faceID" << std::endl;
@@ -404,7 +404,7 @@ void modifyPatchArea(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<Region
                                     nodeOnPatchCountertwo++;
                              }
                 
-                             */
+                             
                         }
 
                 //if ( solver.comm()->MyPID() == 0 ) std::cout<<"\nOn patch "<<m_Name<<" "<<nodeOnPatchCounterone<<" nodes had to be moved"<<nodeOnPatchCountertwo;
