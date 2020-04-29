@@ -763,9 +763,9 @@ vectorPtr_Type directionalVectorField(EMSolver<RegionMesh<LinearTetra>, EMMonodo
 
                 //std::cout << "This is displacmeent VEctor: " <<  displacement_vector(0) << "          " << displacement_vector(1) << "         " << displacement_vector(2) << std::endl;
 
-                        (*p2PatchDisplacement)[iGID] = 0.1; //displacement_vector[0];
-                        (*p2PatchDisplacement)[jGID] = 0.0; //displacement_vector[1];
-                        (*p2PatchDisplacement)[kGID] = 0.0; //displacement_vector[2];
+                        (*p2PatchDisplacement)[iGID] = 5.0; //displacement_vector[0];
+                        (*p2PatchDisplacement)[jGID] = 5.0; //displacement_vector[1];
+                        (*p2PatchDisplacement)[kGID] = 5.0; //displacement_vector[2];
 
                         /*
                         (*m_p2currentPositionVector)[iGID] = (*m_p2currentPositionVector)[iGID] + (*p2PatchDisplacement)[iGID];
