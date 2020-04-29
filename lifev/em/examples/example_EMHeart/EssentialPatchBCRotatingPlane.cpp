@@ -736,8 +736,8 @@ vectorPtr_Type directionalVectorField(EMSolver<RegionMesh<LinearTetra>, EMMonodo
                             timestream <<m_Name<<"_" << time<<"_";
                             //double time1 = time;
                             //std::to_string(..)
-                            //std::string path = "/cluster/home/lglaus/LIFE5/lifev-env-rp/lifev-em-install/lifev/em/examples/example_EMHeart/distancefiles/"+timestream.str() + oss.str() + ".dat"; //2020.02.05 lg
-                            std::string path = problemFolder+timestream.str() + oss.str() + ".dat"; //2020.04.28 lg
+                            std::string path = "/cluster/home/lglaus/LIFE5/lifev-env-rp/lifev-em-install/lifev/em/examples/example_EMHeart/distancefiles/"+timestream.str() + oss.str() + ".dat"; //2020.02.05 lg
+                            //std::string path = problemFolder+timestream.str() + oss.str() + ".dat"; //2020.04.28 lg, unfortunately doesnt work because problemFolder isnt available in this class, it is only in main. there would be a function required in main which fed the problemFolder information into the patch classes
                             
                             //std::string path = "/cluster/home/pamstad/LIFE5/lifev-env/lifev-em-build/lifev/em/examples/example_EMHeart/distancefiles/distances_" + oss.str() + ".dat"; //2020.02.05 lg
                             std::ofstream writer(path.c_str(), std::ios_base::app);
