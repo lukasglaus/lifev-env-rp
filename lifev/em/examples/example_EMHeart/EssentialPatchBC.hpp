@@ -690,9 +690,9 @@ public:
             UInt jGID = m_patchDispPtr->blockMap().GID (j + nCompLocalDof);
             UInt kGID = m_patchDispPtr->blockMap().GID (j + 2 * nCompLocalDof);
 
-            localPatchDisplacement[iGID] = (*m_dispPtr)[iGID]; // * (*m_patchLocationPtr)[iGID];
-            localPatchDisplacement[jGID] = (*m_dispPtr)[jGID]; // * (*m_patchLocationPtr)[iGID];
-            localPatchDisplacement[kGID] = (*m_dispPtr)[kGID]; // * (*m_patchLocationPtr)[iGID];
+            localPatchDisplacement[iGID] = (*m_dispPtr)[iGID] * (*m_patchLocationPtr)[iGID];//2nd Part was marked out
+            localPatchDisplacement[jGID] = (*m_dispPtr)[jGID] * (*m_patchLocationPtr)[iGID];//2nd Part was marked out
+            localPatchDisplacement[kGID] = (*m_dispPtr)[kGID] * (*m_patchLocationPtr)[iGID];//2nd Part was marked out
         }
 
         return localPatchDisplacement;
@@ -904,8 +904,8 @@ public:
     	     if(pointInPatch == true)
     	     {
     	    	 p1VectorField[iGID] = 1.0;
-    	    	 p1VectorField[jGID] = 1.0; //1.0; //used to be 0.0, changed 2020.04.28lg
-    	    	 p1VectorField[kGID] = 1.0; //1.0; //used to be 0.0, changed 2020.04.28lg
+    	    	 p1VectorField[jGID] = 0.0; //1.0; //used to be 0.0, changed 2020.04.28lg
+    	    	 p1VectorField[kGID] = 0.0; //1.0; //used to be 0.0, changed 2020.04.28lg
     	     }
     	}
     	return p1VectorField;
