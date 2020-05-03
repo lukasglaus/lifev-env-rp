@@ -850,7 +850,6 @@ int main (int argc, char** argv)
                     if (0 == comm->MyPID())
                     {
                     //////////////////Here we write volume to file
-                    auto currentprocessor = dFeSpace->mesh()->comm()->MyPID();
                     
                     std::ostringstream timestream;//this is to convert int to string
                     timestream << time<<"_";
