@@ -400,8 +400,9 @@ void modifyPatchArea(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<Region
                                      //std::cout << "" << std::endl;
                                      face.setMarkerID(m_patchFlag);
                                      //std::cout << "This is the set face flag: " ;
-                                     //face.Marker::showMe(std::cout);
-                                    nodeOnPatchCountertwo++;
+                                     face.Marker::showMe(std::cout);
+                                     nodeOnPatchCountertwo++;
+                
                              }
                 
                              
@@ -591,7 +592,7 @@ void modifyPatchBC(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMe
 vectorPtr_Type directionalVectorField(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver,const boost::shared_ptr<FESpace<RegionMesh<LinearTetra>, MapEpetra >> dFeSpace, Vector3D& direction, const Real& disp, const Real& time)
 {
     Vector3D current_point_on_plane=starting_point;
-    Real distance;
+    Real distance = 0.0;
 
         //m_p2currentPositionVector = vectorPtr_Type (new VectorEpetra( dFeSpace->map(), Repeated ));
     //std::cout << "NOW WE ARE IN DIRECTIONAL VECTOR FIELD" << std::endl;
@@ -763,9 +764,9 @@ vectorPtr_Type directionalVectorField(EMSolver<RegionMesh<LinearTetra>, EMMonodo
 
                 //std::cout << "This is displacmeent VEctor: " <<  displacement_vector(0) << "          " << displacement_vector(1) << "         " << displacement_vector(2) << std::endl;
 
-                        (*p2PatchDisplacement)[iGID] = 5.0; //displacement_vector[0];
-                        (*p2PatchDisplacement)[jGID] = 5.0; //displacement_vector[1];
-                        (*p2PatchDisplacement)[kGID] = 5.0; //displacement_vector[2];
+                        (*p2PatchDisplacement)[iGID] = displacement_vector[0];
+                        (*p2PatchDisplacement)[jGID] = displacement_vector[1];
+                        (*p2PatchDisplacement)[kGID] = displacement_vector[2];
 
                         /*
                         (*m_p2currentPositionVector)[iGID] = (*m_p2currentPositionVector)[iGID] + (*p2PatchDisplacement)[iGID];
