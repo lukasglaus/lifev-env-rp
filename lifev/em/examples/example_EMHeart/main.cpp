@@ -854,13 +854,13 @@ int main (int argc, char** argv)
                     std::ostringstream timestream;//this is to convert int to string
                     timestream << t<<"_";
                     //std::string path = "/cluster/home/lglaus/LIFE5/lifev-env-rp/lifev-em-install/lifev/em/examples/example_EMHeart/volumefiles/"+timestream.str() +"volume"+ ".dat"; //2020.02.05 lg
-                    std::string path = problemFolder + "/volume/volume_file.dat"; //2020.04.28 lg, unfortunately doesnt work because problemFolder isnt available in this class, it is only in main. there would be a function required in main which fed the problemFolder information into the patch classes
+                    std::string path = problemFolder + "volume/volume_file.dat"; //2020.04.28 lg, unfortunately doesnt work because problemFolder isnt available in this class, it is only in main. there would be a function required in main which fed the problemFolder information into the patch classes
                     
 
                     std::ofstream writer(path.c_str(), std::ios_base::app);
                     if(writer.is_open()==false)
                     {
-                        std::cout << "error occured while opening the file" << std::endl;
+                        std::cout << "error occured while opening the file @" <<path <<std::endl;
                     }
                     writer <<t << "\t\t LeftVolume = " << VFeNew[0] << "\t\t RightVolume = " << VFeNew[1] << std::endl;
                     writer.close();
