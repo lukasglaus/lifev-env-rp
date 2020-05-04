@@ -853,8 +853,8 @@ int main (int argc, char** argv)
                     
                     std::ostringstream timestream;//this is to convert int to string
                     timestream << time<<"_";
-                    std::string path = "/cluster/home/lglaus/LIFE5/lifev-env-rp/lifev-em-install/lifev/em/examples/example_EMHeart/volumefiles/"+timestream.str() +"_volume"+ ".dat"; //2020.02.05 lg
-                    //std::string path = problemFolder+timestream.str() + oss.str() + ".dat"; //2020.04.28 lg, unfortunately doesnt work because problemFolder isnt available in this class, it is only in main. there would be a function required in main which fed the problemFolder information into the patch classes
+                    //std::string path = "/cluster/home/lglaus/LIFE5/lifev-env-rp/lifev-em-install/lifev/em/examples/example_EMHeart/volumefiles/"+timestream.str() +"volume"+ ".dat"; //2020.02.05 lg
+                    std::string path = problemFolder+timestream.str() + "volume" + ".dat"; //2020.04.28 lg, unfortunately doesnt work because problemFolder isnt available in this class, it is only in main. there would be a function required in main which fed the problemFolder information into the patch classes
                     
 
                     std::ofstream writer(path.c_str(), std::ios_base::app);
@@ -862,7 +862,7 @@ int main (int argc, char** argv)
                     {
                         std::cout << "error occured while opening the file" << std::endl;
                     }
-                    writer <<time << "\t\t LeftVolume" << VFeNew[0] << "\t\t RightVolume" << VFeNew[1] << std::endl;
+                    writer <<t << "\t\t LeftVolume = " << VFeNew[0] << "\t\t RightVolume = " << VFeNew[1] << std::endl;
                     writer.close();
                     //////////////////Here the writing to the file ends
                     }
