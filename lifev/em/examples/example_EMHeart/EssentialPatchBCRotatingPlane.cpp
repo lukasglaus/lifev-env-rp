@@ -404,6 +404,10 @@ void modifyPatchArea(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<Region
                                      nodeOnPatchCountertwo++;
                 
                              }
+                            /*else
+                                {
+                                face.setMarkerID(464);
+                                }*/
                 
                              
                         }
