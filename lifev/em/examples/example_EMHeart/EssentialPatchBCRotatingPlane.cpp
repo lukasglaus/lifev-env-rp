@@ -360,56 +360,56 @@ void modifyPatchArea(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<Region
                             auto& face = mesh->boundaryFacet(j);
                             auto faceFlag = face.markerID();
                             //std::cout << "This is face marker ID: " << face.markerID() << std::endl;
-                            //if (faceFlag == m_PrevFlag)
-                            //{
-                            int numPointsOnFace(0);
+                            if (faceFlag == m_PrevFlag)
+                            {
+                                int numPointsOnFace(0);
 
-                            for (int k(0); k < 3; ++k) //k < 3 was before; this is just a test
-                                 {
+                                for (int k(0); k < 3; ++k) //k < 3 was before; this is just a test
+                                {
                                      //auto coord = face.point(k).coordinates();
                                      ID pointGlobalId = face.point(k).id();
                                      auto coord = face.point(k).coordinates();
                                      auto pointInPatch = nodeOnPatchCurrent(coord, time);
                                      
                                      if (k==0 && std::fmod(j,50)==0)
-                                        {
+                                     {
                                          if ( solver.comm()->MyPID() == 0 ) std::cout<<"\n\nnodedisplayer for: "<<m_Name;
                                          if ( solver.comm()->MyPID() == 0 ) std::cout<<"\nnode number "<<j<<" of "<<mesh->numBoundaryFacets();
                                          if ( solver.comm()->MyPID() == 0 ) nodeOnPatchdisplayer(coord, time);
-                                        }
+                                     }
                                      
                                      if(pointInPatch == true)
+                                     {
+                                         nodeOnPatchCounterone++;
+                                         ++numPointsOnFace;
+                                         for(int n = 0; n < p1ScalarFieldFacesDof; n++)
                                          {
-                                             nodeOnPatchCounterone++;
-                                             ++numPointsOnFace;
-                                             for(int n = 0; n < p1ScalarFieldFacesDof; n++)
-                                                 {
-                                                     if(pointGlobalId == globalIdArray[n])
-                                                         {
-                                                         //++numPointsOnFace;
-                                                         p1ScalarFieldFaces[pointGlobalId] = 1.0;
-                                                         }
-                                                 }
+                                             if(pointGlobalId == globalIdArray[n])
+                                             {
+                                                 //++numPointsOnFace;
+                                                 p1ScalarFieldFaces[pointGlobalId] = 1.0;
+                                             }
                                          }
+                                     }s
 
                                  }
-                            
-                             if (numPointsOnFace >= 1) // if there are more than two points on face we execute the if statement; not completly sure here
-                             {
-                                     //std::cout << "We are now changing the faceID" << std::endl;
-                                     //std::cout << "" << std::endl;
-                                     face.setMarkerID(m_patchFlag);
-                                     //std::cout << "This is the set face flag: " ;
-                                     face.Marker::showMe(std::cout);
-                                     nodeOnPatchCountertwo++;
-                
-                             }
-                            /*else
-                                {
-                                face.setMarkerID(464);
-                                }*/
-                
-                             
+                                
+                                 if (numPointsOnFace >= 1) // if there are more than two points on face we execute the if statement; not completly sure here
+                                 {
+                                         //std::cout << "We are now changing the faceID" << std::endl;
+                                         //std::cout << "" << std::endl;
+                                         face.setMarkerID(m_patchFlag);
+                                         //std::cout << "This is the set face flag: " ;
+                                         face.Marker::showMe(std::cout);
+                                         nodeOnPatchCountertwo++;
+                    
+                                 }
+                                /*else
+                                    {
+                                    face.setMarkerID(464);
+                                    }*/
+                    
+                            }
                         }
 
                 //if ( solver.comm()->MyPID() == 0 ) std::cout<<"\nOn patch "<<m_Name<<" "<<nodeOnPatchCounterone<<" nodes had to be moved"<<nodeOnPatchCountertwo;
@@ -985,9 +985,9 @@ vector_Type displayDirectionalVectorField(EMSolver<RegionMesh<LinearTetra>, EMMo
                                             (*p2PatchDisplacement)[jGID] = displacement_vector[1];
                                             (*p2PatchDisplacement)[kGID] = displacement_vector[2];
 
-                                                                    (*m_currentPositionVector)[iGID] = (*m_currentPositionVector)[iGID] + (*p2PatchDisplacement)[iGID];
-                                                                    (*m_currentPositionVector)[jGID] = (*m_currentPositionVector)[jGID] + (*p2PatchDisplacement)[jGID];
-                                                                    (*m_currentPositionVector)[kGID] = (*m_currentPositionVector)[kGID] + (*p2PatchDisplacement)[kGID];
+                                            (*m_currentPositionVector)[iGID] = (*m_currentPositionVector)[iGID] + (*p2PatchDisplacement)[iGID];
+                                            (*m_currentPositionVector)[jGID] = (*m_currentPositionVector)[jGID] + (*p2PatchDisplacement)[jGID];
+                                            (*m_currentPositionVector)[kGID] = (*m_currentPositionVector)[kGID] + (*p2PatchDisplacement)[kGID];
 
                                 }
 
