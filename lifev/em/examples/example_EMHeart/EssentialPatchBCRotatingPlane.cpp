@@ -390,7 +390,7 @@ void modifyPatchArea(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<Region
                                                  p1ScalarFieldFaces[pointGlobalId] = 1.0;
                                              }
                                          }
-                                     }s
+                                     }
 
                                  }
                                 
