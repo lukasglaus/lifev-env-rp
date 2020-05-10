@@ -378,7 +378,7 @@ void modifyPatchArea(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<Region
                                          if ( solver.comm()->MyPID() == 0 ) nodeOnPatchdisplayer(coord, time);
                                      }
                                      
-                                     if(pointInPatch == true)
+                                     if(pointInPatch == true && coord[2]<-3.0)
                                      {
                                          nodeOnPatchCounterone++;
                                          ++numPointsOnFace;
@@ -743,7 +743,7 @@ vectorPtr_Type directionalVectorField(EMSolver<RegionMesh<LinearTetra>, EMMonodo
                             timestream <<m_Name<<"_" << time<<"_";
                             //double time1 = time;
                             //std::to_string(..)
-                            std::string path = "/cluster/home/lglaus/LIFE5/lifev-env-rp/lifev-em-install/lifev/em/examples/example_EMHeart/distancefiles/"+timestream.str() + oss.str() + ".dat"; //2020.02.05 lg
+                            std::string path = "/cluster/home/lglaus/LIFE5/lifev-env-rp/lifev-em-install/lifev/em/examples/example_EMHeart/distancefiles/"+timestream.str() + ".dat"; //2020.02.05 lg
                             //std::string path = problemFolder+timestream.str() + oss.str() + ".dat"; //2020.04.28 lg, unfortunately doesnt work because problemFolder isnt available in this class, it is only in main. there would be a function required in main which fed the problemFolder information into the patch classes
                             
                             //std::string path = "/cluster/home/pamstad/LIFE5/lifev-env/lifev-em-build/lifev/em/examples/example_EMHeart/distancefiles/distances_" + oss.str() + ".dat"; //2020.02.05 lg
@@ -752,7 +752,7 @@ vectorPtr_Type directionalVectorField(EMSolver<RegionMesh<LinearTetra>, EMMonodo
                             {
                                 std::cout << "error occured while opening the file" << std::endl;
                             }
-                            writer <<time << "\t\t" << coordinates(0) << "\t\t" << coordinates(1) << "\t\t" << coordinates(2) << "\t\t"  << distance << std::endl;
+                            writer <<time << "\t\t" << currentprocessor << "\t\t" << coordinates(0) << "\t\t" << coordinates(1) << "\t\t" << coordinates(2) << "\t\t"  << distance << std::endl;
                             writer.close();
                             //////////////////Here the writing to the file ends
 
