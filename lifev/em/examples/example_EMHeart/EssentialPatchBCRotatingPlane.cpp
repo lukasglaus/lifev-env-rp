@@ -360,10 +360,10 @@ void modifyPatchArea(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<Region
                             auto& face = mesh->boundaryFacet(j);
                             auto faceFlag = face.markerID();
                             
-                            std::cout << "This is face marker ID in modify patchArea in EPRP: " << face.markerID() << std::endl;
+                            std::cout << "\nThis is face marker ID in modify patchArea in EPRP: " << face.markerID() << std::endl;
                             std::cout << "\nm_PrevFlag = "<<m_PrevFlag;
                             
-                            if (faceFlag == m_PrevFlag)
+                            if (faceFlag == m_PrevFlag or faceFlag == m_patchFlag)
                             {
                                 int numPointsOnFace(0);
 
@@ -381,7 +381,7 @@ void modifyPatchArea(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<Region
                                          if ( solver.comm()->MyPID() == 0 ) nodeOnPatchdisplayer(coord, time);
                                      }
                                      
-                                     if(pointInPatch == true && coord[2]<-3.0)
+                                     if(pointInPatch == true && coord[1]<-3.0)
                                      {
                                          nodeOnPatchCounterone++;
                                          ++numPointsOnFace;
@@ -407,10 +407,11 @@ void modifyPatchArea(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<Region
                                          nodeOnPatchCountertwo++;
                     
                                  }
-                                /*else
-                                    {
-                                    face.setMarkerID(464);
-                                    }*/
+                                
+                                 else
+                                 {
+                                 face.setMarkerID(m_PrevFlag);
+                                 }
                     
                             }
                         }
