@@ -743,7 +743,6 @@ int main (int argc, char** argv)
                     std::cout << "\nProblemfolder = "<<problemFolder;
                     std::cout << "\nsimplerun ="<<simplerun;
                     std::cout << "\nskipfactor ="<<skipfactor;
-                    std::cout << "\nm_PrevFlag = "<<m_PrevFlag;
                     std::cout << "\nmechanicsLoadstepIter*skipfactor"<<mechanicsLoadstepIter*skipfactor;
                         std::cout << "\nk % (mechanicsLoadstepIter*skipfactor"<<k % (mechanicsLoadstepIter*skipfactor);
                     }

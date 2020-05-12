@@ -185,7 +185,6 @@ double calculate_angleOfTime (Real time)
         std::cout<<"\ninitial maximum_angle = "<<maximum_angle*180/PI<<" degree";
         std::cout<<"\ninitial minimum_angle = "<<minimum_angle*180/PI<<" degree";
         std::cout<<"\ninitial m_tduration = "<<m_tduration;
-        std::cout << "\nm_PrevFlag = "<<m_PrevFlag;
     }
 
 //cos in degree or radian?
@@ -360,7 +359,10 @@ void modifyPatchArea(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<Region
                         {
                             auto& face = mesh->boundaryFacet(j);
                             auto faceFlag = face.markerID();
-                            //std::cout << "This is face marker ID: " << face.markerID() << std::endl;
+                            
+                            std::cout << "This is face marker ID in modify patchArea in EPRP: " << face.markerID() << std::endl;
+                            std::cout << "\nm_PrevFlag = "<<m_PrevFlag;
+                            
                             if (faceFlag == m_PrevFlag)
                             {
                                 int numPointsOnFace(0);
