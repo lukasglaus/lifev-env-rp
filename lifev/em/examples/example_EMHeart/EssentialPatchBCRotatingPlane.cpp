@@ -185,6 +185,7 @@ double calculate_angleOfTime (Real time)
         std::cout<<"\ninitial maximum_angle = "<<maximum_angle*180/PI<<" degree";
         std::cout<<"\ninitial minimum_angle = "<<minimum_angle*180/PI<<" degree";
         std::cout<<"\ninitial m_tduration = "<<m_tduration;
+        std::cout << "\nm_PrevFlag = "<<m_PrevFlag;
     }
 
 //cos in degree or radian?
