@@ -360,8 +360,8 @@ void modifyPatchArea(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<Region
                             auto& face = mesh->boundaryFacet(j);
                             auto faceFlag = face.markerID();
                             
-                            std::cout << "\nThis is face marker ID in modify patchArea in EPRP: " << face.markerID() << std::endl;
-                            std::cout << "\nm_PrevFlag = "<<m_PrevFlag;
+                            //std::cout << "\nThis is face marker ID in modify patchArea in EPRP: " << face.markerID() << std::endl;
+                            //std::cout << "\nm_PrevFlag = "<<m_PrevFlag;
                             
                             if (faceFlag == m_PrevFlag or faceFlag == m_patchFlag)
                             {
@@ -381,7 +381,7 @@ void modifyPatchArea(EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<Region
                                          if ( solver.comm()->MyPID() == 0 ) nodeOnPatchdisplayer(coord, time);
                                      }
                                      
-                                     if(pointInPatch == true && coord[1]<-3.0)
+                                     if(pointInPatch == true && coord[1]<-5.0)
                                      {
                                          nodeOnPatchCounterone++;
                                          ++numPointsOnFace;
@@ -765,6 +765,7 @@ vectorPtr_Type directionalVectorField(EMSolver<RegionMesh<LinearTetra>, EMMonodo
                         else
                         {
                             distance = 0.0;
+                            cout <<"else in directional vector field in EPRP is beeing executed";
                         }
 
                         Vector3D displacement_vector;

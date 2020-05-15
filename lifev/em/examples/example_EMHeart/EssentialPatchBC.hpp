@@ -1294,11 +1294,11 @@ public:
             patch->modifyPatchBC(solver, time, PatchFlag);
         }
 
-        updatePatchDisplacementSum(solver);
-        updatePatchLocationSum(solver);
+        //updatePatchDisplacementSum(solver);
+        //updatePatchLocationSum(solver);
         updatePatchFacesLocationSum(solver);
-        updatePatchVec(solver, time);
-        updateDispDirectionalVec(solver, time);
+        //updatePatchVec(solver, time);
+        //updateDispDirectionalVec(solver, time);
         
         if ( solver.comm()->MyPID() == 0 ) std::cout << "\nEssentialPatchBCHandler: " << __FUNCTION__ << " - done" << std::endl;
     }
